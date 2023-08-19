@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!--  <link rel="stylesheet" href="report.css">-->
+    <style>
+        :root {
+      --border-color: #d9d9d9;
+      --passed-status-color: #008000;
+      --failed-status-color: #e01e37;
+      --skipped-status-color: #C0C0C0;
+      --known-failures-status-color:  #FFC300;
+      --passed-with-known-failure-color:  #85e74d;
+    }
+
+    html {
+      font-family: Roboto, Arial;
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      margin-top: 5px;
+      margin-left: 20px;
+      margin-right: 20px;
+      margin-bottom: 0px;
+    }
+
+    .report-title {
+      display: block;
+      color: #03256c;
+      font-weight: bold;
+      font-size: larger;
+      text-align: center;
+    }
+
+    .over-all-highlight {
+      height: 30px;
+      background-color: #008000;
+      color: white;
+      font-size: large;
+      font-weight: bolder;
+      text-align: center;
+      border-radius: 10px;
+      padding-top: 5px;
+    }
+
+    .project-info-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border: solid;
+      border-color: var(--border-color);
+      border-width: 1px;
+      margin-right: 10px;
+      box-shadow: 2px 2px 15px 2px #C0C0C0;
+      border-radius: 15px;
+      padding-bottom: 20px;
+      margin-top: 18px;
+      margin-bottom: 10px;
+    }
+
+    .project-info-header {
+      flex: 1;
+      font-weight: bold;
+      color: #1d3557;
+      text-align: left;
+      padding-bottom: 8px;
+      padding-top: 5px;
+      margin-top: 10px;
+      margin-left: 15px;
+    }
+
+    .project-info-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: left;
+    }
+
+    .project-info-content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 120px 10px 1fr;
+      color: #7d8597;
+      column-gap: 4px;
+      row-gap: 0px;
+      padding-left: 10px;
+      font-size: smaller;
+      margin-top: 5px;
+      margin-left: 15px;
+    }
+
+    .project-info-key {
+      font-weight: 700;
+    }
+
+    .project-info-value {
+      color: #8d99ae;
+    }
+
+    .project-info-element {
+      height: 15px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      margin-left: 0px;
+      margin-right: 0px;
+      height: 20px;
+    }
+
+    #project-info-content-description {
+      overflow: scroll;
+    }
+    .chart-area {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .chart-section-element {
+      flex: 1;
+      border: solid;
+      border-color: var(--border-color);
+      border-width: 1px;
+      margin-right: 10px;
+      box-shadow: 2px 2px 15px 2px #C0C0C0;
+      border-radius: 15px;
+      padding-bottom: 20px;
+    }
+
+    /* .feature-chart-header,
+    .testcase-chart-header {
+      font-weight: bold;
+      color: #1d3557;
+      text-align: center;
+      padding-bottom: 8px;
+      padding-top: 5px;
+    } */
+
+    .stats-tables {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .overall-stats-header,
+    .feature-stats-header {
+      font-weight: bold;
+      color: #1d3557;
+      text-align: left;
+      padding-bottom: 8px;
+      padding-top: 5px;
+    }
+
+    .overall-stats-table,
+    .feature-stats-table {
+      box-shadow: 1px 1px 15px 2px #C0C0C0;
+      margin-top: 8px;
+    }
+
+    .feature-stats-section {
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table th{
+        padding: 10px 0;
+        background-color: #f5f4f5;
+        text-align: center;
+        border:  0.2px solid #d4d4d4;
+      font-size: small;
+    }
+
+    table td{
+        padding: 10px;
+        border:  0.2px solid #d4d4d4;
+        text-align: center;
+        background-color: #ffffff;
+      margin: 0px;
+      font-size: smaller;
+      color: #6c757d;
+    }
+    </style>
+    <title>Report</title>
+</head>
+
+<body>
+
+<div class="content">
+    <!-- Title -->
+    <div class="report-title">
+        <p>Cucumber Easy Report</p>
+    </div>
+
+    <!-- Overall Status Highlight -->
+    <div class="over-all-highlight-section"></div>
+
+    <!-- project info section -->
+    <div class="project-info-section">
+        <div>
+            <div class="project-info-header">Project Information</div>
+        </div>
+
+        <div class="project-info-container">
+            <div class="project-info-content" id="project-info-content-details"></div>
+            <div class="project-info-content" id="project-info-content-description"></div>
+        </div>
+
+    </div>
+
+    <!-- Chart Area -->
+    <div class="chart-area">
+
+        <div class="chart-section-element feature-pie-chart-section">
+            <div class="pie-chart">
+                <canvas id="featurePieChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-section-element testcase-pie-chart-section">
+            <div class="pie-chart">
+                <canvas id="testCasePieChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-section-element testcase-pie-chart-section">
+            <div class="pie-chart">
+                <canvas id="testStepePieChart"></canvas>
+            </div>
+        </div>
+
+        <!-- project info section -->
+        <!-- <div class="chart-section-element project-info-section">
+          <div>
+            <div class="project-info-header">Project Information</div>
+          </div>
+          <div class="project-info-content">
+            <div class="project-info-element">Environment</div>
+            <div class="project-info-element separator">:</div>
+            <div class="project-info-element">QA</div>
+
+            <div class="project-info-element">Browser</div>
+            <div class="project-info-element separator">:</div>
+            <div class="project-info-element">Microsoft Edge</div>
+
+            <div class="project-info-element">Application</div>
+            <div class="project-info-element separator">:</div>
+            <div class="project-info-element">https://www.google.com</div>
+
+            <div class="project-info-element">OS</div>
+            <div class="project-info-element separator">:</div>
+            <div class="project-info-element">Windows 11</div>
+          </div>
+        </div> -->
+    </div>
+
+    <!-- stats table-->
+    <div class="stats-tables">
+        <!-- it shows overall status-->
+        <div class="overall-stats-header">Overall Summary</div>
+        <div class="overall-stats-table">
+            <table>
+                <thead>
+                <tr>
+                    <th>Total Cases</th>
+                    <th>Passed</th>
+                    <th>Failed</th>
+                    <th>Skipped</th>
+                    <th>Known Failures</th>
+                    <th>Passed With Known Failures</th>
+                    <th>Pass %</th>
+                    <th>Fail %</th>
+                    <th>Skipped %</th>
+                    <th>Known Fail %</th>
+                    <th>Passed With Known Fail %</th>
+                    <th>Status</th>
+                    <th>Executed Time</th>
+                </tr>
+                </thead>
+
+                <tbody id="overall-stats-data-output">
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- it shows featurewise stats-->
+        <div class="feature-stats-section">
+            <div class="feature-stats-header">Features Summary</div>
+            <div class="feature-stats-table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Feature Name</th>
+                        <th>Total Cases</th>
+                        <th>Passed</th>
+                        <th>Failed</th>
+                        <th>Skipped</th>
+                        <th>Known Failures</th>
+                        <th>Passed With Known Failures</th>
+                        <th>Pass %</th>
+                        <th>Fail %</th>
+                        <th>Skipped %</th>
+                        <th>Known Fail %</th>
+                        <th>Passed With Known Fail %</th>
+                        <th>Status</th>
+                        <th>Executed Time</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="feature-stats-data-output">
+                    <!-- user JS to inset table row elements here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+    var json = `
+
+{
+  "overAllExecutionStatus" : "failed",
+  "projectInfo" : {
+    "environment" : "Development Region",
+    "os" : "Mac OS X",
+    "appName" : "Google",
+    "browser" : "Microsoft Edge",
+    "description" : "We regularly use Google to search for CSS properties that we don't know or don't remember.When using Google, search what you're trying to accomplish.We regularly use Google to search for CSS properties that we don't know or don't remember.When using Google, search what you're trying to accomplish.We regularly use Google to search for CSS properties that we don't know or don't remember.When using Google, search what you're trying to accomplish.We regularly use Google to search for CSS properties that we don't know or don't remember.When using Google, search what you're trying to accomplish.We regularly use Google to search for CSS properties that we don't know or don't remember.When using Google, search what you're trying to accomplish.We regularly use Google to search for CSS properties that we don't know or don't remember.When using Google, search what you're trying to accomplish.",
+    "url" : "https://www.google.com"
+  },
+  "featurePieChartDataMap" : {
+    "totalFeatures" : 4,
+    "passedWithKnownFailures" : 1,
+    "passed" : 1,
+    "failed" : 2,
+    "knownFailures" : 0,
+    "skipped" : 0
+  },
+  "testCasePieChartDataMap" : {
+    "passedWithKnownFailures" : 4,
+    "passed" : 6,
+    "failed" : 2,
+    "knownFailures" : 0,
+    "totalCases" : 12,
+    "skipped" : 0
+  },
+  "testStepPieChartDataMap" : {
+    "pending" : 0,
+    "totalSteps" : 36,
+    "unused" : 0,
+    "passed" : 20,
+    "failed" : 2,
+    "ambiguous" : 0,
+    "knownFailures" : 4,
+    "skipped" : 10,
+    "undefined" : 0
+  },
+  "overallTestCaseStats" : {
+    "failPercent" : "17 %",
+    "failed" : "2",
+    "overAllStatus" : "failed",
+    "passedWithKnownFailPercent" : "33 %",
+    "overallDuration" : "0h 0m 2s",
+    "skipped" : "0",
+    "knownFailPercent" : "0 %",
+    "passedWithKnownFailures" : "4",
+    "passed" : "6",
+    "passPercent" : "50 %",
+    "knownFailures" : "0",
+    "skippedPercent" : "0 %",
+    "totalCases" : "12"
+  },
+  "featuresStats" : [ {
+    "failPercent" : "0 %",
+    "featureName" : "Home Page All Pass",
+    "failed" : "0",
+    "passedWithKnownFailPercent" : "0 %",
+    "skipped" : "0",
+    "duration" : "0h 0m 0s",
+    "knownFailPercent" : "0 %",
+    "passedWithKnownFailures" : "0",
+    "passed" : "3",
+    "passPercent" : "100 %",
+    "knownFailures" : "0",
+    "skippedPercent" : "0 %",
+    "totalCases" : "3",
+    "status" : "passed"
+  }, {
+    "failPercent" : "0 %",
+    "featureName" : "Home Page pass with known fails",
+    "failed" : "0",
+    "passedWithKnownFailPercent" : "100 %",
+    "skipped" : "0",
+    "duration" : "0h 0m 1s",
+    "knownFailPercent" : "0 %",
+    "passedWithKnownFailures" : "3",
+    "passed" : "0",
+    "passPercent" : "0 %",
+    "knownFailures" : "0",
+    "skippedPercent" : "0 %",
+    "totalCases" : "3",
+    "status" : "passed with known failures"
+  }, {
+    "failPercent" : "33 %",
+    "featureName" : "Home Page pass with fails",
+    "failed" : "1",
+    "passedWithKnownFailPercent" : "0 %",
+    "skipped" : "0",
+    "duration" : "0h 0m 0s",
+    "knownFailPercent" : "0 %",
+    "passedWithKnownFailures" : "0",
+    "passed" : "2",
+    "passPercent" : "67 %",
+    "knownFailures" : "0",
+    "skippedPercent" : "0 %",
+    "totalCases" : "3",
+    "status" : "failed"
+  }, {
+    "failPercent" : "33 %",
+    "featureName" : "Home Page pass with fails 2",
+    "failed" : "1",
+    "passedWithKnownFailPercent" : "33 %",
+    "skipped" : "0",
+    "duration" : "0h 0m 0s",
+    "knownFailPercent" : "0 %",
+    "passedWithKnownFailures" : "1",
+    "passed" : "1",
+    "passPercent" : "33 %",
+    "knownFailures" : "0",
+    "skippedPercent" : "0 %",
+    "totalCases" : "3",
+    "status" : "failed"
+  } ]
+}
+
+`;
+
+// Read Json Data
+var data = JSON.parse(json);
+
+// populate overall status on top of the report
+let overallStatusParentElement = document.querySelector(".over-all-highlight-section");
+var overAllStatusInnerElement = " ";
+var overallStatus = data.overAllExecutionStatus;
+if (overallStatus == "passed") {
+  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#008000;">${overallStatus}</div>`;
+} else if (overallStatus == "failed") {
+  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#e01e37;">${overallStatus}</div>`;
+} else if (overallStatus == "skipped") {
+  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#C0C0C0 ; color:white; font-weight:bold;">${overallStatus}</div>`;
+} else if (overallStatus == "known failures") {
+  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#FFC300 ; color:#008000; font-weight:bold;">${overallStatus}</div>`;
+} else if (overallStatus == "passed with known failures") {
+  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#85e74d ; color:white; font-weight:bold;">${overallStatus}</div>`;
+} else {
+  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#C0C0C0 ; color:white; font-weight:bold;">No Results Found</div>`;
+}
+
+overallStatusParentElement.innerHTML = overAllStatusInnerElement;
+
+var projectInfo = data.projectInfo;
+let projectInfoContentDetailsParentElement = document.querySelector("#project-info-content-details");
+var projectInfoContentDetailsInnerElement = " ";
+
+projectInfoContentDetailsInnerElement = `
+<div class="project-info-element project-info-key">Environment</div>
+<div class="project-info-element project-info-separator">:</div>
+<div class="project-info-element project-info-value">${projectInfo.environment}</div>
+
+<div class="project-info-element project-info-key">Browser</div>
+<div class="project-info-element project-info-separator">:</div>
+<div class="project-info-element project-info-value">${projectInfo.browser}</div>
+
+<div class="project-info-element project-info-key">Application</div>
+<div class="project-info-element project-info-separator">:</div>
+<div class="project-info-element project-info-value">${projectInfo.appName}</div>
+
+<div class="project-info-element project-info-key">URL</div>
+<div class="project-info-element project-info-separator">:</div>
+<div class="project-info-element project-info-value">${projectInfo.url}</div>
+
+<div class="project-info-element project-info-key">OS</div>
+<div class="project-info-element project-info-separator">:</div>
+<div class="project-info-element project-info-value">${projectInfo.os}</div>
+
+`;
+
+projectInfoContentDetailsParentElement.innerHTML = projectInfoContentDetailsInnerElement;
+
+let projectInfoContentDescriptionParentElement = document.querySelector("#project-info-content-description");
+var projectInfoContentDescriptionInnerElement = " ";
+
+projectInfoContentDescriptionInnerElement = `
+<div class="project-info-element project-info-key">Description</div>
+<div class="project-info-element project-info-separator">:</div>
+<div class="project-info-element project-info-value">${projectInfo.description}</div>
+
+`;
+
+projectInfoContentDescriptionParentElement.innerHTML = projectInfoContentDescriptionInnerElement;
+
+// Load pie charts for feature, test case and test steps on loading the page
+// refer Chart.js library : https://www.chartjs.org/docs/latest/samples/other-charts/doughnut.html
+window.onload = function () {
+
+  // feature pie chart
+  let featureLabels = ["Passed", "Failed", "Skipped", "Known Failures", "Passed With Known Failures"];
+  let featurePieDataSet = [
+    data.featurePieChartDataMap.passed,
+    data.featurePieChartDataMap.failed,
+    data.featurePieChartDataMap.skipped,
+    data.featurePieChartDataMap.knownFailures,
+    data.featurePieChartDataMap.passedWithKnownFailures
+  ];
+
+  const featurePieData = {
+    labels: featureLabels,
+    datasets: [{
+      data: featurePieDataSet,
+      backgroundColor: [
+        '#25a244',
+        '#d80032',
+        '#c0d6df',
+        '#ffc43d',
+        '#80b918'
+      ]
+    }]
+  };
+
+  const featurePieConfig = {
+    type: 'doughnut',
+    data: featurePieData,
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+      legend: {
+        position: 'right'
+      },
+      title: {
+        display: true,
+        text: 'Feature Status'
+      },
+      plugins: {
+
+      }
+    }
+  };
+
+  const featurePieChart = new Chart(
+    document.getElementById('featurePieChart'),
+    featurePieConfig
+  );
+
+  // testcase pie chart
+  let testCaseLabels = ["Passed", "Failed", "Skipped", "Known Failures", "Passed With Known Failures"];
+  let testCasePieDataSet = [
+    data.testCasePieChartDataMap.passed,
+    data.testCasePieChartDataMap.failed,
+    data.testCasePieChartDataMap.skipped,
+    data.testCasePieChartDataMap.knownFailures,
+    data.testCasePieChartDataMap.passedWithKnownFailures
+  ];
+
+  const testCasePieData = {
+    labels: testCaseLabels,
+    datasets: [{
+      data: testCasePieDataSet,
+      backgroundColor: [
+        '#25a244',
+        '#d80032',
+        '#c0d6df',
+        '#ffc43d',
+        '#80b918'
+      ]
+    }]
+  };
+
+  const testCasePieConfig = {
+    type: 'doughnut',
+    data: testCasePieData,
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+      legend: {
+        display: true,
+        position: 'right'
+      },
+      title: {
+        display: true,
+        text: 'TestCase Status'
+      },
+      plugins: {
+
+      }
+    }
+  };
+
+  const testCasePieChart = new Chart(
+    document.getElementById('testCasePieChart'),
+    testCasePieConfig
+  );
+
+  // testcase pie chart
+  let testStepLabels = ["Passed", "Failed", "Skipped", "Known Failures", "Pending", "Undefined", "Ambiguous", "Unused"];
+  let testStepPieDataSet = [
+    data.testStepPieChartDataMap.passed,
+    data.testStepPieChartDataMap.failed,
+    data.testStepPieChartDataMap.skipped,
+    data.testStepPieChartDataMap.knownFailures,
+    data.testStepPieChartDataMap.pending,
+    data.testStepPieChartDataMap.undefined,
+    data.testStepPieChartDataMap.ambiguous,
+    data.testStepPieChartDataMap.unused,
+  ];
+
+  const testStepPieData = {
+    labels: testStepLabels,
+    datasets: [{
+      data: testStepPieDataSet,
+      backgroundColor: [
+        '#25a244',
+        '#d80032',
+        '#c0d6df',
+        '#ffc43d',
+        '#f72585',
+        '#124559',
+        '#aed9e0',
+        '#8a817c'
+      ]
+    }]
+  };
+
+  const testStepPieConfig = {
+    type: 'doughnut',
+    data: testStepPieData,
+    options: {
+      maintainAspectRatio: false,
+      responsive: true,
+      legend: {
+        display: true,
+        position: 'right'
+      },
+      title: {
+        display: true,
+        text: 'TestStep Status'
+      }
+    }
+  };
+
+  const testStepPieChart = new Chart(
+    document.getElementById('testStepePieChart'),
+    testStepPieConfig
+  );
+
+}
+
+// load feature stats table - starts
+let featureStatsTable = document.querySelector("#feature-stats-data-output");
+let out = "";
+var featuresList = data.featuresStats;
+
+for (let feature of featuresList) {
+  var statusCell = "";
+  if (feature.status == "passed") {
+    statusCell = `<td style="color:#008000; font-weight:bold;">${feature.status}</td>`;
+  } else if (feature.status == "failed") {
+    statusCell = `<td style="color:#e01e37; font-weight:bold;">${feature.status}</td>`;
+  } else if (feature.status == "skipped") {
+    statusCell = `<td style="color:#C0C0C0; font-weight:bold;">${feature.status}</td>`;
+  } else if (feature.status == "known failures") {
+    statusCell = `<td style="color:#FFC300; font-weight:bold;">${feature.status}</td>`;
+  } else if (feature.status == "passed with known failures") {
+    statusCell = `<td style="color:#85e74d; font-weight:bold;">${feature.status}</td>`;
+  } else {
+    statusCell = `<td>${feature.status}</td>`;
+  }
+
+  out += `
+
+  <tr>
+    <td style="text-align: left">${feature.featureName}</td>
+    <td>${feature.totalCases}</td>
+    <td>${feature.passed}</td>
+    <td>${feature.failed}</td>
+    <td>${feature.skipped}</td>
+    <td>${feature.knownFailures}</td>
+    <td>${feature.passedWithKnownFailures}</td>
+    <td>${feature.passPercent}</td>
+    <td>${feature.failPercent}</td>
+    <td>${feature.skippedPercent}</td>
+    <td>${feature.knownFailPercent}</td>
+    <td>${feature.passedWithKnownFailPercent}</td>
+
+    ${statusCell}
+
+
+    <td>${feature.duration}</td>
+  </tr>
+
+  `;
+  featureStatsTable.innerHTML = out;
+}
+// load feature stats table - ends
+
+// load overall testcase stats table - starts
+let overallTestCaseStatsTable = document.querySelector("#overall-stats-data-output");
+let overAllTestCaseTableOut = "";
+var overallTestCaseData = data.overallTestCaseStats;
+
+var statusCell = "";
+var overallStatus = overallTestCaseData.overAllStatus;
+if (overallStatus == "passed") {
+  statusCell = `<td style="color:#008000; font-weight:bold;">${overallStatus}</td>`;
+} else if (overallStatus == "failed") {
+  statusCell = `<td style="color:#e01e37; font-weight:bold;">${overallStatus}</td>`;
+} else if (overallStatus == "skipped") {
+  statusCell = `<td style="color:#C0C0C0; font-weight:bold;">${overallStatus}</td>`;
+} else if (overallStatus == "known failures") {
+  statusCell = `<td style="color:#FFC300; font-weight:bold;">${overallStatus}</td>`;
+} else if (overallStatus == "passed with known failures") {
+  statusCell = `<td style="color:#85e74d; font-weight:bold;">${overallStatus}</td>`;
+} else {
+  statusCell = `<td>${feature.status}</td>`;
+}
+
+overAllTestCaseTableOut = `
+
+  <tr>
+    <td>${overallTestCaseData.totalCases}</td>
+    <td>${overallTestCaseData.passed}</td>
+    <td>${overallTestCaseData.failed}</td>
+    <td>${overallTestCaseData.skipped}</td>
+    <td>${overallTestCaseData.knownFailures}</td>
+    <td>${overallTestCaseData.passedWithKnownFailures}</td>
+    <td>${overallTestCaseData.passPercent}</td>
+    <td>${overallTestCaseData.failPercent}</td>
+    <td>${overallTestCaseData.skippedPercent}</td>
+    <td>${overallTestCaseData.knownFailPercent}</td>
+    <td>${overallTestCaseData.passedWithKnownFailPercent}</td>
+
+    ${statusCell}
+
+
+    <td>${overallTestCaseData.overallDuration}</td>
+  </tr>
+
+  `;
+overallTestCaseStatsTable.innerHTML = overAllTestCaseTableOut;
+// load overall testcase stats table - ends
+</script>
+</body>
+
+</html>

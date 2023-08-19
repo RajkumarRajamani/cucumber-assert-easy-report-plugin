@@ -1,0 +1,44 @@
+{
+  "featurePieChartDataMap": {
+    "Passed": 0,
+    "Passed With Known Failures": 1,
+    "Total Features": 2,
+    "Failed": 1,
+    "Skipped": 0,
+    "Known Failures": 0
+  },
+  "testCasePieChartDataMap": {
+    "Passed": 5,
+    "Passed With Known Failures": 1,
+    "Total Cases": 7,
+    "Failed": 1,
+    "Skipped": 0,
+    "Known Failures": 0
+  },
+  "featuresStats": [
+    {
+      "known fail": "0.0",
+      "featureName": "Home Page 1",
+      "fail %": "0 %",
+      "passed": "2.0",
+      "failed": "0.0",
+      "total cases": "3.0",
+      "passed with known fail": "1.0",
+      "pass %": "67 %",
+      "skipped": "0.0",
+      "status": "passed with known failures"
+    },
+    {
+      "known fail": "0.0",
+      "featureName": "Home Page 2",
+      "fail %": "25 %",
+      "passed": "3.0",
+      "failed": "1.0",
+      "total cases": "4.0",
+      "passed with known fail": "0.0",
+      "pass %": "75 %",
+      "skipped": "0.0",
+      "status": "failed"
+    }
+  ]
+}

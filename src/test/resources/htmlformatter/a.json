@@ -1,0 +1,1767 @@
+[
+  {
+    "line": 2,
+    "elements": [
+      {
+        "start_timestamp": "2023-08-15T16:13:24.726Z",
+        "before": [
+          {
+            "result": {
+              "duration": 47000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 4,
+        "name": "scenario 1",
+        "description": "",
+        "id": "home-page-all-pass;scenario-1",
+        "after": [
+          {
+            "result": {
+              "duration": 33000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 48000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 1423000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 5,
+            "name": "start1",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureA_StepDefinitions.start()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 881000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 58000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 1178000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 6,
+            "name": "process1",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureA_StepDefinitions.process()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 204000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 41000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 32000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 7,
+            "name": "check1",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureA_StepDefinitions.check()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 567000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2023-08-15T16:13:24.727Z",
+        "before": [
+          {
+            "result": {
+              "duration": 36000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 9,
+        "name": "scenario 2",
+        "description": "",
+        "id": "home-page-all-pass;scenario-2",
+        "after": [
+          {
+            "result": {
+              "duration": 157000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 903000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 30000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 10,
+            "name": "start2",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureA_StepDefinitions.start2()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 27000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 43000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 97000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 11,
+            "name": "process2",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureA_StepDefinitions.process2()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 217000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 369000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 441000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 12,
+            "name": "check2",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureA_StepDefinitions.check2()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 45000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2023-08-15T16:13:24.725Z",
+        "before": [
+          {
+            "result": {
+              "duration": 1521000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 14,
+        "name": "scenario 3",
+        "description": "",
+        "id": "home-page-all-pass;scenario-3",
+        "after": [
+          {
+            "result": {
+              "duration": 142000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 66000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 978000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 15,
+            "name": "start3",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureA_StepDefinitions.start3()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 1279000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 162000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 95000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 16,
+            "name": "process3",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureA_StepDefinitions.process3()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 530000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 32000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 35000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 17,
+            "name": "check3",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureA_StepDefinitions.check3()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 259000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      }
+    ],
+    "name": "Home Page All Pass",
+    "description": "",
+    "id": "home-page-all-pass",
+    "keyword": "Feature",
+    "uri": "file:src/test/resources/features/feature-a.feature",
+    "tags": [
+      {
+        "name": "@test",
+        "type": "Tag",
+        "location": {
+          "line": 1,
+          "column": 1
+        }
+      }
+    ]
+  },
+  {
+    "line": 2,
+    "elements": [
+      {
+        "start_timestamp": "2023-08-15T16:13:24.726Z",
+        "before": [
+          {
+            "result": {
+              "duration": 1865000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 4,
+        "name": "scenario 4",
+        "description": "",
+        "id": "home-page-pass-with-known-fails;scenario-4",
+        "after": [
+          {
+            "result": {
+              "duration": 19000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "error_message": "org.assertj.core.api.SoftAssertionError: \nThe following assertion failed:\n1) {\n  \"name\" : \"[ \\\"[failed] expected:<raj[kumar]> but was:<raj[]>\\\" ]\",\n  \"age\" : \"[ \\\"[failed] expected:<3[1]> but was:<3[0]>\\\" ]\"\n}\n\n\tat com.cucumber.assertions.Assertions.assertAll(Assertions.java:86)\n\tat com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.start(FeatureB_StepDefinitions.java:20)\n\tat ✽.start4(file:///Users/rajkumarrajamani/Documents/01-Project/intellij-idea/ws-a/cucumber-assert-easy-report/src/test/resources/features/feature-b.feature:5)\n",
+              "duration": 412967000,
+              "status": "known failures"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 26000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 5,
+            "name": "start4",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.start()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 142000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 17000,
+              "status": "skipped"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 125000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 6,
+            "name": "process4",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.process()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 21000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 19000,
+              "status": "skipped"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 25000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 7,
+            "name": "check4",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.check()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 16000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2023-08-15T16:13:24.726Z",
+        "before": [
+          {
+            "result": {
+              "duration": 30000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 9,
+        "name": "scenario 5",
+        "description": "",
+        "id": "home-page-pass-with-known-fails;scenario-5",
+        "after": [
+          {
+            "result": {
+              "duration": 20000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "error_message": "org.assertj.core.api.SoftAssertionError: \nThe following assertion failed:\n1) {\n  \"name\" : \"[ \\\"[failed] expected:<raj[kumar]> but was:<raj[]>\\\" ]\",\n  \"age\" : \"[ \\\"[failed] expected:<3[1]> but was:<3[0]>\\\" ]\"\n}\n\n\tat com.cucumber.assertions.Assertions.assertAll(Assertions.java:86)\n\tat com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.start5(FeatureB_StepDefinitions.java:42)\n\tat ✽.start5(file:///Users/rajkumarrajamani/Documents/01-Project/intellij-idea/ws-a/cucumber-assert-easy-report/src/test/resources/features/feature-b.feature:10)\n",
+              "duration": 413255000,
+              "status": "known failures"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 32000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 10,
+            "name": "start5",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.start5()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 283000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 18000,
+              "status": "skipped"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 183000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 11,
+            "name": "process5",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.process5()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 17000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 23000,
+              "status": "skipped"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 16000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 12,
+            "name": "check5",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.check5()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 16000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2023-08-15T16:13:24.726Z",
+        "before": [
+          {
+            "result": {
+              "duration": 1578000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 14,
+        "name": "scenario 6",
+        "description": "",
+        "id": "home-page-pass-with-known-fails;scenario-6",
+        "after": [
+          {
+            "result": {
+              "duration": 21000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "error_message": "org.assertj.core.api.SoftAssertionError: \nThe following assertion failed:\n1) {\n  \"name\" : \"[ \\\"[failed] expected:<raj[kumar]> but was:<raj[]>\\\" ]\",\n  \"age\" : \"[ \\\"[failed] expected:<3[1]> but was:<3[0]>\\\" ]\"\n}\n\n\tat com.cucumber.assertions.Assertions.assertAll(Assertions.java:86)\n\tat com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.start6(FeatureB_StepDefinitions.java:64)\n\tat ✽.start6(file:///Users/rajkumarrajamani/Documents/01-Project/intellij-idea/ws-a/cucumber-assert-easy-report/src/test/resources/features/feature-b.feature:15)\n",
+              "duration": 412199000,
+              "status": "known failures"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 25000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 15,
+            "name": "start6",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.start6()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 40000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 69000,
+              "status": "skipped"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 94000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 16,
+            "name": "process6",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.process6()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 15000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 14000,
+              "status": "skipped"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 258000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 17,
+            "name": "check6",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureB_StepDefinitions.check6()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 24000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      }
+    ],
+    "name": "Home Page pass with known fails",
+    "description": "",
+    "id": "home-page-pass-with-known-fails",
+    "keyword": "Feature",
+    "uri": "file:src/test/resources/features/feature-b.feature",
+    "tags": [
+      {
+        "name": "@test",
+        "type": "Tag",
+        "location": {
+          "line": 1,
+          "column": 1
+        }
+      }
+    ]
+  },
+  {
+    "line": 2,
+    "elements": [
+      {
+        "start_timestamp": "2023-08-15T16:13:24.725Z",
+        "before": [
+          {
+            "result": {
+              "duration": 64000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 4,
+        "name": "scenario 7",
+        "description": "",
+        "id": "home-page-pass-with-fails;scenario-7",
+        "after": [
+          {
+            "result": {
+              "duration": 86000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 1009000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 25000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 5,
+            "name": "start7",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureC_StepDefinitions.start()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 38000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 68000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 38000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 6,
+            "name": "process7",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureC_StepDefinitions.process()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 40000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "error_message": "org.assertj.core.api.SoftAssertionError: \nThe following assertion failed:\n1) {\n  \"dob\" : \"[ \\\"[failed] expected:<3[1]> but was:<3[0]>\\\" ]\",\n  \"name\" : \"[ \\\"[failed] expected:<raj[kumar]> but was:<raj[]>\\\" ]\"\n}\n\n\tat com.cucumber.assertions.Assertions.assertAll(Assertions.java:86)\n\tat com.cucumber.report.stepdefinitions.FeatureC_StepDefinitions.check(FeatureC_StepDefinitions.java:28)\n\tat ✽.check7(file:///Users/rajkumarrajamani/Documents/01-Project/intellij-idea/ws-a/cucumber-assert-easy-report/src/test/resources/features/feature-c.feature:7)\n",
+              "duration": 405878000,
+              "status": "failed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 843000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 7,
+            "name": "check7",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureC_StepDefinitions.check()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 193000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2023-08-15T16:13:24.726Z",
+        "before": [
+          {
+            "result": {
+              "duration": 31000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 9,
+        "name": "scenario 8",
+        "description": "",
+        "id": "home-page-pass-with-fails;scenario-8",
+        "after": [
+          {
+            "result": {
+              "duration": 87000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 819000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 2653000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 10,
+            "name": "start8",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureC_StepDefinitions.start5()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 998000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 655000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 1187000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 11,
+            "name": "process8",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureC_StepDefinitions.process5()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 23000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 27000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 145000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 12,
+            "name": "check8",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureC_StepDefinitions.check5()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 114000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2023-08-15T16:13:24.726Z",
+        "before": [
+          {
+            "result": {
+              "duration": 179000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 14,
+        "name": "scenario 9",
+        "description": "",
+        "id": "home-page-pass-with-fails;scenario-9",
+        "after": [
+          {
+            "result": {
+              "duration": 509000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 62000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 42000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 15,
+            "name": "start9",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureC_StepDefinitions.start6()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 28000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 42000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 44000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 16,
+            "name": "process9",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureC_StepDefinitions.process6()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 31000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 30000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 23000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 17,
+            "name": "check9",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureC_StepDefinitions.check6()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 28000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      }
+    ],
+    "name": "Home Page pass with fails",
+    "description": "",
+    "id": "home-page-pass-with-fails",
+    "keyword": "Feature",
+    "uri": "file:src/test/resources/features/feature-c.feature",
+    "tags": [
+      {
+        "name": "@test",
+        "type": "Tag",
+        "location": {
+          "line": 1,
+          "column": 1
+        }
+      }
+    ]
+  },
+  {
+    "line": 2,
+    "elements": [
+      {
+        "start_timestamp": "2023-08-15T16:13:24.725Z",
+        "before": [
+          {
+            "result": {
+              "duration": 37000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 4,
+        "name": "scenario 10",
+        "description": "",
+        "id": "home-page-pass-with-fails-2;scenario-10",
+        "after": [
+          {
+            "result": {
+              "duration": 976000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "error_message": "java.lang.IllegalArgumentException: Forced Exception\n\tat com.cucumber.report.stepdefinitions.FeatureD_StepDefinitions.start(FeatureD_StepDefinitions.java:14)\n\tat ✽.start10(file:///Users/rajkumarrajamani/Documents/01-Project/intellij-idea/ws-a/cucumber-assert-easy-report/src/test/resources/features/feature-d.feature:5)\n",
+              "duration": 1835000,
+              "status": "failed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 24000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 5,
+            "name": "start10",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureD_StepDefinitions.start()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 54000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 29000,
+              "status": "skipped"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 244000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 6,
+            "name": "process10",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureD_StepDefinitions.process()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 18000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 31000,
+              "status": "skipped"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 24000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 7,
+            "name": "check10",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureD_StepDefinitions.check()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 20000,
+                  "status": "skipped"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2023-08-15T16:13:24.742Z",
+        "before": [
+          {
+            "result": {
+              "duration": 28000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 9,
+        "name": "scenario 11",
+        "description": "",
+        "id": "home-page-pass-with-fails-2;scenario-11",
+        "after": [
+          {
+            "result": {
+              "duration": 15000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 32000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 17000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 10,
+            "name": "start11",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureD_StepDefinitions.start5()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 120000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 37000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 33000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 11,
+            "name": "process11",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureD_StepDefinitions.process5()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 20000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 27000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 19000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 12,
+            "name": "check11",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureD_StepDefinitions.check5()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 16000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      },
+      {
+        "start_timestamp": "2023-08-15T16:13:24.744Z",
+        "before": [
+          {
+            "result": {
+              "duration": 104000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "line": 14,
+        "name": "scenario 12",
+        "description": "",
+        "id": "home-page-pass-with-fails-2;scenario-12",
+        "after": [
+          {
+            "result": {
+              "duration": 16000,
+              "status": "passed"
+            },
+            "match": {
+              "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndScenario(io.cucumber.java.Scenario)"
+            }
+          }
+        ],
+        "type": "scenario",
+        "keyword": "Scenario",
+        "steps": [
+          {
+            "result": {
+              "duration": 34000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 81000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 15,
+            "name": "start12",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureD_StepDefinitions.start6()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 22000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Given "
+          },
+          {
+            "result": {
+              "duration": 26000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 18000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 16,
+            "name": "process12",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureD_StepDefinitions.process6()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 16000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "When "
+          },
+          {
+            "result": {
+              "duration": 44000,
+              "status": "passed"
+            },
+            "before": [
+              {
+                "result": {
+                  "duration": 16000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportInitStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "line": 17,
+            "name": "check12",
+            "match": {
+              "location": "com.cucumber.report.stepdefinitions.FeatureD_StepDefinitions.check6()"
+            },
+            "after": [
+              {
+                "result": {
+                  "duration": 17000,
+                  "status": "passed"
+                },
+                "match": {
+                  "location": "com.cucumber.report.hooks.CucumberHooks.easyReportEndStep(io.cucumber.java.Scenario)"
+                }
+              }
+            ],
+            "keyword": "Then "
+          }
+        ],
+        "tags": [
+          {
+            "name": "@test"
+          }
+        ]
+      }
+    ],
+    "name": "Home Page pass with fails 2",
+    "description": "",
+    "id": "home-page-pass-with-fails-2",
+    "keyword": "Feature",
+    "uri": "file:src/test/resources/features/feature-d.feature",
+    "tags": [
+      {
+        "name": "@test",
+        "type": "Tag",
+        "location": {
+          "line": 1,
+          "column": 1
+        }
+      }
+    ]
+  }
+]
