@@ -2,338 +2,310 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!--  <link rel="stylesheet" href="report.css">-->
-    <style>
-        :root {
-      --border-color: #d9d9d9;
-      --passed-status-color: #008000;
-      --failed-status-color: #e01e37;
-      --skipped-status-color: #C0C0C0;
-      --known-failures-status-color:  #FFC300;
-      --passed-with-known-failure-color:  #85e74d;
-    }
+  <title>EasyCucumberReport</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <style>
+    :root {
+  --border-color: #d9d9d9;
+  --passed-status-color: #008000;
+  --failed-status-color: #e01e37;
+  --skipped-status-color: #C0C0C0;
+  --known-failures-status-color:  #FFC300;
+  --passed-with-known-failure-color:  #85e74d;
+}
 
-    html {
-      font-family: Roboto, Arial;
-      margin-top: 0;
-      margin-bottom: 0;
-    }
+html {
+  font-family: Roboto, Arial;
+  margin-top: 0;
+  margin-bottom: 0;
+}
 
-    .content {
-      display: flex;
-      flex-direction: column;
-      margin-top: 5px;
-      margin-left: 20px;
-      margin-right: 20px;
-      margin-bottom: 0px;
-    }
+.content {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 0px;
+}
 
-    .report-title {
-      display: block;
-      color: #03256c;
-      font-weight: bold;
-      font-size: larger;
-      text-align: center;
-    }
+.report-title {
+  display: block;
+  color: #03256c;
+  font-weight: bold;
+  font-size: larger;
+  text-align: center;
+}
 
-    .over-all-highlight {
-      height: 30px;
-      background-color: #008000;
-      color: white;
-      font-size: large;
-      font-weight: bolder;
-      text-align: center;
-      border-radius: 10px;
-      padding-top: 5px;
-    }
+.over-all-highlight {
+  height: 30px;
+  background-color: #008000;
+  color: white;
+  font-size: large;
+  font-weight: bolder;
+  text-align: center;
+  border-radius: 10px;
+  padding-top: 5px;
+}
 
-    .project-info-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      border: solid;
-      border-color: var(--border-color);
-      border-width: 1px;
-      margin-right: 10px;
-      box-shadow: 2px 2px 15px 2px #C0C0C0;
-      border-radius: 15px;
-      padding-bottom: 20px;
-      margin-top: 18px;
-      margin-bottom: 10px;
-    }
+.project-info-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: solid;
+  border-color: var(--border-color);
+  border-width: 1px;
+  margin-right: 10px;
+  box-shadow: 2px 2px 15px 2px #C0C0C0;
+  border-radius: 15px;
+  padding-bottom: 20px;
+  margin-top: 18px;
+  margin-bottom: 10px;
+}
 
-    .project-info-header {
-      flex: 1;
-      font-weight: bold;
-      color: #1d3557;
-      text-align: left;
-      padding-bottom: 8px;
-      padding-top: 5px;
-      margin-top: 10px;
-      margin-left: 15px;
-    }
+.project-info-header {
+  flex: 1;
+  font-weight: bold;
+  color: #1d3557;
+  text-align: left;
+  padding-bottom: 8px;
+  padding-top: 5px;
+  margin-top: 10px;
+  margin-left: 15px;
+}
 
-    .project-info-container {
-      display: flex;
-      flex-direction: row;
-      justify-content: left;
-    }
+.project-info-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
 
-    .project-info-content {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 120px 10px 1fr;
-      color: #7d8597;
-      column-gap: 4px;
-      row-gap: 0px;
-      padding-left: 10px;
-      font-size: smaller;
-      margin-top: 5px;
-      margin-left: 15px;
-    }
+.project-info-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 120px 10px 1fr;
+  color: #7d8597;
+  column-gap: 4px;
+  row-gap: 0px;
+  padding-left: 10px;
+  font-size: smaller;
+  margin-top: 5px;
+  margin-left: 15px;
+}
 
-    .project-info-key {
-      font-weight: 700;
-    }
+.project-info-key {
+  font-weight: 700;
+}
 
-    .project-info-value {
-      color: #8d99ae;
-    }
+.project-info-value {
+  color: #8d99ae;
+}
 
-    .project-info-element {
-      height: 15px;
-      margin-top: 0px;
-      margin-bottom: 0px;
-      margin-left: 0px;
-      margin-right: 0px;
-      height: 20px;
-    }
+.project-info-element {
+  height: 15px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
+  height: 20px;
+}
 
-    #project-info-content-description {
-      overflow: scroll;
-    }
-    .chart-area {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 10px;
-    }
+.project-info-content-description-value {
+  overflow: scroll;
+  min-height: 150px;
+  padding-right: 30px;
+}
 
-    .chart-section-element {
-      flex: 1;
-      border: solid;
-      border-color: var(--border-color);
-      border-width: 1px;
-      margin-right: 10px;
-      box-shadow: 2px 2px 15px 2px #C0C0C0;
-      border-radius: 15px;
-      padding-bottom: 20px;
-    }
+.chart-area {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
 
-    /* .feature-chart-header,
-    .testcase-chart-header {
-      font-weight: bold;
-      color: #1d3557;
-      text-align: center;
-      padding-bottom: 8px;
-      padding-top: 5px;
-    } */
+.chart-section-element {
+  flex: 1;
+  border: solid;
+  border-color: var(--border-color);
+  border-width: 1px;
+  margin-right: 10px;
+  box-shadow: 2px 2px 15px 2px #C0C0C0;
+  border-radius: 15px;
+  padding-bottom: 20px;
+}
 
-    .stats-tables {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+.stats-tables {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 10px;
+  border-radius: 10px;
+}
 
-    .overall-stats-header,
-    .feature-stats-header {
-      font-weight: bold;
-      color: #1d3557;
-      text-align: left;
-      padding-bottom: 8px;
-      padding-top: 5px;
-    }
+.overall-stats-header,
+.feature-stats-header {
+  font-weight: bold;
+  color: #1d3557;
+  text-align: left;
+  padding-bottom: 8px;
+  padding-top: 5px;
+}
 
-    .overall-stats-table,
-    .feature-stats-table {
-      box-shadow: 1px 1px 15px 2px #C0C0C0;
-      margin-top: 8px;
-    }
+.overall-stats-table,
+.feature-stats-table {
+  box-shadow: 1px 1px 15px 2px #C0C0C0;
+  margin-top: 8px;
+}
 
-    .feature-stats-section {
-      margin-top: 20px;
-    }
+.overall-stats-section,
+.feature-stats-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    table th{
-        padding: 10px 0;
-        background-color: #f5f4f5;
-        text-align: center;
-        border:  0.2px solid #d4d4d4;
-      font-size: small;
-    }
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+table th{
+	padding: 10px 0;
+	background-color: #f5f4f5;
+	text-align: center;
+	border:  0.2px solid #d4d4d4;
+  font-size: small;
+}
 
-    table td{
-        padding: 10px;
-        border:  0.2px solid #d4d4d4;
-        text-align: center;
-        background-color: #ffffff;
-      margin: 0px;
-      font-size: smaller;
-      color: #6c757d;
-    }
-    </style>
-    <title>Report</title>
+table td{
+	padding: 10px;
+	border:  0.2px solid #d4d4d4;
+	text-align: center;
+	background-color: #ffffff;
+  margin: 0px;
+  font-size: smaller;
+  color: #6c757d;
+}
+
+
+  </style>
 </head>
 
 <body>
 
 <div class="content">
-    <!-- Title -->
-    <div class="report-title">
-        <p>Cucumber Easy Report</p>
+  <!-- Title -->
+  <div class="report-title">
+    <p>Cucumber Easy Report</p>
+  </div>
+
+  <!-- Overall Status Highlight -->
+  <div class="over-all-highlight-section"></div>
+
+  <!-- project info section -->
+  <div class="project-info-section">
+    <div>
+      <div class="project-info-header">Project Information</div>
     </div>
 
-    <!-- Overall Status Highlight -->
-    <div class="over-all-highlight-section"></div>
-
-    <!-- project info section -->
-    <div class="project-info-section">
-        <div>
-            <div class="project-info-header">Project Information</div>
-        </div>
-
-        <div class="project-info-container">
-            <div class="project-info-content" id="project-info-content-details"></div>
-            <div class="project-info-content" id="project-info-content-description"></div>
-        </div>
-
+    <div class="project-info-container">
+      <div class="project-info-content" id="project-info-content-details"></div>
+      <div class="project-info-content" id="project-info-content-description"></div>
     </div>
 
-    <!-- Chart Area -->
-    <div class="chart-area">
+  </div>
 
-        <div class="chart-section-element feature-pie-chart-section">
-            <div class="pie-chart">
-                <canvas id="featurePieChart"></canvas>
-            </div>
-        </div>
+  <!-- Chart Area -->
+  <div class="chart-area">
 
-        <div class="chart-section-element testcase-pie-chart-section">
-            <div class="pie-chart">
-                <canvas id="testCasePieChart"></canvas>
-            </div>
-        </div>
-
-        <div class="chart-section-element testcase-pie-chart-section">
-            <div class="pie-chart">
-                <canvas id="testStepePieChart"></canvas>
-            </div>
-        </div>
-
-        <!-- project info section -->
-        <!-- <div class="chart-section-element project-info-section">
-          <div>
-            <div class="project-info-header">Project Information</div>
-          </div>
-          <div class="project-info-content">
-            <div class="project-info-element">Environment</div>
-            <div class="project-info-element separator">:</div>
-            <div class="project-info-element">QA</div>
-
-            <div class="project-info-element">Browser</div>
-            <div class="project-info-element separator">:</div>
-            <div class="project-info-element">Microsoft Edge</div>
-
-            <div class="project-info-element">Application</div>
-            <div class="project-info-element separator">:</div>
-            <div class="project-info-element">https://www.google.com</div>
-
-            <div class="project-info-element">OS</div>
-            <div class="project-info-element separator">:</div>
-            <div class="project-info-element">Windows 11</div>
-          </div>
-        </div> -->
+    <div class="chart-section-element feature-pie-chart-section">
+      <div class="pie-chart"><canvas id="featurePieChart"></canvas></div>
     </div>
 
-    <!-- stats table-->
-    <div class="stats-tables">
-        <!-- it shows overall status-->
-        <div class="overall-stats-header">Overall Summary</div>
-        <div class="overall-stats-table">
-            <table>
-                <thead>
-                <tr>
-                    <th>Total Cases</th>
-                    <th>Passed</th>
-                    <th>Failed</th>
-                    <th>Skipped</th>
-                    <th>Known Failures</th>
-                    <th>Passed With Known Failures</th>
-                    <th>Pass %</th>
-                    <th>Fail %</th>
-                    <th>Skipped %</th>
-                    <th>Known Fail %</th>
-                    <th>Passed With Known Fail %</th>
-                    <th>Status</th>
-                    <th>Executed Time</th>
-                </tr>
-                </thead>
-
-                <tbody id="overall-stats-data-output">
-
-                </tbody>
-            </table>
-        </div>
-
-        <!-- it shows featurewise stats-->
-        <div class="feature-stats-section">
-            <div class="feature-stats-header">Features Summary</div>
-            <div class="feature-stats-table">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Feature Name</th>
-                        <th>Total Cases</th>
-                        <th>Passed</th>
-                        <th>Failed</th>
-                        <th>Skipped</th>
-                        <th>Known Failures</th>
-                        <th>Passed With Known Failures</th>
-                        <th>Pass %</th>
-                        <th>Fail %</th>
-                        <th>Skipped %</th>
-                        <th>Known Fail %</th>
-                        <th>Passed With Known Fail %</th>
-                        <th>Status</th>
-                        <th>Executed Time</th>
-                    </tr>
-                    </thead>
-
-                    <tbody id="feature-stats-data-output">
-                    <!-- user JS to inset table row elements here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
+    <div class="chart-section-element testcase-pie-chart-section">
+      <div class="pie-chart"><canvas id="testCasePieChart"></canvas></div>
     </div>
 
+    <div class="chart-section-element testcase-pie-chart-section">
+      <div class="pie-chart"><canvas id="testStepePieChart"></canvas></div>
+    </div>
 
+  </div>
+
+  <!-- stats table-->
+  <div class="stats-tables">
+    <!-- it shows overall status-->
+    <div class="overall-stats-section">
+      <div class="overall-stats-header">Overall Summary</div>
+      <div class="overall-stats-table">
+        <table>
+          <thead>
+          <tr>
+            <th>Total Cases</th>
+            <th>Passed</th>
+            <th>Failed</th>
+            <th>Skipped</th>
+            <th>Known Failures</th>
+            <th>Passed With Known Failures</th>
+            <th>Pass %</th>
+            <th>Fail %</th>
+            <th>Skipped %</th>
+            <th>Known Fail %</th>
+            <th>Passed With Known Fail %</th>
+            <th>Status</th>
+            <th>Executed Time</th>
+          </tr>
+          </thead>
+
+          <tbody id="overall-stats-data-output">
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- it shows featurewise stats-->
+    <div class="feature-stats-section">
+      <div class="feature-stats-header">Features Summary</div>
+      <div class="feature-stats-table">
+        <table>
+          <thead>
+          <tr>
+            <th>Feature Name</th>
+            <th>Total Cases</th>
+            <th>Passed</th>
+            <th>Failed</th>
+            <th>Skipped</th>
+            <th>Known Failures</th>
+            <th>Passed With Known Failures</th>
+            <th>Pass %</th>
+            <th>Fail %</th>
+            <th>Skipped %</th>
+            <th>Known Fail %</th>
+            <th>Passed With Known Fail %</th>
+            <th>Status</th>
+            <th>Executed Time</th>
+          </tr>
+          </thead>
+
+          <tbody id="feature-stats-data-output">
+          <!-- user JS to inset table row elements here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-    var json = `
+  var json = `
 
 <<json-input>>
 
@@ -362,6 +334,7 @@ if (overallStatus == "passed") {
 
 overallStatusParentElement.innerHTML = overAllStatusInnerElement;
 
+// project info section
 var projectInfo = data.projectInfo;
 let projectInfoContentDetailsParentElement = document.querySelector("#project-info-content-details");
 var projectInfoContentDetailsInnerElement = " ";
@@ -397,7 +370,7 @@ var projectInfoContentDescriptionInnerElement = " ";
 projectInfoContentDescriptionInnerElement = `
 <div class="project-info-element project-info-key">Description</div>
 <div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.description}</div>
+<div class="project-info-element project-info-value project-info-content-description-value">${projectInfo.description}</div>
 
 `;
 
@@ -652,6 +625,7 @@ overAllTestCaseTableOut = `
 overallTestCaseStatsTable.innerHTML = overAllTestCaseTableOut;
 // load overall testcase stats table - ends
 </script>
+
 </body>
 
 </html>
