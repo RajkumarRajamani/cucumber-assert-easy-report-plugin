@@ -6,7 +6,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.validator.GenericValidator;
 import org.assertj.core.api.SoftAssertionError;
 import org.assertj.core.api.SoftAssertions;
 import org.cucumber.easyreport.exception.EasyReportException;

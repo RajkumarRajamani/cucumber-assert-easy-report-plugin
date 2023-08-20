@@ -31,7 +31,7 @@ public class FeatureB_StepDefinitions {
     //====
 
     @Given("start5")
-    public void start5() throws JsonProcessingException {
+    public void start5() {
         System.out.println("Start method");
         Assertions assertions = new Assertions();
         assertions.addKnownFailureLabels("name", "age");
@@ -53,7 +53,7 @@ public class FeatureB_StepDefinitions {
     //=====
 
     @Given("start6")
-    public void start6() throws JsonProcessingException {
+    public void start6() {
         System.out.println("Start method");
         Assertions assertions = new Assertions();
         assertions.addKnownFailureLabels("name", "age");
