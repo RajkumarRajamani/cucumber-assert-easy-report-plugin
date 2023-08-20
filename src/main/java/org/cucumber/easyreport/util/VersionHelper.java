@@ -49,4 +49,11 @@ public class VersionHelper {
         }
         return false;
     }
+
+    public static void main(String[] args) {
+        System.out.println(VersionHelper.compare("1", "1"));
+        System.out.println(VersionHelper.compare("1.0", "1.0.1"));
+        System.out.println(VersionHelper.compare("1.0", "1"));
+        System.out.println(VersionHelper.compare("134", "134"));
+    }
 }

@@ -2,14 +2,13 @@
 <html lang="en">
 
 <head>
-  <title>EasyCucumberReport</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <style>
-    :root {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        :root {
   --border-color: #d9d9d9;
   --passed-status-color: #008000;
   --failed-status-color: #e01e37;
@@ -82,6 +81,7 @@ html {
   display: flex;
   flex-direction: row;
   justify-content: left;
+  flex-wrap: wrap;
 }
 
 .project-info-content {
@@ -195,117 +195,124 @@ table td{
 }
 
 
-  </style>
+    </style>
+    <title>Easy Cucumber Report</title>
 </head>
 
 <body>
 
 <div class="content">
-  <!-- Title -->
-  <div class="report-title">
-    <p>Cucumber Easy Report</p>
-  </div>
-
-  <!-- Overall Status Highlight -->
-  <div class="over-all-highlight-section"></div>
-
-  <!-- project info section -->
-  <div class="project-info-section">
-    <div>
-      <div class="project-info-header">Project Information</div>
+    <!-- Title -->
+    <div class="report-title">
+        <p>Cucumber Easy Report</p>
     </div>
 
-    <div class="project-info-container">
-      <div class="project-info-content" id="project-info-content-details"></div>
-      <div class="project-info-content" id="project-info-content-description"></div>
+    <!-- Overall Status Highlight -->
+    <div class="over-all-highlight-section"></div>
+
+    <!-- project info section -->
+    <div class="project-info-section">
+        <div>
+            <div class="project-info-header">Project Information</div>
+        </div>
+
+        <div class="project-info-container">
+            <div class="project-info-content" id="project-info-content-details"></div>
+            <div class="project-info-content" id="project-info-content-description"></div>
+        </div>
+
     </div>
 
-  </div>
+    <!-- Chart Area -->
+    <div class="chart-area">
 
-  <!-- Chart Area -->
-  <div class="chart-area">
+        <div class="chart-section-element feature-pie-chart-section">
+            <div class="pie-chart">
+                <canvas id="featurePieChart"></canvas>
+            </div>
+        </div>
 
-    <div class="chart-section-element feature-pie-chart-section">
-      <div class="pie-chart"><canvas id="featurePieChart"></canvas></div>
+        <div class="chart-section-element testcase-pie-chart-section">
+            <div class="pie-chart">
+                <canvas id="testCasePieChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-section-element testcase-pie-chart-section">
+            <div class="pie-chart">
+                <canvas id="testStepePieChart"></canvas>
+            </div>
+        </div>
+
     </div>
 
-    <div class="chart-section-element testcase-pie-chart-section">
-      <div class="pie-chart"><canvas id="testCasePieChart"></canvas></div>
+    <!-- stats table-->
+    <div class="stats-tables">
+        <!-- it shows overall status-->
+        <div class="overall-stats-section">
+            <div class="overall-stats-header">Overall Summary</div>
+            <div class="overall-stats-table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Total Cases</th>
+                        <th>Passed</th>
+                        <th>Failed</th>
+                        <th>Skipped</th>
+                        <th>Known Failures</th>
+                        <th>Passed With Known Failures</th>
+                        <th>Pass %</th>
+                        <th>Fail %</th>
+                        <th>Skipped %</th>
+                        <th>Known Fail %</th>
+                        <th>Passed With Known Fail %</th>
+                        <th>Status</th>
+                        <th>Executed Time</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="overall-stats-data-output">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- it shows featurewise stats-->
+        <div class="feature-stats-section">
+            <div class="feature-stats-header">Features Summary</div>
+            <div class="feature-stats-table">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Feature Name</th>
+                        <th>Total Cases</th>
+                        <th>Passed</th>
+                        <th>Failed</th>
+                        <th>Skipped</th>
+                        <th>Known Failures</th>
+                        <th>Passed With Known Failures</th>
+                        <th>Pass %</th>
+                        <th>Fail %</th>
+                        <th>Skipped %</th>
+                        <th>Known Fail %</th>
+                        <th>Passed With Known Fail %</th>
+                        <th>Status</th>
+                        <th>Executed Time</th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="feature-stats-data-output">
+                    <!-- user JS to inset table row elements here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-    <div class="chart-section-element testcase-pie-chart-section">
-      <div class="pie-chart"><canvas id="testStepePieChart"></canvas></div>
-    </div>
-
-  </div>
-
-  <!-- stats table-->
-  <div class="stats-tables">
-    <!-- it shows overall status-->
-    <div class="overall-stats-section">
-      <div class="overall-stats-header">Overall Summary</div>
-      <div class="overall-stats-table">
-        <table>
-          <thead>
-          <tr>
-            <th>Total Cases</th>
-            <th>Passed</th>
-            <th>Failed</th>
-            <th>Skipped</th>
-            <th>Known Failures</th>
-            <th>Passed With Known Failures</th>
-            <th>Pass %</th>
-            <th>Fail %</th>
-            <th>Skipped %</th>
-            <th>Known Fail %</th>
-            <th>Passed With Known Fail %</th>
-            <th>Status</th>
-            <th>Executed Time</th>
-          </tr>
-          </thead>
-
-          <tbody id="overall-stats-data-output">
-
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- it shows featurewise stats-->
-    <div class="feature-stats-section">
-      <div class="feature-stats-header">Features Summary</div>
-      <div class="feature-stats-table">
-        <table>
-          <thead>
-          <tr>
-            <th>Feature Name</th>
-            <th>Total Cases</th>
-            <th>Passed</th>
-            <th>Failed</th>
-            <th>Skipped</th>
-            <th>Known Failures</th>
-            <th>Passed With Known Failures</th>
-            <th>Pass %</th>
-            <th>Fail %</th>
-            <th>Skipped %</th>
-            <th>Known Fail %</th>
-            <th>Passed With Known Fail %</th>
-            <th>Status</th>
-            <th>Executed Time</th>
-          </tr>
-          </thead>
-
-          <tbody id="feature-stats-data-output">
-          <!-- user JS to inset table row elements here -->
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script>
-  var json = `
+    var json = `
 
 <<json-input>>
 
