@@ -1,4 +1,4 @@
-package org.cucumber.easyreport;
+package org.cucumber.easyreport.core;
 
 import org.cucumber.easyreport.pojo.ReportJsonFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
 import java.time.Duration;
 import java.util.*;
 
-import static org.cucumber.easyreport.EasyReportStatus.*;
+import static org.cucumber.easyreport.core.EasyReportStatus.*;
 import static java.util.stream.Collectors.toSet;
 
 public class HtmlDataGenerator {

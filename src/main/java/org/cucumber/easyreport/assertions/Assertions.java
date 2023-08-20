@@ -35,6 +35,8 @@ public class Assertions implements Assertion {
     }
 
     /**
+     * Verifies that the actual value is equal to expected.
+     *
      * @param label name of the field of assertion
      * @param actual actual value to compare
      * @param expected expected value to compare against

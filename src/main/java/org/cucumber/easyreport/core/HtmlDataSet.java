@@ -1,4 +1,4 @@
-package org.cucumber.easyreport;
+package org.cucumber.easyreport.core;
 
 import lombok.Data;
 

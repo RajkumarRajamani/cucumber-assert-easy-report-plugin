@@ -1,4 +1,4 @@
-package org.cucumber.easyreport;
+package org.cucumber.easyreport.core;
 
 import io.cucumber.core.internal.com.fasterxml.jackson.annotation.JsonInclude;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonGenerator;

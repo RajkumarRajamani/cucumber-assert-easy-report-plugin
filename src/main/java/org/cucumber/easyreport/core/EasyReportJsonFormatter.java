@@ -1,4 +1,4 @@
-package org.cucumber.easyreport;
+package org.cucumber.easyreport.core;
 
 //
 // Source code recreated from a .class file by IntelliJ IDEA

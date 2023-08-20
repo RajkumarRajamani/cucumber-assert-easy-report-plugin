@@ -1,4 +1,4 @@
-package org.cucumber.easyreport;
+package org.cucumber.easyreport.core;
 
 import org.cucumber.easyreport.exception.EasyReportException;
 import lombok.SneakyThrows;

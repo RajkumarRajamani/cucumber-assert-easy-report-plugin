@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package org.cucumber.easyreport;
+package org.cucumber.easyreport.core;
 
 import io.cucumber.gherkin.GherkinParser;
 import io.cucumber.messages.types.Background;
