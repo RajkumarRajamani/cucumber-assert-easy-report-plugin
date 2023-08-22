@@ -73,11 +73,6 @@ public class EasyReportConfigReader {
         return appName == null ? "Default Application Name" : appName;
     }
 
-    public String getApplicationUrl() {
-        String appUrl = properties.getProperty("easyReport.project.info.url");
-        return appUrl == null ? "Default Application URI" : appUrl;
-    }
-
     public String getProjectDescription() {
         String projectDescription = properties.getProperty("easyReport.project.info.description");
         return projectDescription == null ? "Default Description" : projectDescription;

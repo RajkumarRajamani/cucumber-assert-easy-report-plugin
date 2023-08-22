@@ -8,7 +8,12 @@ import org.apache.commons.text.CaseUtils;
 
 import java.text.DecimalFormat;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static org.cucumber.easyreport.core.EasyReportStatus.*;
 import static java.util.stream.Collectors.toSet;
@@ -36,8 +41,8 @@ public class HtmlDataGenerator {
         this.generateDataForFeaturePieChart(features, htmlDataSet);
         this.generateDataForTestCasePieChart(features, htmlDataSet);
         this.generateDataForTestStepPieChart(features, htmlDataSet);
-        String json = new ObjectMapper().writerWithDefaultPrettyPrinter() .writeValueAsString(htmlDataSet);
-        System.out.println(json);
+//        String json = new ObjectMapper().writerWithDefaultPrettyPrinter() .writeValueAsString(htmlDataSet);
+//        System.out.println(json);
     }
 
     private void loadProjectInformation(HtmlDataSet htmlDataSet) {
@@ -46,9 +51,28 @@ public class HtmlDataGenerator {
         projectInfo.put("environment", configReader.getEnvironment());
         projectInfo.put("browser", configReader.getBrowser());
         projectInfo.put("appName", configReader.getApplicationName());
-        projectInfo.put("url", configReader.getApplicationUrl());
         projectInfo.put("os", configReader.getOs());
         projectInfo.put("description", configReader.getProjectDescription());
+
+        LocalDateTime startTime = features.stream()
+                .map(ReportJsonFeature::getElements)
+                .flatMap(Collection::stream)
+                .map(ReportJsonFeature.Element::getStart_timestamp)
+                .map(dt -> dt.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+                .min(Comparator.naturalOrder()).orElseThrow();
+
+        long totalDuration = features.stream()
+                .map(ReportJsonFeature::getElements)
+                .flatMap(Collection::stream).toList()
+                .stream().mapToLong(ReportJsonFeature.Element::getTotalScenarioDuration)
+                .sum();
+        LocalDateTime endTime = startTime.plus(Duration.ofNanos(totalDuration));
+        String totalExecutionDuration = this.getReadableTime(totalDuration);
+
+        projectInfo.put("startTime", startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")));
+        projectInfo.put("endTime", endTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")));
+        projectInfo.put("totalDuration", totalExecutionDuration);
+
         htmlDataSet.setProjectInfo(projectInfo);
     }
 
@@ -188,7 +212,7 @@ public class HtmlDataGenerator {
     private String getReadableTime(Long elapsedTime){
         Duration duration = Duration.ofNanos(elapsedTime);
         return String.format(
-                "%1dh %1dm %1ds",
+                "%1d Hrs %1d Mins %1d Secs",
                 duration.toHours() % 24, duration.toMinutes() % 60, duration.toSeconds() % 60);
 
     }

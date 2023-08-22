@@ -1,4 +1,4 @@
-@test
+@test @test-b
 Feature: Home Page pass with known fails
 
   Scenario: scenario 4

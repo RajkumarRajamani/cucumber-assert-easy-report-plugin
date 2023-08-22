@@ -1,6 +1,7 @@
 package org.cucumber.easyreport.hooks;
 
 import io.cucumber.java.*;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 
 public class CucumberHooks {

@@ -15,6 +15,7 @@ public class FeatureB_StepDefinitions {
         assertions.addKnownFailureLabels("name", "age");
         assertions.assertEqualsTo("name", "raj", "rajkumar", "failed", "passed");
         assertions.assertEqualsTo("age", "30", "31", "failed", "passed");
+        assertions.assertEqualsTo("age1", "30", "31", "failed", "passed");
         assertions.assertAll();
     }
 
@@ -56,9 +57,9 @@ public class FeatureB_StepDefinitions {
     public void start6() {
         System.out.println("Start method");
         Assertions assertions = new Assertions();
-        assertions.addKnownFailureLabels("nam value", "age");
+        assertions.addKnownFailureLabels("name value", "age");
         assertions.assertEqualsTo("name value", "raj", "rajkumar", "failed", "passed");
-        assertions.assertEqualsTo("name value", "30", "31", "failed", "passed");
+        assertions.assertEqualsTo("age", "30", "31", "failed", "passed");
         assertions.assertAll();
     }
 

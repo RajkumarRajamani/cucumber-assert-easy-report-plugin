@@ -403,7 +403,7 @@ public final class EasyReportJsonFormatter implements EventListener {
                 // for other exceptions, throw it
                 throw new EasyReportException(e.getMessage());
             }
-            boolean allKnownFailures = !errorMap.keySet().isEmpty() && Assertions.getKnownFailureLabels().containsAll(errorMap.keySet());
+            boolean allKnownFailures = !errorMap.keySet().isEmpty() && errorMap.containsKey("knownFailures") && !errorMap.containsKey("failures");
             if(allKnownFailures) {
                 resultMap.put("status", EasyReportStatus.KNOWN_FAILURES.getStatus());
             } else {

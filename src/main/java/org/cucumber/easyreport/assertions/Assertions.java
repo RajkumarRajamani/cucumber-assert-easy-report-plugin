@@ -17,40 +17,62 @@ import java.util.*;
 @Slf4j
 public class Assertions implements Assertion {
 
-    private static final ThreadLocal<Set<String>> KNOWN_FAILURE_LABEL = ThreadLocal.withInitial(HashSet::new);
+    private static final Set<String> knownFailureLabelSet = new HashSet<>();
 
-    public final ThreadLocal<Map<String, String>> failures = ThreadLocal.withInitial(HashMap::new);
+    public final ThreadLocal<Map<String, Map<String, String>>> failures = ThreadLocal.withInitial(HashMap::new);
 
     private final ThreadLocal<SoftAssertions> assertions = ThreadLocal.withInitial(SoftAssertions::new);
 
     public Assertions() {}
 
     public Assertions addKnownFailureLabels(String... labels) {
-        KNOWN_FAILURE_LABEL.get().addAll(List.of(labels));
+        knownFailureLabelSet.addAll(List.of(labels));
         return this;
-    }
-
-    public static void addKnownFailuresLabels(String... labels) {
-        KNOWN_FAILURE_LABEL.get().addAll(List.of(labels));
     }
 
     public static Set<String> getKnownFailureLabels() {
-        return KNOWN_FAILURE_LABEL.get();
+        return knownFailureLabelSet;
     }
 
-    private Assertions assertCurrentStep(String label, SoftAssertions assertions) {
+    private Assertions assertCurrentStep(String label, SoftAssertions assertion) {
         try {
-            assertions.assertAll();
+            assertion.assertAll();
         } catch (AssertJMultipleFailuresError e) {
-            List<String> list = e.getFailures().stream().map(Throwable::getMessage).toList();
-            failures.get().put(label, list.get(0).replaceAll("\n", "").replaceAll("\r", "").replaceAll("\"", "'"));
+            String failure = e.getFailures().stream().map(Throwable::getMessage).toList()
+                    .get(0).replaceAll("\n", " ")
+                    .replaceAll("\r", " ")
+                    .replaceAll("\"", "'");
+            this.addIntoFailures(label, failure);
         } catch (SoftAssertionError error) {
-            List<String> list = error.getErrors();
-            failures.get().put(label, list.get(0).replaceAll("\r", "").replaceAll("\n", "").replaceAll("\"", "'"));
+            String failure = error.getErrors()
+                    .get(0).replaceAll("\r", " ")
+                    .replaceAll("\n", " ")
+                    .replaceAll("\"", "'");
+            this.addIntoFailures(label, failure);
         } finally {
-            assertions = new SoftAssertions();
+            assertions.set(new SoftAssertions());
         }
         return this;
+    }
+
+    private void addIntoFailures(String label, String failure) {
+        if(getKnownFailureLabels().contains(label)) {
+            if(failures.get().containsKey("knownFailures"))
+                failures.get().get("knownFailures").put(label, failure);
+            else {
+                Map<String, String> f = new HashMap<>();
+                f.put(label, failure);
+                failures.get().put("knownFailures", f);
+            }
+        } else {
+            if(failures.get().containsKey("failures"))
+                failures.get().get("failures").put(label, failure);
+            else {
+                Map<String, String> f = new HashMap<>();
+                f.put(label, failure);
+                failures.get().put("failures", f);
+            }
+        }
     }
 
     /**
@@ -222,6 +244,7 @@ public class Assertions implements Assertion {
             }
         } finally {
             failures.get().clear();
+            knownFailureLabelSet.clear();
         }
     }
 
