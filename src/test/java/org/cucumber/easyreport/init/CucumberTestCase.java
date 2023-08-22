@@ -14,15 +14,15 @@ import org.testng.annotations.DataProvider;
         features = "src/test/resources/features",
         glue = {"org.cucumber.easyreport"
         },
-        tags = "@test-a"
+        tags = "@test"
 )
 public class CucumberTestCase extends AbstractTestNGCucumberTests {
 
-        @Override
-        @DataProvider(parallel = true)
-        public Object[][] scenarios() {
-                return super.scenarios();
-        }
+//        @Override
+//        @DataProvider(parallel = true)
+//        public Object[][] scenarios() {
+//                return super.scenarios();
+//        }
 
 
 }

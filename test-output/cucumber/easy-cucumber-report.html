@@ -315,7 +315,7 @@ table td{
     var json = `
 
 {
-  "overAllExecutionStatus" : "passed",
+  "overAllExecutionStatus" : "failed",
   "projectInfo" : {
     "environment" : "Development Region",
     "os" : "Mac OS X",
@@ -325,46 +325,46 @@ table td{
     "url" : "https://www.google.com"
   },
   "featurePieChartDataMap" : {
-    "totalFeatures" : 1,
+    "totalFeatures" : 4,
     "passedWithKnownFailures" : 0,
     "passed" : 1,
-    "failed" : 0,
+    "failed" : 3,
     "knownFailures" : 0,
     "skipped" : 0
   },
   "testCasePieChartDataMap" : {
     "passedWithKnownFailures" : 0,
-    "passed" : 3,
-    "failed" : 0,
+    "passed" : 6,
+    "failed" : 6,
     "knownFailures" : 0,
-    "totalCases" : 3,
+    "totalCases" : 12,
     "skipped" : 0
   },
   "testStepPieChartDataMap" : {
     "pending" : 0,
-    "totalSteps" : 9,
+    "totalSteps" : 36,
     "unused" : 0,
-    "passed" : 9,
-    "failed" : 0,
+    "passed" : 20,
+    "failed" : 6,
     "ambiguous" : 0,
     "knownFailures" : 0,
-    "skipped" : 0,
+    "skipped" : 10,
     "undefined" : 0
   },
   "overallTestCaseStats" : {
-    "failPercent" : "0 %",
-    "failed" : "0",
-    "overAllStatus" : "passed",
+    "failPercent" : "50 %",
+    "failed" : "6",
+    "overAllStatus" : "failed",
     "passedWithKnownFailPercent" : "0 %",
     "overallDuration" : "0h 0m 0s",
     "skipped" : "0",
     "knownFailPercent" : "0 %",
     "passedWithKnownFailures" : "0",
-    "passed" : "3",
-    "passPercent" : "100 %",
+    "passed" : "6",
+    "passPercent" : "50 %",
     "knownFailures" : "0",
     "skippedPercent" : "0 %",
-    "totalCases" : "3"
+    "totalCases" : "12"
   },
   "featuresStats" : [ {
     "failPercent" : "0 %",
@@ -381,6 +381,51 @@ table td{
     "skippedPercent" : "0 %",
     "totalCases" : "3",
     "status" : "passed"
+  }, {
+    "failPercent" : "100 %",
+    "featureName" : "Home Page pass with known fails",
+    "failed" : "3",
+    "passedWithKnownFailPercent" : "0 %",
+    "skipped" : "0",
+    "duration" : "0h 0m 0s",
+    "knownFailPercent" : "0 %",
+    "passedWithKnownFailures" : "0",
+    "passed" : "0",
+    "passPercent" : "0 %",
+    "knownFailures" : "0",
+    "skippedPercent" : "0 %",
+    "totalCases" : "3",
+    "status" : "failed"
+  }, {
+    "failPercent" : "33 %",
+    "featureName" : "Home Page pass with fails",
+    "failed" : "1",
+    "passedWithKnownFailPercent" : "0 %",
+    "skipped" : "0",
+    "duration" : "0h 0m 0s",
+    "knownFailPercent" : "0 %",
+    "passedWithKnownFailures" : "0",
+    "passed" : "2",
+    "passPercent" : "67 %",
+    "knownFailures" : "0",
+    "skippedPercent" : "0 %",
+    "totalCases" : "3",
+    "status" : "failed"
+  }, {
+    "failPercent" : "67 %",
+    "featureName" : "Home Page pass with fails 2",
+    "failed" : "2",
+    "passedWithKnownFailPercent" : "0 %",
+    "skipped" : "0",
+    "duration" : "0h 0m 0s",
+    "knownFailPercent" : "0 %",
+    "passedWithKnownFailures" : "0",
+    "passed" : "1",
+    "passPercent" : "33 %",
+    "knownFailures" : "0",
+    "skippedPercent" : "0 %",
+    "totalCases" : "3",
+    "status" : "failed"
   } ]
 }
 

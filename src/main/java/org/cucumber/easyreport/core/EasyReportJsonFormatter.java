@@ -43,6 +43,8 @@ import lombok.SneakyThrows;
 
 import java.io.*;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -71,10 +73,15 @@ public final class EasyReportJsonFormatter implements EventListener {
             String jsonReporterFilePath = configReader.getJsonReportPath();
             String htmlJsonDataFilePath = configReader.getCustomizedJsonReportPath();
 
+            // create folders of destinations if not exist
+            Files.createDirectories(Paths.get(jsonReporterFilePath).getParent());
+            Files.createDirectories(Paths.get(htmlJsonDataFilePath).getParent());
+            Files.createDirectories(Paths.get(htmlReportFilePath).getParent());
+
             this.jsonReportwriter = new EasyReportUTF8OutputStreamWriter(new FileOutputStream(jsonReporterFilePath));
             this.htmlJsonDatawriter = new EasyReportUTF8OutputStreamWriter(new FileOutputStream(htmlJsonDataFilePath));
             this.htmlReportOutputStream = new FileOutputStream(htmlReportFilePath);
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 

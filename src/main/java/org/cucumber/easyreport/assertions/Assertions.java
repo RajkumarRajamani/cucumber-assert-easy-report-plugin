@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.assertj.core.api.SoftAssertionError;
 import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.error.AssertJMultipleFailuresError;
 import org.cucumber.easyreport.exception.EasyReportException;
 import org.cucumber.easyreport.util.VersionHelper;
 import org.cucumber.easyreport.util.dateutils.DateUtils;
@@ -17,27 +18,55 @@ import java.util.*;
 @Slf4j
 public class Assertions implements Assertion {
 
-    private static final Set<String> KNOWN_FAILURE_LABEL = new HashSet<>();
+    private static final ThreadLocal<Set<String>> KNOWN_FAILURE_LABEL = new ThreadLocal<>() {
+        @Override
+        public Set<String> initialValue() {
+            return new HashSet<>();
+        }
+    };
 
-    public final Map<String, String> failures = new HashMap<>();
+    public final ThreadLocal<Map<String, String>> failures = new ThreadLocal<>() {
+        @Override
+        public Map<String, String> initialValue() {
+            return new HashMap<>();
+        }
+    };
 
-    private SoftAssertions assertions;
+    private final ThreadLocal<SoftAssertions> assertions = new ThreadLocal<>() {
+        @Override
+        public SoftAssertions initialValue() {
+            return new SoftAssertions();
+        }
+    };
 
-    public Assertions() {
-        assertions = new SoftAssertions();
-    }
+    public Assertions() {}
 
     public Assertions addKnownFailureLabels(String... labels) {
-        KNOWN_FAILURE_LABEL.addAll(List.of(labels));
+        KNOWN_FAILURE_LABEL.get().addAll(List.of(labels));
         return this;
     }
 
     public static void addKnownFailuresLabels(String... labels) {
-        KNOWN_FAILURE_LABEL.addAll(List.of(labels));
+        KNOWN_FAILURE_LABEL.get().addAll(List.of(labels));
     }
 
     public static Set<String> getKnownFailureLabels() {
-        return KNOWN_FAILURE_LABEL;
+        return KNOWN_FAILURE_LABEL.get();
+    }
+
+    private Assertions assertCurrentStep(String label, SoftAssertions assertions) {
+        try {
+            assertions.assertAll();
+        } catch (AssertJMultipleFailuresError e) {
+            List<String> list = e.getFailures().stream().map(Throwable::getMessage).toList();
+            failures.get().put(label, list.get(0).replaceAll("\n", "").replaceAll("\r", "").replaceAll("\"", "'"));
+        } catch (SoftAssertionError error) {
+            List<String> list = error.getErrors();
+            failures.get().put(label, list.get(0).replaceAll("\r", "").replaceAll("\n", "").replaceAll("\"", "'"));
+        } finally {
+            assertions = new SoftAssertions();
+        }
+        return this;
     }
 
     /**
@@ -58,24 +87,16 @@ public class Assertions implements Assertion {
 
         if (NumberUtils.isCreatable(actualValue) && NumberUtils.isCreatable(expectedValue)) {
             if (VersionHelper.compare(NumberUtils.createDouble(actualValue).toString(), NumberUtils.createDouble(expectedValue).toString()) != 0)
-                assertions.assertThat(actual).as(failureMsg).isEqualTo(expected);
+                assertions.get().assertThat(actual).as(failureMsg).isEqualTo(expected);
             else
                 log.info(passMessage);
         } else if (!actualValue.equals(expectedValue)) {
-            assertions.assertThat(actual).as(failureMsg).isEqualTo(expected);
+            assertions.get().assertThat(actual).as(failureMsg).isEqualTo(expected);
         } else {
             log.info(passMessage);
         }
 
-        try {
-            assertions.assertAll();
-        } catch (SoftAssertionError error) {
-            List<String> list = error.getErrors().stream().map(er -> er.replaceAll("\\\\", "").replaceAll("\"", "")).toList();
-            failures.put(label, new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(list));
-        } finally {
-            assertions = new SoftAssertions();
-        }
-        return this;
+        return assertCurrentStep(label, assertions.get());
     }
 
     /**
@@ -95,24 +116,16 @@ public class Assertions implements Assertion {
 
         if (NumberUtils.isCreatable(actualValue) && NumberUtils.isCreatable(expectedValue)) {
             if (VersionHelper.compare(NumberUtils.createDouble(actualValue).toString(), NumberUtils.createDouble(expectedValue).toString()) == 0)
-                assertions.assertThat(actual).as(failureMsg).isNotEqualTo(expected);
+                assertions.get().assertThat(actual).as(failureMsg).isNotEqualTo(expected);
             else
                 log.info(passMessage);
         } else if (actualValue.equals(expectedValue)) {
-            assertions.assertThat(actual).as(failureMsg).isNotEqualTo(expected);
+            assertions.get().assertThat(actual).as(failureMsg).isNotEqualTo(expected);
         } else {
             log.info(passMessage);
         }
 
-        try {
-            assertions.assertAll();
-        } catch (SoftAssertionError error) {
-            List<String> list = error.getErrors().stream().map(er -> er.replaceAll("\\\\", "").replaceAll("\"", "")).toList();
-            failures.put(label, new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(list));
-        } finally {
-            assertions = new SoftAssertions();
-        }
-        return this;
+        return assertCurrentStep(label, assertions.get());
     }
 
     /**
@@ -135,22 +148,14 @@ public class Assertions implements Assertion {
             Double actualNumber = NumberUtils.createDouble(actualValue);
             Double expectedNumber = NumberUtils.createDouble(expectedValue);
             if (VersionHelper.compare(actualNumber.toString(), expectedNumber.toString()) != 1) // version helper returns 1 if greater, else returns 0 or -1
-                assertions.assertThat(actualNumber).as(failureMsg).isGreaterThan(expectedNumber);
+                assertions.get().assertThat(actualNumber).as(failureMsg).isGreaterThan(expectedNumber);
             else
                 log.info(passMessage);
         } else {
             throw new EasyReportException("Provided arguments are not number to perform 'GreaterThan' check");
         }
 
-        try {
-            assertions.assertAll();
-        } catch (SoftAssertionError error) {
-            List<String> list = error.getErrors().stream().map(er -> er.replaceAll("\\\\", "").replaceAll("\"", "")).toList();
-            failures.put(label, new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(list));
-        } finally {
-            assertions = new SoftAssertions();
-        }
-        return this;
+        return assertCurrentStep(label, assertions.get());
     }
 
     /**
@@ -172,22 +177,14 @@ public class Assertions implements Assertion {
             Double actualNumber = NumberUtils.createDouble(actualValue);
             Double expectedNumber = NumberUtils.createDouble(expectedValue);
             if (VersionHelper.compare(actualNumber.toString(), expectedNumber.toString()) != -1) // version helper returns -1 if lesser, else returns 0 or 1
-                assertions.assertThat(actualNumber).as(failureMsg).isLessThan(expectedNumber);
+                assertions.get().assertThat(actualNumber).as(failureMsg).isLessThan(expectedNumber);
             else
                 log.info(passMessage);
         } else {
             throw new EasyReportException("Provided arguments are not number to perform 'GreaterThan' check");
         }
 
-        try {
-            assertions.assertAll();
-        } catch (SoftAssertionError error) {
-            List<String> list = error.getErrors().stream().map(er -> er.replaceAll("\\\\", "").replaceAll("\"", "")).toList();
-            failures.put(label, new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(list));
-        } finally {
-            assertions = new SoftAssertions();
-        }
-        return this;
+        return assertCurrentStep(label, assertions.get());
     }
 
     /**
@@ -199,16 +196,8 @@ public class Assertions implements Assertion {
      */
     @Override
     public Assertions assertFail(String label, String failureMsg) throws JsonProcessingException {
-        try {
-            assertions.fail(failureMsg);
-            assertions.assertAll();
-        } catch (SoftAssertionError error) {
-            List<String> list = error.getErrors().stream().map(er -> er.replaceAll("\\\\", "").replaceAll("\"", "")).toList();
-            failures.put(label, new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(list));
-        } finally {
-            assertions = new SoftAssertions();
-        }
-        return this;
+        assertions.get().fail(failureMsg);
+        return assertCurrentStep(label, assertions.get());
     }
 
     /**
@@ -221,16 +210,8 @@ public class Assertions implements Assertion {
     @SneakyThrows
     @Override
     public Assertions isTrue(String label, boolean actual, String failureMsg) {
-        try {
-            assertions.assertThat(actual).as(failureMsg).isTrue();
-            assertions.assertAll();
-        } catch (SoftAssertionError error) {
-            List<String> list = error.getErrors().stream().map(er -> er.replaceAll("\\\\", "").replaceAll("\"", "")).toList();
-            failures.put(label, new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(list));
-        } finally {
-            assertions = new SoftAssertions();
-        }
-        return this;
+        assertions.get().assertThat(actual).as(failureMsg).isTrue();
+        return assertCurrentStep(label, assertions.get());
     }
 
     /**
@@ -242,29 +223,21 @@ public class Assertions implements Assertion {
      */
     @Override
     public Assertions isFalse(String label, boolean actual, String failureMsg) throws JsonProcessingException {
-        try {
-            assertions.assertThat(actual).as(failureMsg).isFalse();
-            assertions.assertAll();
-        } catch (SoftAssertionError error) {
-            List<String> list = error.getErrors().stream().map(er -> er.replaceAll("\\\\", "").replaceAll("\"", "")).toList();
-            failures.put(label, new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(list));
-        } finally {
-            assertions = new SoftAssertions();
-        }
-        return this;
+        assertions.get().assertThat(actual).as(failureMsg).isFalse();
+        return assertCurrentStep(label, assertions.get());
     }
 
 
     @SneakyThrows
     public void assertAll() {
         try {
-            if (!failures.isEmpty()) {
+            if (!failures.get().isEmpty()) {
                 ObjectMapper mapper = new ObjectMapper();
                 String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(failures);
                 throw new SoftAssertionError(List.of(json));
             }
         } finally {
-            failures.clear();
+            failures.get().clear();
         }
     }
 
