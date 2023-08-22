@@ -1,6 +1,5 @@
 package org.cucumber.easyreport.assertions;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -18,26 +17,11 @@ import java.util.*;
 @Slf4j
 public class Assertions implements Assertion {
 
-    private static final ThreadLocal<Set<String>> KNOWN_FAILURE_LABEL = new ThreadLocal<>() {
-        @Override
-        public Set<String> initialValue() {
-            return new HashSet<>();
-        }
-    };
+    private static final ThreadLocal<Set<String>> KNOWN_FAILURE_LABEL = ThreadLocal.withInitial(HashSet::new);
 
-    public final ThreadLocal<Map<String, String>> failures = new ThreadLocal<>() {
-        @Override
-        public Map<String, String> initialValue() {
-            return new HashMap<>();
-        }
-    };
+    public final ThreadLocal<Map<String, String>> failures = ThreadLocal.withInitial(HashMap::new);
 
-    private final ThreadLocal<SoftAssertions> assertions = new ThreadLocal<>() {
-        @Override
-        public SoftAssertions initialValue() {
-            return new SoftAssertions();
-        }
-    };
+    private final ThreadLocal<SoftAssertions> assertions = ThreadLocal.withInitial(SoftAssertions::new);
 
     public Assertions() {}
 
@@ -110,7 +94,7 @@ public class Assertions implements Assertion {
      * @return @{@code Assertions}
      */
     @Override
-    public Assertions assertNotEqualsTo(String label, Object actual, Object expected, String failureMsg, String passMessage) throws JsonProcessingException {
+    public Assertions assertNotEqualsTo(String label, Object actual, Object expected, String failureMsg, String passMessage) {
         String actualValue = Objects.nonNull(actual) ? getLabelValue(actual.toString()) : StringUtils.EMPTY;
         String expectedValue = Objects.nonNull(expected) ? getLabelValue(expected.toString()) : StringUtils.EMPTY;
 
@@ -169,7 +153,7 @@ public class Assertions implements Assertion {
      * @return @{@code Assertions}
      */
     @Override
-    public Assertions assertLesserThan(String label, Object actual, Object expected, String failureMsg, String passMessage) throws JsonProcessingException {
+    public Assertions assertLesserThan(String label, Object actual, Object expected, String failureMsg, String passMessage) {
         String actualValue = Objects.nonNull(actual) ? getLabelValue(actual.toString()) : StringUtils.EMPTY;
         String expectedValue = Objects.nonNull(expected) ? getLabelValue(expected.toString()) : StringUtils.EMPTY;
 
@@ -195,7 +179,7 @@ public class Assertions implements Assertion {
      * @return @{@code Assertions}
      */
     @Override
-    public Assertions assertFail(String label, String failureMsg) throws JsonProcessingException {
+    public Assertions assertFail(String label, String failureMsg) {
         assertions.get().fail(failureMsg);
         return assertCurrentStep(label, assertions.get());
     }
@@ -222,7 +206,7 @@ public class Assertions implements Assertion {
      * @return @{@code Assertions}
      */
     @Override
-    public Assertions isFalse(String label, boolean actual, String failureMsg) throws JsonProcessingException {
+    public Assertions isFalse(String label, boolean actual, String failureMsg) {
         assertions.get().assertThat(actual).as(failureMsg).isFalse();
         return assertCurrentStep(label, assertions.get());
     }
@@ -233,7 +217,7 @@ public class Assertions implements Assertion {
         try {
             if (!failures.get().isEmpty()) {
                 ObjectMapper mapper = new ObjectMapper();
-                String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(failures);
+                String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(failures.get());
                 throw new SoftAssertionError(List.of(json));
             }
         } finally {

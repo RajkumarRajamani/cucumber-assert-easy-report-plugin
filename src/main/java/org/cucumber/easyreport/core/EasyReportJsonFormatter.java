@@ -54,8 +54,8 @@ import java.util.stream.Collectors;
 public final class EasyReportJsonFormatter implements EventListener {
     private static final String before = "before";
     private static final String after = "after";
-    private final List<Map<String, Object>> featureMaps = new ArrayList();
-    private final Map<String, Object> currentBeforeStepHookList = new HashMap();
+    private final List<Map<String, Object>> featureMaps = new ArrayList<>();
+    private final Map<String, Object> currentBeforeStepHookList = new HashMap<>();
     private final Writer jsonReportwriter;
     private final Writer htmlJsonDatawriter;
     private final OutputStream htmlReportOutputStream;
@@ -177,7 +177,7 @@ public final class EasyReportJsonFormatter implements EventListener {
             HtmlDataSet htmlJsonData = new HtmlDataGenerator(reportJson).getHtmlDataSet();
             mapper.writeValue(this.htmlJsonDatawriter, htmlJsonData);
 
-            String reportJsonData = mapper.writerWithDefaultPrettyPrinter() .writeValueAsString(htmlJsonData);;
+            String reportJsonData = mapper.writerWithDefaultPrettyPrinter() .writeValueAsString(htmlJsonData);
             String sourceHtml = "/files/report.html";
             InputStream resource = EasyReportJsonFormatter.class.getResourceAsStream(sourceHtml);
             Objects.requireNonNull(resource, sourceHtml + " could not be loaded");
@@ -194,7 +194,7 @@ public final class EasyReportJsonFormatter implements EventListener {
     private void writeHtmlReport(InputStream resource, String replaceWith) throws IOException {
 
         try(BufferedReader in = new BufferedReader(new InputStreamReader(resource));
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(htmlReportOutputStream));) {
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(htmlReportOutputStream))) {
             String line;
             String stringToReplace = "<<json-input>>";
 
@@ -238,9 +238,9 @@ public final class EasyReportJsonFormatter implements EventListener {
         testCaseMap.put("start_timestamp", this.getDateTimeFromTimeStamp(event.getInstant()));
         TestCase testCase = event.getTestCase();
         testCaseMap.put("name", testCase.getName());
-        testCaseMap.put("line", testCase.getLine());
+        testCaseMap.put("line", testCase.getLocation().getLine());
         testCaseMap.put("type", "scenario");
-        EasyReportTestSourcesModel.AstNode astNode = this.testSources.getAstNode(this.currentFeatureFile, testCase.getLine());
+        EasyReportTestSourcesModel.AstNode astNode = this.testSources.getAstNode(this.currentFeatureFile, testCase.getLocation().getLine());
         if (astNode != null) {
             testCaseMap.put("id", EasyReportTestSourcesModel.calculateId(astNode));
             Scenario scenarioDefinition = EasyReportTestSourcesModel.getScenarioDefinition(astNode);
@@ -294,10 +294,10 @@ public final class EasyReportJsonFormatter implements EventListener {
 
     private Map<String, Object> createTestStep(PickleStepTestStep testStep) {
         Map<String, Object> stepMap = new HashMap<>();
-        stepMap.put("name", testStep.getStepText());
-        stepMap.put("line", testStep.getStepLine());
+        stepMap.put("name", testStep.getStep().getText());
+        stepMap.put("line", testStep.getStep().getLine());
         EasyReportTestSourcesModel.AstNode astNode = this.testSources.getAstNode(this.currentFeatureFile, testStep.getStepLine());
-        StepArgument argument = testStep.getStepArgument();
+        StepArgument argument = testStep.getStep().getArgument();
         if (argument != null) {
             if (argument instanceof DocStringArgument) {
                 DocStringArgument docStringArgument = (DocStringArgument)argument;
