@@ -1,7 +1,3 @@
-var json = `
- <<json-input>>
-`;
-
 // Read Json Data
 var data = JSON.parse(json);
 
@@ -346,7 +342,7 @@ var features = data.featureMapList;
 // On selecting any feature link from left side navigation,
 // clearing backgroup of other features
 // add background only for selected feature
-function loadContent(selector) {
+function loadScenarioContent(selector) {
   $("#loadOnClick").html($(selector).html());
 
   $("ul > li > a").on("click", function () {
@@ -363,25 +359,17 @@ function loadContent(selector) {
   });
 };
 
-
-
+// when document becomes ready, it selects and highlights
+// the first feature navigation option
 $(document).ready(function () {
   var firstFeatureId = features[0].id
   document.querySelector("li a[href='#" + features[0].id + "']").parentNode.classList.add("side-nav-item-active");
-  loadContent("#" + firstFeatureId);
+  loadScenarioContent("#" + firstFeatureId);
 
 });
 
-
-
-var completeResultSectionParentElement = document.querySelector("#complete-result-section");
-var featureListElement = "";
-var content = "";
-
-for (let feature of features) {
-
+function getFeatureNavigationLineStatusColor(featureStatus) {
   var statusCell = "";
-  var featureStatus = feature.status;
   if (featureStatus == "passed") {
     statusCell = `<i class="fa-solid fa-circle-check status-icon" style="color: #0e920c;"></i>`;
   } else if (featureStatus == "failed") {
@@ -395,10 +383,58 @@ for (let feature of features) {
   } else {
     statusCell = "";
   }
+  return statusCell;
+}
+
+function getStepLineColorBasedOnStatus(stepStatus) {
+  var stepLineColor = "";
+  if (stepStatus == "passed") {
+    stepLineColor = "style='color: #008000'";
+  } else if (stepStatus == "failed") {
+    stepLineColor = "style='color: #e01e37'";
+  } else if (stepStatus == "skipped") {
+    stepLineColor = "style='color: #C0C0C0'";
+  } else if (stepStatus == "known failures") {
+    stepLineColor = "style='color: #FFC300'";
+  } else if (stepStatus == "pending") {
+    stepLineColor = "style='color: #f72585'";
+  } else if (stepStatus == "undefined") {
+    stepLineColor = "style='color: #124559'";
+  } else if (stepStatus == "ambiguous") {
+    stepLineColor = "style='color: #aed9e0'";
+  } else if (stepStatus == "unused") {
+    stepLineColor = "style='color: #8a817c'";
+  }
+  return stepLineColor;
+}
+
+function getScenarioLineColorBasedOnStatus(scenarioStatus) {
+  var scLineColor = "";
+  if (scenarioStatus == "passed") {
+    scLineColor = "style='color: #008000'";
+  } else if (scenarioStatus == "failed") {
+    scLineColor = "style='color: #e01e37'";
+  } else if (scenarioStatus == "skipped") {
+    scLineColor = "style='color: #C0C0C0'";
+  } else if (scenarioStatus == "known failures") {
+    scLineColor = "style='color: #FFC300'";
+  } else if (scenarioStatus == "passed with known failures") {
+    scLineColor = "style='color: #73e2a7'";
+  }
+  return scLineColor;
+}
+
+// it consist of whole elements
+var completeResultSectionParentElement = document.querySelector("#complete-result-section");
+var featureListElement = "";
+var content = "";
+
+for (let feature of features) {
+  var statusCell = getFeatureNavigationLineStatusColor(feature.status);
 
   // prepare left side features link as li
   featureListElement += `
-  <li class="side-nav-item"><a id="${feature.id}-a" href="#${feature.id}" class="featureLinks" onclick='loadContent("#${feature.id}")'>${feature.name}</a><span>${feature.duration}</span>${statusCell}</li>
+  <li class="side-nav-item"><a id="${feature.id}-a" href="#${feature.id}" class="featureLinks" onclick='loadScenarioContent("#${feature.id}")'>${feature.name}</a><span>${feature.duration}</span>${statusCell}</li>
   `;
 
 
@@ -410,31 +446,11 @@ for (let feature of features) {
     var steps = scenario.steps;
     var stepElements = "";
 
-    for(let step of steps) {
-
-      var stepStatus = step.status;
-      var stepLineColor = "";
-      if(stepStatus == "passed") {
-        stepLineColor = "style='color: #008000'";
-      } else if(stepStatus == "failed") {
-        stepLineColor = "style='color: #e01e37'";
-      } else if(stepStatus == "skipped") {
-        stepLineColor = "style='color: #C0C0C0'";
-      } else if(stepStatus == "known failures") {
-        stepLineColor = "style='color: #FFC300'";
-      } else if(stepStatus == "pending") {
-        stepLineColor = "style='color: #f72585'";
-      } else if(stepStatus == "undefined") {
-        stepLineColor = "style='color: #124559'";
-      } else if(stepStatus == "ambiguous") {
-        stepLineColor = "style='color: #aed9e0'";
-      } else if(stepStatus == "unused") {
-        stepLineColor = "style='color: #8a817c'";
-      }
-
+    for (let step of steps) {
+      var stepLineColor = getStepLineColorBasedOnStatus(step.status);
       var stepError = "";
 
-      if(step.error != null) {
+      if (step.error != null) {
         stepError = `
           <div class="step-error">${step.error}</div>
         `;
@@ -443,12 +459,12 @@ for (let feature of features) {
       var stepEmbeddings = "";
       var currentStepStatus = step.status;
 
-      if(step.embeddings != null && step.embeddings.length > 0) {
+      if (step.embeddings != null && step.embeddings.length > 0) {
         var i = 0;
-        for(let embedding of step.embeddings) {
+        for (let embedding of step.embeddings) {
 
           var attachmentSource = "";
-          if(embedding.mime_type == "text/plain") {
+          if (embedding.mime_type == "text/plain") {
             attachmentSource = `<div>${embedding.data}</div>`;
           } else {
             var uint8array = new TextEncoder("utf-8").encode(embedding.data);
@@ -457,7 +473,7 @@ for (let feature of features) {
           }
 
           var ignorableStatuses = ['skipped', 'pending', 'undefined', 'ambiguous', 'unused'];
-          if(ignorableStatuses.includes(step.status)) {
+          if (ignorableStatuses.includes(step.status)) {
             stepEmbeddings += `
               <div>
               <div class="embedding-name">${embedding.name}</div>
@@ -497,21 +513,7 @@ for (let feature of features) {
       `;
     }
 
-    // prepare scenarios list to put inside scenarios container
-    var scStatus = scenario.status;
-    var scLineColor = "";
-    if(scStatus == "passed") {
-      scLineColor = "style='color: #008000'";
-    } else if(scStatus == "failed") {
-      scLineColor = "style='color: #e01e37'";
-    } else if(scStatus == "skipped") {
-      scLineColor = "style='color: #C0C0C0'";
-    } else if(scStatus == "known failures") {
-      scLineColor = "style='color: #FFC300'";
-    } else if(scStatus == "passed with known failures") {
-      scLineColor = "style='color: #73e2a7'";
-    }
-
+    var scLineColor = getScenarioLineColorBasedOnStatus(scenario.status);
     scenarioElements += `
         <div id="#${scenario.id}" class="scenario-item">
           <div id="#${scenario.id}-collapsible" class="scenario-name collapsible" onclick="collapseExpandScenario('#${scenario.id}-collapsible-content')">
@@ -556,7 +558,7 @@ completeResultSectionParentElement.innerHTML = containerElement;
 
 function collapseExpandScenario(id) {
 
-  if(document.getElementById(id).style.display == "flex") {
+  if (document.getElementById(id).style.display == "flex") {
     document.getElementById(id).style.display = "none";
   } else {
     document.getElementById(id).style.display = "flex";
@@ -565,11 +567,12 @@ function collapseExpandScenario(id) {
 
 function collapseExpandStep(id) {
 
-  if(document.getElementById(id).style.display == "block") {
+  if (document.getElementById(id).style.display == "block") {
     document.getElementById(id).style.display = "none";
   } else {
     document.getElementById(id).style.display = "block";
   }
 }
 
-$(document).ready(function(){$("img").click(function(){this.requestFullscreen()})});
+$(document).ready(function () { $("img").click(function () { this.requestFullscreen() }) });
+
