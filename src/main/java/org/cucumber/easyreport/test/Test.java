@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,6 +30,10 @@ public class Test {
         LocalDateTime start = LocalDateTime.now().plus(gap);
         System.out.println(start);
 
+        String s = "bG9nIHN0YXRlbWVudCB0ZXh0IGF0dGFjaG1lbnQ=";
+        byte[] b = Base64.getDecoder().decode(s);
+        String ss = new String(b, StandardCharsets.UTF_8);
+        System.out.println(ss);
 
     }
 

@@ -2,6 +2,8 @@ package org.cucumber.easyreport.hooks;
 
 import io.cucumber.java.*;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 public class CucumberHooks {
@@ -10,12 +12,12 @@ public class CucumberHooks {
 
     @BeforeAll
     public static void beforeAllCucumberHook() {
-//        driver = WebDriverManager.chromedriver().create();
+        driver = WebDriverManager.chromedriver().create();
     }
 
     @Before
     public void easyReportInitScenario(Scenario scenario) {
-//        driver.get("https://www.google.com");
+        driver.get("https://www.google.com");
     }
 
     @BeforeStep
@@ -24,12 +26,12 @@ public class CucumberHooks {
 
     @AfterStep
     public void easyReportEndStep(Scenario scenario) {
-//        final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 //        final byte[] screenshot = "Screenshot Image".getBytes();
-//        scenario.attach(screenshot, "image/png", "screenshot");
+        scenario.attach(screenshot, "image/png", "screenshot");
 //        scenario.attach(screenshot, "image/png", "screenshot");
 //        scenario.attach("test screenshot".getBytes(), "image/png", "screenshot");
-//        scenario.attach("log statement text attachment", "text/plain", "screenshot");
+        scenario.attach("log statement text attachment", "text/plain", "screenshot");
     }
 
     @After
@@ -38,6 +40,6 @@ public class CucumberHooks {
 
     @AfterAll
     public static void afterAllCucumberHook() {
-//        driver.quit();
+        driver.quit();
     }
 }

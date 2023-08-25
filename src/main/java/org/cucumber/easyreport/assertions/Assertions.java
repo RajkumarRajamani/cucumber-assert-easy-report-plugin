@@ -17,24 +17,24 @@ import java.util.*;
 @Slf4j
 public class Assertions implements Assertion {
 
-    private static final Set<String> knownFailureLabelSet = new HashSet<>();
+    private final ThreadLocal<Set<String>> knownFailureLabelSet = ThreadLocal.withInitial(HashSet::new);
 
-    public final ThreadLocal<Map<String, Map<String, String>>> failures = ThreadLocal.withInitial(HashMap::new);
+    private final ThreadLocal<Map<String, Map<String, String>>> failures = ThreadLocal.withInitial(HashMap::new);
 
     private final ThreadLocal<SoftAssertions> assertions = ThreadLocal.withInitial(SoftAssertions::new);
 
     public Assertions() {}
 
-    public Assertions addKnownFailureLabels(String... labels) {
-        knownFailureLabelSet.addAll(List.of(labels));
+    public synchronized Assertions addKnownFailureLabels(String... labels) {
+        knownFailureLabelSet.get().addAll(List.of(labels));
         return this;
     }
 
-    public static Set<String> getKnownFailureLabels() {
-        return knownFailureLabelSet;
+    public synchronized Set<String> getKnownFailureLabels() {
+        return knownFailureLabelSet.get();
     }
 
-    private Assertions assertCurrentStep(String label, SoftAssertions assertion) {
+    private synchronized Assertions assertCurrentStep(String label, SoftAssertions assertion) {
         try {
             assertion.assertAll();
         } catch (AssertJMultipleFailuresError e) {
@@ -55,7 +55,7 @@ public class Assertions implements Assertion {
         return this;
     }
 
-    private void addIntoFailures(String label, String failure) {
+    private synchronized void addIntoFailures(String label, String failure) {
         if(getKnownFailureLabels().contains(label)) {
             if(failures.get().containsKey("knownFailures"))
                 failures.get().get("knownFailures").put(label, failure);
@@ -87,7 +87,7 @@ public class Assertions implements Assertion {
      */
     @SneakyThrows
     @Override
-    public Assertions assertEqualsTo(String label, Object actual, Object expected, String failureMsg, String passMessage) {
+    public synchronized Assertions assertEqualsTo(String label, Object actual, Object expected, String failureMsg, String passMessage) {
         String actualValue = Objects.nonNull(actual) ? getLabelValue(actual.toString()) : StringUtils.EMPTY;
         String expectedValue = Objects.nonNull(expected) ? getLabelValue(expected.toString()) : StringUtils.EMPTY;
 
@@ -116,7 +116,7 @@ public class Assertions implements Assertion {
      * @return @{@code Assertions}
      */
     @Override
-    public Assertions assertNotEqualsTo(String label, Object actual, Object expected, String failureMsg, String passMessage) {
+    public synchronized Assertions assertNotEqualsTo(String label, Object actual, Object expected, String failureMsg, String passMessage) {
         String actualValue = Objects.nonNull(actual) ? getLabelValue(actual.toString()) : StringUtils.EMPTY;
         String expectedValue = Objects.nonNull(expected) ? getLabelValue(expected.toString()) : StringUtils.EMPTY;
 
@@ -146,7 +146,7 @@ public class Assertions implements Assertion {
      */
     @SneakyThrows
     @Override
-    public Assertions assertGreaterThan(String label, Object actual, Object expected, String failureMsg, String passMessage) {
+    public synchronized Assertions assertGreaterThan(String label, Object actual, Object expected, String failureMsg, String passMessage) {
         String actualValue = Objects.nonNull(actual) ? getLabelValue(actual.toString()) : StringUtils.EMPTY;
         String expectedValue = Objects.nonNull(expected) ? getLabelValue(expected.toString()) : StringUtils.EMPTY;
 
@@ -175,7 +175,7 @@ public class Assertions implements Assertion {
      * @return @{@code Assertions}
      */
     @Override
-    public Assertions assertLesserThan(String label, Object actual, Object expected, String failureMsg, String passMessage) {
+    public synchronized Assertions assertLesserThan(String label, Object actual, Object expected, String failureMsg, String passMessage) {
         String actualValue = Objects.nonNull(actual) ? getLabelValue(actual.toString()) : StringUtils.EMPTY;
         String expectedValue = Objects.nonNull(expected) ? getLabelValue(expected.toString()) : StringUtils.EMPTY;
 
@@ -201,7 +201,7 @@ public class Assertions implements Assertion {
      * @return @{@code Assertions}
      */
     @Override
-    public Assertions assertFail(String label, String failureMsg) {
+    public synchronized Assertions assertFail(String label, String failureMsg) {
         assertions.get().fail(failureMsg);
         return assertCurrentStep(label, assertions.get());
     }
@@ -215,7 +215,7 @@ public class Assertions implements Assertion {
      */
     @SneakyThrows
     @Override
-    public Assertions isTrue(String label, boolean actual, String failureMsg) {
+    public synchronized Assertions isTrue(String label, boolean actual, String failureMsg) {
         assertions.get().assertThat(actual).as(failureMsg).isTrue();
         return assertCurrentStep(label, assertions.get());
     }
@@ -228,14 +228,14 @@ public class Assertions implements Assertion {
      * @return @{@code Assertions}
      */
     @Override
-    public Assertions isFalse(String label, boolean actual, String failureMsg) {
+    public synchronized Assertions isFalse(String label, boolean actual, String failureMsg) {
         assertions.get().assertThat(actual).as(failureMsg).isFalse();
         return assertCurrentStep(label, assertions.get());
     }
 
 
     @SneakyThrows
-    public void assertAll() {
+    public synchronized void assertAll() {
         try {
             if (!failures.get().isEmpty()) {
                 ObjectMapper mapper = new ObjectMapper();
@@ -244,15 +244,14 @@ public class Assertions implements Assertion {
             }
         } finally {
             failures.get().clear();
-            knownFailureLabelSet.clear();
+            knownFailureLabelSet.get().clear();
         }
     }
 
-    private static String getLabelValue(String value) {
+    private synchronized static String getLabelValue(String value) {
         try {
             if (value.length() >= 10 && DateUtils.isDateValue(value.substring(0, 10)))
                 return value.substring(0, 10);
-
             else
                 return value;
         } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
