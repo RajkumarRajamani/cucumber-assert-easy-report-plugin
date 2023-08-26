@@ -188,7 +188,7 @@ public class HtmlDataGenerator {
             String knownFailPercent = knownFailCount != 0 ? df.format(((Long) knownFailCount).doubleValue() / totalCases) : "0 %";
             String passWithKnownFailPercent = passWithKnownFailCount != 0 ? df.format(((Long) passWithKnownFailCount).doubleValue() / totalCases) : "0 %";
 
-            featureStats.put("featureName", featureName);
+            featureStats.put("featureName", this.replaceEscapesWithHtml(featureName));
             featureStats.put("totalCases", String.valueOf(totalCases));
             featureStats.put(PASSED.getStatus(), String.valueOf(passCount));
             featureStats.put(FAILED.getStatus(), String.valueOf(failCount));
@@ -335,16 +335,13 @@ public class HtmlDataGenerator {
                                 steps
                                         .forEach(step -> {
                                             Map<String, Object> stepMap = new HashMap<>();
-                                            stepMap.put("name", step.getName());
+                                            stepMap.put("name", this.replaceEscapesWithHtml(step.getName()));
                                             stepMap.put("line", step.getLine());
                                             stepMap.put("duration", this.getReadableTime(step.getTotalStepDuration()));
                                             stepMap.put("status", step.getStatus());
                                             String stepError = step.getResult().getError_message();
                                             if (Objects.nonNull(stepError)) {
-                                                stepError = stepError.replaceAll("\r", " ")
-                                                        .replaceAll("\n", "<br>")
-                                                        .replaceAll("\t", "&emsp")
-                                                        .replaceAll("\"", "'");
+                                                stepError = this.replaceEscapesWithHtml(stepError);
                                             }
                                             stepMap.put("error", stepError);
 
@@ -359,7 +356,8 @@ public class HtmlDataGenerator {
                                                     if(embedding.getMime_type().equals("text/plain")) {
                                                         byte[] byteArray = Base64.getDecoder().decode(embedding.getData());
                                                         String text = new String(byteArray, StandardCharsets.UTF_8);
-                                                        embedding.setData(text);
+                                                        embedding.setData(this.replaceEscapesWithHtml(text));
+                                                        embedding.setName(this.replaceEscapesWithHtml(embedding.getName()));
                                                     }
                                                 });
                                             }
@@ -367,15 +365,15 @@ public class HtmlDataGenerator {
                                             stepMap.put("embeddings", screenshots);
                                             stepMapList.add(stepMap);
                                         });
-                                scenariosSet.put("id", scenario.getId().replaceAll(";", "-"));
-                                scenariosSet.put("name", scenario.getName());
+                                scenariosSet.put("id", this.replaceEscapesWithHtml(scenario.getId()));
+                                scenariosSet.put("name", this.replaceEscapesWithHtml(scenario.getName()));
                                 scenariosSet.put("status", scenario.getStatus());
                                 scenariosSet.put("duration", this.getReadableTime(scenario.getTotalScenarioDuration()));
                                 scenariosSet.put("steps", stepMapList);
                                 scenarioMapList.add(scenariosSet);
                             });
-                    featuresSet.put("id", feature.getId());
-                    featuresSet.put("name", feature.getName());
+                    featuresSet.put("id", this.replaceEscapesWithHtml(feature.getId()));
+                    featuresSet.put("name", this.replaceEscapesWithHtml(feature.getName()));
                     featuresSet.put("status", feature.getStatus());
                     featuresSet.put("duration", this.getReadableTime(feature.getTotalFeatureDuration()));
                     featuresSet.put("scenarios", scenarioMapList);
@@ -384,6 +382,14 @@ public class HtmlDataGenerator {
 
         htmlDataSet.setFeatureMapList(featureMapList);
 
+    }
+
+    private String replaceEscapesWithHtml(String value) {
+        return value.replaceAll("\r", "<br>")
+                .replaceAll("\n", "<br>")
+                .replaceAll("\t", "&emsp")
+                .replaceAll("\"", "'")
+                .replaceAll(";", "-");
     }
 
 }

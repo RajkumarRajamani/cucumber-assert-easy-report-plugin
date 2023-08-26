@@ -2,7 +2,7 @@
 Feature: Home Page All Pass
 
   Scenario: scenario 1
-    Given start1
+    Given start1 "testdata"
     When process1
     Then check1
 

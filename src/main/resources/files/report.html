@@ -972,10 +972,21 @@ function getFeatureElements(features) {
   var featureListElement = "";
   for (let feature of features) {
     var statusCell = getFeatureNavigationLineStatusColor(feature.status);
+    var featureId = replaceEscapesAndHtmlWithHyphen(feature.id);
 
     // prepare left side features link as li
     featureListElement += `
-    <li class="side-nav-item"><a id="${feature.id}-a" href="#${feature.id}" class="featureLinks" onclick='loadScenarioContent("#${feature.id}")'>${feature.name}</a><span>${feature.duration}</span>${statusCell}</li>
+    <li class="side-nav-item">
+      <a
+        id="${featureId}-a"
+        href="#${featureId}"
+        class="featureLinks"
+        onclick='loadScenarioContent("#${featureId}")'>
+        ${feature.name}
+      </a>
+      <span>${feature.duration}</span>
+      ${statusCell}
+    </li>
     `;
   }
   return featureListElement;
@@ -987,17 +998,18 @@ function getScenarioElements(scenarios) {
     var steps = scenario.steps;
     var stepElements = getStepElements(steps);
     var scLineColor = getScenarioLineColorBasedOnStatus(scenario.status);
+    var scenarioId = replaceEscapesAndHtmlWithHyphen(scenario.id);
 
     // Below is a box of scenario line and its steps details.
     // By default, steps are hidden [display : none]
     // On clicking scenario line, step is displayed
     scenarioElements += `
-        <div id="#${scenario.id}" class="scenario-item">
-          <div id="#${scenario.id}-collapsible" class="scenario-name collapsible" onclick="collapseExpandScenario('#${scenario.id}-collapsible-content')">
+        <div id="#${scenarioId}" class="scenario-item">
+          <div id="#${scenarioId}-collapsible" class="scenario-name collapsible" onclick="collapseExpandScenario('#${scenarioId}-collapsible-content')">
             <div ${scLineColor}>${scenario.name}</div>
             <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: #9eb3c2;"></span>
           </div>
-          <div id="#${scenario.id}-collapsible-content" class="step-items">
+          <div id="#${scenarioId}-collapsible-content" class="step-items">
             ${stepElements}
           </div>
         </div>
@@ -1019,20 +1031,35 @@ function getStepElements(steps) {
     }
 
     var stepEmbeddings = getStepEmbeddingElements(step.embeddings, step.status);
+    var stepName = step.name;
+    var stepNameForId = replaceEscapesAndHtmlWithHyphen(stepName);
 
     stepElements += `
+      <div id="#${stepNameForId}-${step.line}" class="step-item">
+        <div
+          id="#step-${stepNameForId}-${step.line}-collapsible"
+          class="step-name" ${stepLineColor}
+          onclick="collapseExpandStep('#step-${stepNameForId}-${step.line}-collapsible-content')">${stepName}
+        </div>
 
-      <div id="#${step.name}-${step.line}" class="step-item">
-        <div id="#step-${step.name}-${step.line}-collapsible" class="step-name" ${stepLineColor} onclick="collapseExpandStep('#step-${step.name}-${step.line}-collapsible-content')">${step.name}</div>
-        <div id="#step-${step.name}-${step.line}-collapsible-content" class="step-info-section">
-          ${stepError}
-          ${stepEmbeddings}
+        <div
+          id="#step-${stepNameForId}-${step.line}-collapsible-content"
+          class="step-info-section">
+            ${stepError}
+            ${stepEmbeddings}
         </div>
       </div>
-
     `;
   }
   return stepElements;
+}
+
+function replaceEscapesAndHtmlWithHyphen(value) {
+  return value.replaceAll("<br>", "-")
+    .replaceAll("&emsp", "-")
+    .replaceAll("'", "-")
+    .replaceAll(";", "-")
+    .replaceAll(" ", "-");
 }
 
 function getStepEmbeddingElements(embeddings, stepStatus) {

@@ -31,7 +31,13 @@ public class CucumberHooks {
         scenario.attach(screenshot, "image/png", "screenshot");
 //        scenario.attach(screenshot, "image/png", "screenshot");
 //        scenario.attach("test screenshot".getBytes(), "image/png", "screenshot");
-        scenario.attach("log statement text attachment", "text/plain", "screenshot");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Total Number of cases = 5").append("\n")
+                .append("Total Number of cases = 5").append("\n")
+                .append("Total Number of cases = 5").append("\n")
+                .append("Total Number of cases = 5").append("\n");
+        scenario.attach(sb.toString(), "text/plain", "screenshot");
     }
 
     @After
