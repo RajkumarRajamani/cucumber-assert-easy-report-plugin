@@ -407,11 +407,11 @@ public class HtmlDataGenerator {
                                             stepMap.put("line", step.getLine());
                                             stepMap.put("duration", this.getReadableTime(step.getTotalStepDuration()));
                                             stepMap.put("beforeStatus", step.getBeforeStatus());
-                                            stepMap.put("beforeError", step.getBeforeError());
+                                            stepMap.put("beforeError", this.getEncodedText(step.getBeforeError()));
                                             stepMap.put("status", step.getStepStatus());
-                                            stepMap.put("error", step.getStepError());
+                                            stepMap.put("error", this.getEncodedText(step.getStepError()));
                                             stepMap.put("afterStatus", step.getAfterStatus());
-                                            stepMap.put("afterError", step.getAfterError());
+                                            stepMap.put("afterError", this.getEncodedText(step.getAfterError()));
                                             stepMap.put("finalStatus", step.getStepFinalStatus());
 
                                             List<ReportJsonFeature.Embedding> beforeScreenshots = new ArrayList<>();
@@ -438,10 +438,10 @@ public class HtmlDataGenerator {
                                 scenariosSet.put("name", this.replaceEscapesWithHtml(scenario.getName()));
                                 scenariosSet.put("duration", this.getReadableTime(scenario.getTotalScenarioDuration()));
                                 scenariosSet.put("beforeStatus", scenario.getBeforeStatus());
-                                scenariosSet.put("beforeError", scenario.getBeforeError());
+                                scenariosSet.put("beforeError", this.getEncodedText(scenario.getBeforeError()));
                                 scenariosSet.put("status", scenario.getScenarioStatus());
                                 scenariosSet.put("afterStatus", scenario.getAfterStatus());
-                                scenariosSet.put("afterError", scenario.getAfterError());
+                                scenariosSet.put("afterError", this.getEncodedText(scenario.getAfterError()));
                                 scenariosSet.put("steps", stepMapList);
                                 scenarioMapList.add(scenariosSet);
                             });
@@ -463,6 +463,10 @@ public class HtmlDataGenerator {
                 .replaceAll("\t", "&emsp")
                 .replaceAll("\"", "'")
                 .replaceAll(";", "-");
+    }
+
+    private String getEncodedText(String value) {
+        return Objects.nonNull(value) ? Base64.getEncoder().encodeToString(value.getBytes()) : value;
     }
 
 }

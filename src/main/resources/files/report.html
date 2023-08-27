@@ -67,7 +67,6 @@
           border-width: 1px;
           margin-right: 10px;
           box-shadow: 2px 2px 15px 2px #C0C0C0;
-          /* box-shadow: -1px 2px 5px -1px #C0C0C0; */
           border-radius: 15px;
           padding-bottom: 20px;
           margin-top: 18px;
@@ -146,7 +145,6 @@
           border-width: 1px;
           margin-right: 10px;
           box-shadow: 2px 2px 15px 2px #C0C0C0;
-          /* box-shadow: -1px 2px 5px -1px #C0C0C0; */
           border-radius: 15px;
           padding-bottom: 20px;
         }
@@ -172,7 +170,6 @@
         .overall-stats-table,
         .feature-stats-table {
           box-shadow: 1px 1px 15px 2px #C0C0C0;
-          /* box-shadow: -1px 2px 5px -1px #C0C0C0; */
           margin-top: 8px;
           border-radius: 15px;
         }
@@ -183,7 +180,8 @@
           display: flex;
           flex-direction: column;
           justify-content: space-around;
-          border-radius: 15px;;
+          border-radius: 15px;
+          ;
         }
 
         table {
@@ -196,7 +194,6 @@
           padding: 10px 0;
           background-color: #03045e;
           text-align: center;
-          /* border: 0.2px solid #d4d4d4; */
           font-size: small;
           color: white;
         }
@@ -226,8 +223,6 @@
         table tr:last-child td:last-child {
           border-bottom-right-radius: 15px;
         }
-
-        /* new */
 
         .complete-result-section-header {
           font-weight: bold;
@@ -259,7 +254,6 @@
           display: -webkit-flex;
           /* Safari */
           display: flex;
-          /* padding-right: 10px; */
           border-top-left-radius: 15px;
           border-bottom-left-radius: 15px;
         }
@@ -268,17 +262,14 @@
           flex: auto;
           border-right: 0.5px solid var(--border-color);
           border-left: 0.5px solid var(--border-color);
-          /* border-bottom: 0.5px solid var(--border-color); */
           border-top: none;
           padding-top: 10px;
           margin-top: 0px;
           margin-right: 0px;
           line-height: 40px;
-          /* box-shadow: 2px 2px 15px 2px #C0C0C0; */
           background-color: white;
           min-height: 650px;
           border-top-left-radius: 15px;
-          /* border-bottom-left-radius: 15px; */
         }
 
         nav ul {
@@ -355,14 +346,12 @@
           justify-content: flex-start;
           row-gap: 10px;
           border-top: 0.1px solid var(--border-color);
-          /* border-bottom: 0.1px solid var(--border-color); */
           border-right: 0.1px solid var(--border-color);
           border-left: none;
           padding: 10px;
           min-height: 650px;
           background-color: white;
           border-top-right-radius: 15px;
-          /* border-bottom-right-radius: 15px; */
         }
 
         .displayOnClick {
@@ -386,7 +375,6 @@
           border-right: 0.1px solid var(--border-color);
           border-left: 0.1px solid var(--border-color);
           border-bottom: 0.1px solid var(--border-color);
-          /* border: 0.1px solid var(--border-color); */
         }
 
         .scenario-name {
@@ -394,7 +382,6 @@
           display: flex;
           flex-direction: row;
           justify-content: space-between;
-          /* background-color: #fefefa; */
           align-items: center;
           padding-left: 10px;
           border-bottom: 0.1px solid var(--border-color);
@@ -411,12 +398,16 @@
           cursor: pointer;
           background-color: #f4acb7;
           color: white;
-          line-height: 18px;
+          line-height: 19px;
           font-size: small;
         }
 
-        .scenario-hook-key {
-          flex: 30%
+        .scenario-hook-error-value {
+          line-height: 18px;
+          font-size: small;
+          max-height: fit-content;
+          overflow: scroll;
+          resize: vertical;
         }
 
         .scenario-expand-icon {
@@ -434,7 +425,7 @@
           border: 0.1px solid var(--border-color);
           margin-bottom: 10px;
           padding: 10px;
-          box-shadow: 2px 2px 15px 2px #e3e2e2;
+          box-shadow: 2px 2px 15px 2px #f0eded;
         }
 
         .step-item {
@@ -450,7 +441,6 @@
 
         .step-name {
           border-bottom: 0.1px solid var(--border-color);
-          /* border-top: 0.1px solid var(--border-color); */
           padding-left: 20px;
           display: flex;
           flex-direction: row;
@@ -461,13 +451,20 @@
 
         .step-hook-error-section {
           flex: 1;
-          display: flex;
-          flex-direction: row;
-          justify-content: left;
+          display: grid;
+          grid-template-columns: 20% 1fr;
           background-color: #f4acb7;
           color: white;
           line-height: 18px;
           height: fit-content;
+        }
+
+        .step-hook-error-value {
+          line-height: 18px;
+          font-size: small;
+          max-height: fit-content;
+          overflow: scroll;
+          resize: vertical;
         }
 
         .step-info-section {
@@ -486,8 +483,12 @@
           background-color: #f4acb7;
           color: white;
           line-height: 18px;
+          font-size: small;
           display: block;
           padding: 10px;
+          max-height: fit-content;
+          overflow: scroll;
+          resize: vertical;
         }
 
         .embedding-name {
@@ -501,8 +502,8 @@
         }
 
         img {
-          height: 100px;
-          width: 150px;
+          max-height: 100px;
+          max-width: 150px;
         }
     </style>
     <title>EasyCucumberReport</title>
@@ -630,701 +631,706 @@
 <script>
     var json = `
     <<json-input>>
-`;
-
-// Read Json Data
-var data = JSON.parse(json);
-
-// populate overall status on top of the report
-let overallStatusParentElement = document.querySelector(".over-all-highlight-section");
-var overAllStatusInnerElement = " ";
-var overallStatus = data.overAllExecutionStatus;
-if (overallStatus == "passed") {
-  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#008000;">${overallStatus}</div>`;
-} else if (overallStatus == "failed") {
-  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#e01e37;">${overallStatus}</div>`;
-} else if (overallStatus == "skipped") {
-  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#C0C0C0 ; color:white; font-weight:bold;">${overallStatus}</div>`;
-} else if (overallStatus == "known failures") {
-  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#FFC300 ; color:#008000; font-weight:bold;">${overallStatus}</div>`;
-} else if (overallStatus == "passed with known failures") {
-  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#85e74d ; color:white; font-weight:bold;">${overallStatus}</div>`;
-} else {
-  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#C0C0C0 ; color:white; font-weight:bold;">No Results Found</div>`;
-}
-
-overallStatusParentElement.innerHTML = overAllStatusInnerElement;
-
-// project info section
-var projectInfo = data.projectInfo;
-
-// project into content column a
-let projectInfoContentDetailsParentElement = document.querySelector("#project-info-content-details-a");
-var projectInfoContentDetailsInnerElement = " ";
-
-projectInfoContentDetailsInnerElement = `
-<div class="project-info-element project-info-key">Environment</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.environment}</div>
-
-<div class="project-info-element project-info-key">Browser</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.browser}</div>
-
-<div class="project-info-element project-info-key">Application</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.appName}</div>
-
-<div class="project-info-element project-info-key">OS</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.os}</div>
-
-`;
-
-projectInfoContentDetailsParentElement.innerHTML = projectInfoContentDetailsInnerElement;
-
-// project info content column b
-
-let projectInfoContentDetailsBParentElement = document.querySelector("#project-info-content-details-b");
-var projectInfoContentDetailsBInnerElement = " ";
-
-projectInfoContentDetailsBInnerElement = `
-<div class="project-info-element project-info-key">Start Time</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.startTime}</div>
-
-<div class="project-info-element project-info-key">End Time</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.endTime}</div>
-
-<div class="project-info-element project-info-key">Elapsed Time</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.totalDuration}</div>
-
-`;
-
-projectInfoContentDetailsBParentElement.innerHTML = projectInfoContentDetailsBInnerElement;
-
-// project info content column c
-
-let projectInfoContentDescriptionParentElement = document.querySelector("#project-info-content-description");
-var projectInfoContentDescriptionInnerElement = " ";
-
-projectInfoContentDescriptionInnerElement = `
-<div class="project-info-element project-info-key">Description</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value project-info-content-description-value">${projectInfo.description}</div>
-
-`;
-
-projectInfoContentDescriptionParentElement.innerHTML = projectInfoContentDescriptionInnerElement;
-
-// Load pie charts for feature, test case and test steps on loading the page
-// refer Chart.js library : https://www.chartjs.org/docs/latest/samples/other-charts/doughnut.html
-window.onload = function () {
-
-  // feature pie chart
-  let featureLabels = ["Passed", "Failed", "Skipped", "Known Failures", "Passed With Known Failures"];
-  let featurePieDataSet = [
-    data.featurePieChartDataMap.passed,
-    data.featurePieChartDataMap.failed,
-    data.featurePieChartDataMap.skipped,
-    data.featurePieChartDataMap.knownFailures,
-    data.featurePieChartDataMap.passedWithKnownFailures
-  ];
-
-  const featurePieData = {
-    labels: featureLabels,
-    datasets: [{
-      data: featurePieDataSet,
-      backgroundColor: [
-        '#25a244',
-        '#d80032',
-        '#c0d6df',
-        '#ffc43d',
-        '#73e2a7'
-      ]
-    }]
-  };
-
-  const featurePieConfig = {
-    type: 'doughnut',
-    data: featurePieData,
-    options: {
-      maintainAspectRatio: false,
-      responsive: true,
-      legend: {
-        position: 'right'
-      },
-      title: {
-        display: true,
-        text: 'Feature Status'
-      },
-      plugins: {
-
-      }
-    }
-  };
-
-  const featurePieChart = new Chart(
-    document.getElementById('featurePieChart'),
-    featurePieConfig
-  );
-
-  // testcase pie chart
-  let testCaseLabels = ["Passed", "Failed", "Skipped", "Known Failures", "Passed With Known Failures"];
-  let testCasePieDataSet = [
-    data.testCasePieChartDataMap.passed,
-    data.testCasePieChartDataMap.failed,
-    data.testCasePieChartDataMap.skipped,
-    data.testCasePieChartDataMap.knownFailures,
-    data.testCasePieChartDataMap.passedWithKnownFailures
-  ];
-
-  const testCasePieData = {
-    labels: testCaseLabels,
-    datasets: [{
-      data: testCasePieDataSet,
-      backgroundColor: [
-        '#25a244',
-        '#d80032',
-        '#c0d6df',
-        '#ffc43d',
-        '#73e2a7'
-      ]
-    }]
-  };
-
-  const testCasePieConfig = {
-    type: 'doughnut',
-    data: testCasePieData,
-    options: {
-      maintainAspectRatio: false,
-      responsive: true,
-      legend: {
-        display: true,
-        position: 'right'
-      },
-      title: {
-        display: true,
-        text: 'TestCase Status'
-      },
-      plugins: {
-
-      }
-    }
-  };
-
-  const testCasePieChart = new Chart(
-    document.getElementById('testCasePieChart'),
-    testCasePieConfig
-  );
-
-  // testcase pie chart
-  let testStepLabels = ["Passed", "Failed", "Skipped", "Known Failures", "Pending", "Undefined", "Ambiguous", "Unused"];
-  let testStepPieDataSet = [
-    data.testStepPieChartDataMap.passed,
-    data.testStepPieChartDataMap.failed,
-    data.testStepPieChartDataMap.skipped,
-    data.testStepPieChartDataMap.knownFailures,
-    data.testStepPieChartDataMap.pending,
-    data.testStepPieChartDataMap.undefined,
-    data.testStepPieChartDataMap.ambiguous,
-    data.testStepPieChartDataMap.unused,
-  ];
-
-  const testStepPieData = {
-    labels: testStepLabels,
-    datasets: [{
-      data: testStepPieDataSet,
-      backgroundColor: [
-        '#25a244',
-        '#d80032',
-        '#c0d6df',
-        '#ffc43d',
-        '#f72585',
-        '#124559',
-        '#aed9e0',
-        '#8a817c'
-      ]
-    }]
-  };
-
-  const testStepPieConfig = {
-    type: 'doughnut',
-    data: testStepPieData,
-    options: {
-      maintainAspectRatio: false,
-      responsive: true,
-      legend: {
-        display: true,
-        position: 'right'
-      },
-      title: {
-        display: true,
-        text: 'TestStep Status'
-      }
-    }
-  };
-
-  const testStepPieChart = new Chart(
-    document.getElementById('testStepePieChart'),
-    testStepPieConfig
-  );
-
-}
-
-// load feature stats table - starts
-let featureStatsTable = document.querySelector("#feature-stats-data-output");
-let out = "";
-var featuresList = data.featuresStats;
-
-for (let feature of featuresList) {
-  var statusCell = "";
-  if (feature.status == "passed") {
-    statusCell = `<td style="color:#008000; font-weight:bold;">${feature.status}</td>`;
-  } else if (feature.status == "failed") {
-    statusCell = `<td style="color:#e01e37; font-weight:bold;">${feature.status}</td>`;
-  } else if (feature.status == "skipped") {
-    statusCell = `<td style="color:#C0C0C0; font-weight:bold;">${feature.status}</td>`;
-  } else if (feature.status == "known failures") {
-    statusCell = `<td style="color:#FFC300; font-weight:bold;">${feature.status}</td>`;
-  } else if (feature.status == "passed with known failures") {
-    statusCell = `<td style="color:#73e2a7; font-weight:bold;">${feature.status}</td>`;
-  } else {
-    statusCell = `<td>${feature.status}</td>`;
-  }
-
-  out += `
-
-  <tr>
-    <td style="text-align: left">${feature.featureName}</td>
-    <td>${feature.totalCases}</td>
-    <td>${feature.passed}</td>
-    <td>${feature.failed}</td>
-    <td>${feature.skipped}</td>
-    <td>${feature.knownFailures}</td>
-    <td>${feature.passedWithKnownFailures}</td>
-    <td>${feature.passPercent}</td>
-    <td>${feature.failPercent}</td>
-    <td>${feature.skippedPercent}</td>
-    <td>${feature.knownFailPercent}</td>
-    <td>${feature.passedWithKnownFailPercent}</td>
-
-    ${statusCell}
-
-
-    <td>${feature.duration}</td>
-  </tr>
-
-  `;
-  featureStatsTable.innerHTML = out;
-}
-// load feature stats table - ends
-
-// load overall testcase stats table - starts
-let overallTestCaseStatsTable = document.querySelector("#overall-stats-data-output");
-let overAllTestCaseTableOut = "";
-var overallTestCaseData = data.overallTestCaseStats;
-
-var statusCell = "";
-var overallStatus = overallTestCaseData.overAllStatus;
-if (overallStatus == "passed") {
-  statusCell = `<td style="color:#008000; font-weight:bold;">${overallStatus}</td>`;
-} else if (overallStatus == "failed") {
-  statusCell = `<td style="color:#e01e37; font-weight:bold;">${overallStatus}</td>`;
-} else if (overallStatus == "skipped") {
-  statusCell = `<td style="color:#C0C0C0; font-weight:bold;">${overallStatus}</td>`;
-} else if (overallStatus == "known failures") {
-  statusCell = `<td style="color:#FFC300; font-weight:bold;">${overallStatus}</td>`;
-} else if (overallStatus == "passed with known failures") {
-  statusCell = `<td style="color:#73e2a7; font-weight:bold;">${overallStatus}</td>`;
-} else {
-  statusCell = `<td>${feature.status}</td>`;
-}
-
-overAllTestCaseTableOut = `
-
-  <tr>
-    <td>${overallTestCaseData.totalCases}</td>
-    <td>${overallTestCaseData.passed}</td>
-    <td>${overallTestCaseData.failed}</td>
-    <td>${overallTestCaseData.skipped}</td>
-    <td>${overallTestCaseData.knownFailures}</td>
-    <td>${overallTestCaseData.passedWithKnownFailures}</td>
-    <td>${overallTestCaseData.passPercent}</td>
-    <td>${overallTestCaseData.failPercent}</td>
-    <td>${overallTestCaseData.skippedPercent}</td>
-    <td>${overallTestCaseData.knownFailPercent}</td>
-    <td>${overallTestCaseData.passedWithKnownFailPercent}</td>
-
-    ${statusCell}
-
-
-    <td>${overallTestCaseData.overallDuration}</td>
-  </tr>
-
-  `;
-overallTestCaseStatsTable.innerHTML = overAllTestCaseTableOut;
-// load overall testcase stats table - ends
-
-
-// Display features, its scenarios, its steps and its screenshots
-var features = data.featureMapList;
-
-// it consist of whole elements
-var completeResultSectionParentElement = document.querySelector("#complete-result-section");
-var featureListElement = getFeatureElements(features);
-var content = getContentToDisplayOnRightWhenClickingFeatureNavLink(features);
-var testResultSectionContainerElement = `
-
-  <section class="complete-result-container">
-    <nav>
-      <ul>
-        ${featureListElement}
-      </ul>
-    </nav>
-
-    <div class="feature-specific-sc-container" id="loadOnClick" style="width:70%; float: right;">
-
-    </div>
-  </section>
-
-  ${content}
-
-  `;
-
-completeResultSectionParentElement.innerHTML = testResultSectionContainerElement;
-
-$(document).ready(function () { $("img").click(function () { this.requestFullscreen() }) });
-
-function getContentToDisplayOnRightWhenClickingFeatureNavLink(features) {
-  var displayOnClickContent = "";
-  for (let feature of features) {
-    // get all scenario elements to be displayed on right side page
-    var scenarioElements = getScenarioElements(feature.scenarios);
-
-    // then build the content panel section with above scenario elements
-    // for every feature
-    displayOnClickContent += `
-      <div id="${feature.id}" class="displayOnClick">
-        ${scenarioElements}
-      </div>
-      `;
-  }
-  return displayOnClickContent;
-}
-
-function getFeatureElements(features) {
-  var featureListElement = "";
-  for (let feature of features) {
-    var statusCell = getFeatureNavigationLineStatusColor(feature.status);
-    var featureId = replaceEscapesAndHtmlWithHyphen(feature.id);
-
-    // prepare left side features link as li
-    featureListElement += `
-    <li class="side-nav-item">
-      <a
-        id="${featureId}-a"
-        href="#${featureId}"
-        class="featureLinks"
-        onclick='loadScenarioContent("#${featureId}")'>
-        ${feature.name}
-      </a>
-      <span>${feature.duration}</span>
-      ${statusCell}
-    </li>
     `;
-  }
-  return featureListElement;
-}
 
-function getScenarioElements(scenarios) {
-  var scenarioElements = "";
-  var i = 1;
-  for (let scenario of scenarios) {
-    var steps = scenario.steps;
-    var stepElements = getStepElements(steps);
-    var scLineColor = getScenarioLineColorBasedOnStatus(scenario.status);
-    var scenarioId = replaceEscapesAndHtmlWithHyphen(scenario.id);
+    // Read Json Data
+    var data = JSON.parse(json);
 
-    var beforeScenarioError = "";
-    if(scenario.beforeError.length != 0) {
-      beforeScenarioError = `
-        <div class="scenario-hook-section">
-          <div class="scenario-hook-key">Scenario ${i} BeforeScenario-Hook-Error : </div>
-          <div>${scenario.beforeError}</div>
-        </div>
-      `;
+    // populate overall status on top of the report
+    let overallStatusParentElement = document.querySelector(".over-all-highlight-section");
+    var overAllStatusInnerElement = " ";
+    var overallStatus = data.overAllExecutionStatus;
+    if (overallStatus == "passed") {
+      overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#008000;">${overallStatus}</div>`;
+    } else if (overallStatus == "failed") {
+      overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#e01e37;">${overallStatus}</div>`;
+    } else if (overallStatus == "skipped") {
+      overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#C0C0C0 ; color:white; font-weight:bold;">${overallStatus}</div>`;
+    } else if (overallStatus == "known failures") {
+      overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#FFC300 ; color:#008000; font-weight:bold;">${overallStatus}</div>`;
+    } else if (overallStatus == "passed with known failures") {
+      overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#85e74d ; color:white; font-weight:bold;">${overallStatus}</div>`;
+    } else {
+      overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#C0C0C0 ; color:white; font-weight:bold;">No Results Found</div>`;
     }
 
-    var afterScenarioError = "";
-    if(scenario.afterError.length != 0) {
-      afterScenarioError = `
-        <div class="scenario-hook-section">
-          <div class="scenario-hook-key">Scenario ${i} AfterScenario-Hook-Error : </div>
-          <div>${scenario.afterError}</div>
-        </div>
-      `;
-    }
+    overallStatusParentElement.innerHTML = overAllStatusInnerElement;
 
-    // Below is a box of scenario line and its steps details.
-    // By default, steps are hidden [display : none]
-    // On clicking scenario line, step is displayed
-    scenarioElements += `
-    <div class="scenario-item-box">
-        ${beforeScenarioError}
-        <div id="#${scenarioId}" class="scenario-item">
-          <div id="#${scenarioId}-collapsible" class="scenario-name collapsible" onclick="collapseExpandScenario('#${scenarioId}-collapsible-content')">
-            <div ${scLineColor}>Scenario ${i} : ${scenario.name}</div>
-            <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: #9eb3c2;"></span>
-          </div>
-          <div id="#${scenarioId}-collapsible-content" class="step-items">
-            ${stepElements}
-          </div>
-        </div>
-        ${afterScenarioError}
-    </div>
-      `;
-      i++;
-  }
-  return scenarioElements;
-}
+    // project info section
+    var projectInfo = data.projectInfo;
 
-function getStepElements(steps) {
-  var stepElements = "";
-  var i = 1;
-  for (let step of steps) {
-    var stepLineColor = getStepLineColorBasedOnStatus(step.status);
-    var beforeStepError = "";
-    if(step.beforeError.length != 0) {
-      beforeStepError = `
-        <div class="step-name">
-          <div class="step-hook-error-section">
-            <div>Step ${i} BeforeStep-Hook-Error : </div>
-            <div>${step.beforeError}</div>
-          </div>
-        </div>
-      `;
-    }
+    // project into content column a
+    let projectInfoContentDetailsParentElement = document.querySelector("#project-info-content-details-a");
+    var projectInfoContentDetailsInnerElement = " ";
 
-    var afterStepError = "";
-    if(step.afterError.length != 0) {
-      afterStepError = `
-      <div class="step-name">
-        <div class="step-hook-error-section">
-          <div>Step ${i} AfterStep-Hook-Error : </div>
-          <div>${step.afterError}</div>
-        </div>
-      </div>
-      `;
-    }
+    projectInfoContentDetailsInnerElement = `
+    <div class="project-info-element project-info-key">Environment</div>
+    <div class="project-info-element project-info-separator">:</div>
+    <div class="project-info-element project-info-value">${projectInfo.environment}</div>
 
-    var stepError = "";
+    <div class="project-info-element project-info-key">Browser</div>
+    <div class="project-info-element project-info-separator">:</div>
+    <div class="project-info-element project-info-value">${projectInfo.browser}</div>
 
-    if (step.error != null) {
-      stepError = `
-        <div class="step-error">${step.error}</div>
-      `;
-    }
+    <div class="project-info-element project-info-key">Application</div>
+    <div class="project-info-element project-info-separator">:</div>
+    <div class="project-info-element project-info-value">${projectInfo.appName}</div>
 
-    var stepEmbeddings = getStepEmbeddingElements(step.embeddings, step.status);
-    var stepName = step.name;
-    var stepNameForId = replaceEscapesAndHtmlWithHyphen(stepName);
+    <div class="project-info-element project-info-key">OS</div>
+    <div class="project-info-element project-info-separator">:</div>
+    <div class="project-info-element project-info-value">${projectInfo.os}</div>
 
-    stepElements += `
-      <div id="#${stepNameForId}-${step.line}" class="step-item">
-        ${beforeStepError}
-        <div
-          id="#step-${stepNameForId}-${step.line}-collapsible"
-          class="step-name" ${stepLineColor}
-          onclick="collapseExpandStep('#step-${stepNameForId}-${step.line}-collapsible-content')">
-            <div>Step ${i} : ${stepName}</div>
-            <div><i class="fa-sharp fa-solid fa-circle"></i></div>
-        </div>
-
-        <div
-          id="#step-${stepNameForId}-${step.line}-collapsible-content"
-          class="step-info-section">
-            ${stepError}
-            ${stepEmbeddings}
-        </div>
-        ${afterStepError}
-      </div>
     `;
-    i++;
-  }
-  return stepElements;
-}
 
-function replaceEscapesAndHtmlWithHyphen(value) {
-  return value.replaceAll("<br>", "-")
-    .replaceAll("&emsp", "-")
-    .replaceAll("'", "-")
-    .replaceAll(";", "-")
-    .replaceAll(" ", "-");
-}
+    projectInfoContentDetailsParentElement.innerHTML = projectInfoContentDetailsInnerElement;
 
-function getStepEmbeddingElements(embeddings, stepStatus) {
-  var stepEmbeddingElement = "";
-  if (embeddings != null && embeddings.length > 0) {
-    for (let embedding of embeddings) {
-      var attachmentSource = getStepScreenshotElement(embedding.mime_type, embedding.data);
-      if (isStepStatusIngnorable(stepStatus)) {
-        stepEmbeddingElement += `
-          <div>
-          <div class="embedding-name">${embedding.name}</div>
-          <div class="embedding-src">${attachmentSource}</div>
-          <div class="embedding-name">${stepStatus} step</div>
+    // project info content column b
+
+    let projectInfoContentDetailsBParentElement = document.querySelector("#project-info-content-details-b");
+    var projectInfoContentDetailsBInnerElement = " ";
+
+    projectInfoContentDetailsBInnerElement = `
+    <div class="project-info-element project-info-key">Start Time</div>
+    <div class="project-info-element project-info-separator">:</div>
+    <div class="project-info-element project-info-value">${projectInfo.startTime}</div>
+
+    <div class="project-info-element project-info-key">End Time</div>
+    <div class="project-info-element project-info-separator">:</div>
+    <div class="project-info-element project-info-value">${projectInfo.endTime}</div>
+
+    <div class="project-info-element project-info-key">Elapsed Time</div>
+    <div class="project-info-element project-info-separator">:</div>
+    <div class="project-info-element project-info-value">${projectInfo.totalDuration}</div>
+
+    `;
+
+    projectInfoContentDetailsBParentElement.innerHTML = projectInfoContentDetailsBInnerElement;
+
+    // project info content column c
+
+    let projectInfoContentDescriptionParentElement = document.querySelector("#project-info-content-description");
+    var projectInfoContentDescriptionInnerElement = " ";
+
+    projectInfoContentDescriptionInnerElement = `
+    <div class="project-info-element project-info-key">Description</div>
+    <div class="project-info-element project-info-separator">:</div>
+    <div class="project-info-element project-info-value project-info-content-description-value">${projectInfo.description}</div>
+
+    `;
+
+    projectInfoContentDescriptionParentElement.innerHTML = projectInfoContentDescriptionInnerElement;
+
+    // Load pie charts for feature, test case and test steps on loading the page
+    // refer Chart.js library : https://www.chartjs.org/docs/latest/samples/other-charts/doughnut.html
+    window.onload = function () {
+
+      // feature pie chart
+      let featureLabels = ["Passed", "Failed", "Skipped", "Known Failures", "Passed With Known Failures"];
+      let featurePieDataSet = [
+        data.featurePieChartDataMap.passed,
+        data.featurePieChartDataMap.failed,
+        data.featurePieChartDataMap.skipped,
+        data.featurePieChartDataMap.knownFailures,
+        data.featurePieChartDataMap.passedWithKnownFailures
+      ];
+
+      const featurePieData = {
+        labels: featureLabels,
+        datasets: [{
+          data: featurePieDataSet,
+          backgroundColor: [
+            '#25a244',
+            '#d80032',
+            '#c0d6df',
+            '#ffc43d',
+            '#73e2a7'
+          ]
+        }]
+      };
+
+      const featurePieConfig = {
+        type: 'doughnut',
+        data: featurePieData,
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+          legend: {
+            position: 'right'
+          },
+          title: {
+            display: true,
+            text: 'Feature Status'
+          },
+          plugins: {
+
+          }
+        }
+      };
+
+      const featurePieChart = new Chart(
+        document.getElementById('featurePieChart'),
+        featurePieConfig
+      );
+
+      // testcase pie chart
+      let testCaseLabels = ["Passed", "Failed", "Skipped", "Known Failures", "Passed With Known Failures"];
+      let testCasePieDataSet = [
+        data.testCasePieChartDataMap.passed,
+        data.testCasePieChartDataMap.failed,
+        data.testCasePieChartDataMap.skipped,
+        data.testCasePieChartDataMap.knownFailures,
+        data.testCasePieChartDataMap.passedWithKnownFailures
+      ];
+
+      const testCasePieData = {
+        labels: testCaseLabels,
+        datasets: [{
+          data: testCasePieDataSet,
+          backgroundColor: [
+            '#25a244',
+            '#d80032',
+            '#c0d6df',
+            '#ffc43d',
+            '#73e2a7'
+          ]
+        }]
+      };
+
+      const testCasePieConfig = {
+        type: 'doughnut',
+        data: testCasePieData,
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+          legend: {
+            display: true,
+            position: 'right'
+          },
+          title: {
+            display: true,
+            text: 'TestCase Status'
+          },
+          plugins: {
+
+          }
+        }
+      };
+
+      const testCasePieChart = new Chart(
+        document.getElementById('testCasePieChart'),
+        testCasePieConfig
+      );
+
+      // testcase pie chart
+      let testStepLabels = ["Passed", "Failed", "Skipped", "Known Failures", "Pending", "Undefined", "Ambiguous", "Unused"];
+      let testStepPieDataSet = [
+        data.testStepPieChartDataMap.passed,
+        data.testStepPieChartDataMap.failed,
+        data.testStepPieChartDataMap.skipped,
+        data.testStepPieChartDataMap.knownFailures,
+        data.testStepPieChartDataMap.pending,
+        data.testStepPieChartDataMap.undefined,
+        data.testStepPieChartDataMap.ambiguous,
+        data.testStepPieChartDataMap.unused,
+      ];
+
+      const testStepPieData = {
+        labels: testStepLabels,
+        datasets: [{
+          data: testStepPieDataSet,
+          backgroundColor: [
+            '#25a244',
+            '#d80032',
+            '#c0d6df',
+            '#ffc43d',
+            '#f72585',
+            '#124559',
+            '#aed9e0',
+            '#8a817c'
+          ]
+        }]
+      };
+
+      const testStepPieConfig = {
+        type: 'doughnut',
+        data: testStepPieData,
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+          legend: {
+            display: true,
+            position: 'right'
+          },
+          title: {
+            display: true,
+            text: 'TestStep Status'
+          }
+        }
+      };
+
+      const testStepPieChart = new Chart(
+        document.getElementById('testStepePieChart'),
+        testStepPieConfig
+      );
+
+    }
+
+    // load feature stats table - starts
+    let featureStatsTable = document.querySelector("#feature-stats-data-output");
+    let out = "";
+    var featuresList = data.featuresStats;
+
+    for (let feature of featuresList) {
+      var statusCell = "";
+      if (feature.status == "passed") {
+        statusCell = `<td style="color:#008000; font-weight:bold;">${feature.status}</td>`;
+      } else if (feature.status == "failed") {
+        statusCell = `<td style="color:#e01e37; font-weight:bold;">${feature.status}</td>`;
+      } else if (feature.status == "skipped") {
+        statusCell = `<td style="color:#C0C0C0; font-weight:bold;">${feature.status}</td>`;
+      } else if (feature.status == "known failures") {
+        statusCell = `<td style="color:#FFC300; font-weight:bold;">${feature.status}</td>`;
+      } else if (feature.status == "passed with known failures") {
+        statusCell = `<td style="color:#73e2a7; font-weight:bold;">${feature.status}</td>`;
+      } else {
+        statusCell = `<td>${feature.status}</td>`;
+      }
+
+      out += `
+
+      <tr>
+        <td style="text-align: left">${feature.featureName}</td>
+        <td>${feature.totalCases}</td>
+        <td>${feature.passed}</td>
+        <td>${feature.failed}</td>
+        <td>${feature.skipped}</td>
+        <td>${feature.knownFailures}</td>
+        <td>${feature.passedWithKnownFailures}</td>
+        <td>${feature.passPercent}</td>
+        <td>${feature.failPercent}</td>
+        <td>${feature.skippedPercent}</td>
+        <td>${feature.knownFailPercent}</td>
+        <td>${feature.passedWithKnownFailPercent}</td>
+
+        ${statusCell}
+
+
+        <td>${feature.duration}</td>
+      </tr>
+
+      `;
+      featureStatsTable.innerHTML = out;
+    }
+    // load feature stats table - ends
+
+    // load overall testcase stats table - starts
+    let overallTestCaseStatsTable = document.querySelector("#overall-stats-data-output");
+    let overAllTestCaseTableOut = "";
+    var overallTestCaseData = data.overallTestCaseStats;
+
+    var statusCell = "";
+    var overallStatus = overallTestCaseData.overAllStatus;
+    if (overallStatus == "passed") {
+      statusCell = `<td style="color:#008000; font-weight:bold;">${overallStatus}</td>`;
+    } else if (overallStatus == "failed") {
+      statusCell = `<td style="color:#e01e37; font-weight:bold;">${overallStatus}</td>`;
+    } else if (overallStatus == "skipped") {
+      statusCell = `<td style="color:#C0C0C0; font-weight:bold;">${overallStatus}</td>`;
+    } else if (overallStatus == "known failures") {
+      statusCell = `<td style="color:#FFC300; font-weight:bold;">${overallStatus}</td>`;
+    } else if (overallStatus == "passed with known failures") {
+      statusCell = `<td style="color:#73e2a7; font-weight:bold;">${overallStatus}</td>`;
+    } else {
+      statusCell = `<td>${feature.status}</td>`;
+    }
+
+    overAllTestCaseTableOut = `
+
+      <tr>
+        <td>${overallTestCaseData.totalCases}</td>
+        <td>${overallTestCaseData.passed}</td>
+        <td>${overallTestCaseData.failed}</td>
+        <td>${overallTestCaseData.skipped}</td>
+        <td>${overallTestCaseData.knownFailures}</td>
+        <td>${overallTestCaseData.passedWithKnownFailures}</td>
+        <td>${overallTestCaseData.passPercent}</td>
+        <td>${overallTestCaseData.failPercent}</td>
+        <td>${overallTestCaseData.skippedPercent}</td>
+        <td>${overallTestCaseData.knownFailPercent}</td>
+        <td>${overallTestCaseData.passedWithKnownFailPercent}</td>
+
+        ${statusCell}
+
+
+        <td>${overallTestCaseData.overallDuration}</td>
+      </tr>
+
+      `;
+    overallTestCaseStatsTable.innerHTML = overAllTestCaseTableOut;
+    // load overall testcase stats table - ends
+
+
+    // Display features, its scenarios, its steps and its screenshots
+    var features = data.featureMapList;
+
+    // it consist of whole elements
+    var completeResultSectionParentElement = document.querySelector("#complete-result-section");
+    var featureListElement = getFeatureElements(features);
+    var content = getContentToDisplayOnRightWhenClickingFeatureNavLink(features);
+    var testResultSectionContainerElement = `
+
+      <section class="complete-result-container">
+        <nav>
+          <ul>
+            ${featureListElement}
+          </ul>
+        </nav>
+
+        <div class="feature-specific-sc-container" id="loadOnClick" style="width:70%; float: right;">
+
+        </div>
+      </section>
+
+      ${content}
+
+      `;
+
+    completeResultSectionParentElement.innerHTML = testResultSectionContainerElement;
+
+    $(document).ready(function () { $("img").click(function () { this.requestFullscreen() }) });
+
+    function getContentToDisplayOnRightWhenClickingFeatureNavLink(features) {
+      var displayOnClickContent = "";
+      for (let feature of features) {
+        // get all scenario elements to be displayed on right side page
+        var scenarioElements = getScenarioElements(feature.scenarios);
+
+        // then build the content panel section with above scenario elements
+        // for every feature
+        displayOnClickContent += `
+          <div id="${feature.id}" class="displayOnClick">
+            ${scenarioElements}
+          </div>
+          `;
+      }
+      return displayOnClickContent;
+    }
+
+    function getFeatureElements(features) {
+      var featureListElement = "";
+      for (let feature of features) {
+        var statusCell = getFeatureNavigationLineStatusColor(feature.status);
+        var featureId = replaceEscapesAndHtmlWithHyphen(feature.id);
+
+        // prepare left side features link as li
+        featureListElement += `
+        <li class="side-nav-item">
+          <a
+            id="${featureId}-a"
+            href="#${featureId}"
+            class="featureLinks"
+            onclick='loadScenarioContent("#${featureId}")'>
+            ${feature.name}
+          </a>
+          <span>${feature.duration}</span>
+          ${statusCell}
+        </li>
+        `;
+      }
+      return featureListElement;
+    }
+
+    function getScenarioElements(scenarios) {
+      var scenarioElements = "";
+      var i = 1;
+      for (let scenario of scenarios) {
+        var steps = scenario.steps;
+        var stepElements = getStepElements(steps);
+        var scLineColor = getScenarioLineColorBasedOnStatus(scenario.status);
+        var scenarioId = replaceEscapesAndHtmlWithHyphen(scenario.id);
+
+        var beforeScenarioError = "";
+        if (scenario.beforeError.length != 0) {
+          var beforeScenarioErrorDecoded = atob(scenario.beforeError);
+          beforeScenarioError = `
+            <div class="scenario-hook-section">
+              <div class="scenario-hook-error-key">Scenario ${i} BeforeScenario-Hook-Error : </div>
+              <div class="scenario-hook-error-value">${beforeScenarioErrorDecoded}</div>
+            </div>
+          `;
+        }
+
+        var afterScenarioError = "";
+        if (scenario.afterError.length != 0) {
+          var afterScenarioErrorDecoded = atob(scenario.afterError);
+          afterScenarioError = `
+            <div class="scenario-hook-section">
+              <div class="scenario-hook-error-key">Scenario ${i} AfterScenario-Hook-Error : </div>
+              <div class="scenario-hook-error-value">${afterScenarioErrorDecoded}</div>
+            </div>
+          `;
+        }
+
+        // Below is a box of scenario line and its steps details.
+        // By default, steps are hidden [display : none]
+        // On clicking scenario line, step is displayed
+        scenarioElements += `
+        <div class="scenario-item-box">
+            ${beforeScenarioError}
+            <div id="#${scenarioId}" class="scenario-item">
+              <div id="#${scenarioId}-collapsible" class="scenario-name collapsible" onclick="collapseExpandScenario('#${scenarioId}-collapsible-content')">
+                <div ${scLineColor}>Scenario ${i} : ${scenario.name}</div>
+                <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: #9eb3c2;"></span>
+              </div>
+              <div id="#${scenarioId}-collapsible-content" class="step-items">
+                ${stepElements}
+              </div>
+            </div>
+            ${afterScenarioError}
+        </div>
+          `;
+        i++;
+      }
+      return scenarioElements;
+    }
+
+    function getStepElements(steps) {
+      var stepElements = "";
+      var i = 1;
+      for (let step of steps) {
+        var stepLineColor = getStepLineColorBasedOnStatus(step.status);
+        var beforeStepError = "";
+        if (step.beforeError.length != 0) {
+          var beforeStepErrorDecoded = atob(step.beforeError);
+          beforeStepError = `
+            <div class="step-name">
+              <div class="step-hook-error-section">
+                <div>Step ${i} BeforeStep-Hook-Error : </div>
+                <div class="step-hook-error-value">${beforeStepErrorDecoded}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        var afterStepError = "";
+        if (step.afterError.length != 0) {
+          var afterStepErrorDecoded = atob(step.afterError);
+          afterStepError = `
+          <div class="step-name">
+            <div class="step-hook-error-section">
+              <div>Step ${i} AfterStep-Hook-Error : </div>
+              <div class="step-hook-error-value">${afterStepErrorDecoded}</div>
+            </div>
+          </div>
+          `;
+        }
+
+        var stepError = "";
+
+        if (step.error != null) {
+          var stepErrorDecoded = atob(step.error); // decodes the encoded error text
+          stepError = `
+            <div class="step-error">${stepErrorDecoded}</div>
+          `;
+        }
+
+        var stepEmbeddings = getStepEmbeddingElements(step.embeddings, step.status);
+        var stepName = step.name;
+        var stepNameForId = replaceEscapesAndHtmlWithHyphen(stepName);
+
+        stepElements += `
+          <div id="#${stepNameForId}-${step.line}" class="step-item">
+            ${beforeStepError}
+            <div
+              id="#step-${stepNameForId}-${step.line}-collapsible"
+              class="step-name" ${stepLineColor}
+              onclick="collapseExpandStep('#step-${stepNameForId}-${step.line}-collapsible-content')">
+                <div>Step ${i} : ${stepName}</div>
+                <div><i class="fa-sharp fa-solid fa-circle"></i></div>
+            </div>
+
+            <div
+              id="#step-${stepNameForId}-${step.line}-collapsible-content"
+              class="step-info-section">
+                ${stepError}
+                ${stepEmbeddings}
+            </div>
+            ${afterStepError}
           </div>
         `;
+        i++;
+      }
+      return stepElements;
+    }
+
+    function replaceEscapesAndHtmlWithHyphen(value) {
+      return value.replaceAll("<br>", "-")
+        .replaceAll("&emsp", "-")
+        .replaceAll("'", "-")
+        .replaceAll(";", "-")
+        .replaceAll(" ", "-");
+    }
+
+    function getStepEmbeddingElements(embeddings, stepStatus) {
+      var stepEmbeddingElement = "";
+      if (embeddings != null && embeddings.length > 0) {
+        for (let embedding of embeddings) {
+          var attachmentSource = getStepScreenshotElement(embedding.mime_type, embedding.data);
+          if (isStepStatusIngnorable(stepStatus)) {
+            stepEmbeddingElement += `
+              <div>
+              <div class="embedding-name">${embedding.name}</div>
+              <div class="embedding-src">${attachmentSource}</div>
+              <div class="embedding-name">${stepStatus} step</div>
+              </div>
+            `;
+          } else {
+            stepEmbeddingElement += `
+              <div>
+                <div class="embedding-name">${embedding.name}</div>
+                <div class="embedding-src">${attachmentSource}</div>
+              </div>
+            `;
+          }
+        }
       } else {
         stepEmbeddingElement += `
-          <div>
-            <div class="embedding-name">${embedding.name}</div>
-            <div class="embedding-src">${attachmentSource}</div>
-          </div>
-        `;
+              <div>
+                <div class="embedding-name">${stepStatus}</div>
+              </div>
+            `;
+      }
+
+      return stepEmbeddingElement;
+    }
+
+    function getStepScreenshotElement(mimeType, encodedString) {
+      if (mimeType == "text/plain") {
+        return `<div>${encodedString}</div>`;
+      } else {
+        var uint8array = new TextEncoder("utf-8").encode(encodedString);
+        var text = new TextDecoder().decode(uint8array);
+        return `<img src="data:${mimeType};base64, ${text}" alt="unable to find image source">`;
       }
     }
-  } else {
-    stepEmbeddingElement += `
-          <div>
-            <div class="embedding-name">${stepStatus}</div>
-          </div>
-        `;
-  }
 
-  return stepEmbeddingElement;
-}
+    function isStepStatusIngnorable(stepStatus) {
+      const ignorableStatuses = ['skipped', 'pending', 'undefined', 'ambiguous', 'unused'];
+      return ignorableStatuses.includes(stepStatus);
+    }
 
-function getStepScreenshotElement(mimeType, encodedString) {
-  if (mimeType == "text/plain") {
-    return `<div>${encodedString}</div>`;
-  } else {
-    var uint8array = new TextEncoder("utf-8").encode(encodedString);
-    var text = new TextDecoder().decode(uint8array);
-    return `<img src="data:${mimeType};base64, ${text}" alt="unable to find image source">`;
-  }
-}
+    // On selecting any feature link from left side navigation,
+    // clearing backgroup of other features
+    // add background only for selected feature
+    function loadScenarioContent(selector) {
+      $("#loadOnClick").html($(selector).html());
 
-function isStepStatusIngnorable(stepStatus) {
-  const ignorableStatuses = ['skipped', 'pending', 'undefined', 'ambiguous', 'unused'];
-  return ignorableStatuses.includes(stepStatus);
-}
+      $("ul > li > a").on("click", function () {
+        $("ul li a").css("color", "black");
+        $("ul li a").css("background-color", "transparent");
+        $("ul li a").css("border", "none");
 
-// On selecting any feature link from left side navigation,
-// clearing backgroup of other features
-// add background only for selected feature
-function loadScenarioContent(selector) {
-  $("#loadOnClick").html($(selector).html());
+        $("ul li").css("color", "black");
+        $("ul li").css("background-color", "transparent");
 
-  $("ul > li > a").on("click", function () {
-    $("ul li a").css("color", "black");
-    $("ul li a").css("background-color", "transparent");
-    $("ul li a").css("border", "none");
+        $(this).css("color", "white");
+        $(this).css("background-color", "#03045e");
+        $(this.parentNode).css("background-color", "#03045e");
+      });
+    };
 
-    $("ul li").css("color", "black");
-    $("ul li").css("background-color", "transparent");
+    // when document becomes ready, it selects and highlights
+    // the first feature navigation option
+    $(document).ready(function () {
+      var firstFeatureId = features[0].id
+      document.querySelector("li a[href='#" + features[0].id + "']").parentNode.classList.add("side-nav-item-active");
+      loadScenarioContent("#" + firstFeatureId);
 
-    $(this).css("color", "white");
-    $(this).css("background-color", "#03045e");
-    $(this.parentNode).css("background-color", "#03045e");
-  });
-};
+    });
 
-// when document becomes ready, it selects and highlights
-// the first feature navigation option
-$(document).ready(function () {
-  var firstFeatureId = features[0].id
-  document.querySelector("li a[href='#" + features[0].id + "']").parentNode.classList.add("side-nav-item-active");
-  loadScenarioContent("#" + firstFeatureId);
+    function collapseExpandScenario(id) {
 
-});
+      if (document.getElementById(id).style.display == "flex") {
+        document.getElementById(id).style.display = "none";
+      } else {
+        document.getElementById(id).style.display = "flex";
+      }
+    }
 
-function collapseExpandScenario(id) {
+    function collapseExpandStep(id) {
 
-  if (document.getElementById(id).style.display == "flex") {
-    document.getElementById(id).style.display = "none";
-  } else {
-    document.getElementById(id).style.display = "flex";
-  }
-}
+      if (document.getElementById(id).style.display == "block") {
+        document.getElementById(id).style.display = "none";
+      } else {
+        document.getElementById(id).style.display = "block";
+      }
+    }
 
-function collapseExpandStep(id) {
+    // jquery to click and open any image in fullscreen view
+    // pressing escape will close image
+    // $(document).ready(function () { $("img").click(function () { this.requestFullscreen() }) });
+    $('img').on("click", function () {
+      var win = window.open();
+      var url = $(this).attr("src");
+      var html = $("body").html("<textarea>" + url + "</textarea>");
+      $(win.document.body).html(html);
+    });
 
-  if (document.getElementById(id).style.display == "block") {
-    document.getElementById(id).style.display = "none";
-  } else {
-    document.getElementById(id).style.display = "block";
-  }
-}
+    function getFeatureNavigationLineStatusColor(featureStatus) {
+      var statusCell = "";
+      if (featureStatus == "passed") {
+        statusCell = `<i class="fa-solid fa-circle-check status-icon" style="color: #0e920c;"></i>`;
+      } else if (featureStatus == "failed") {
+        statusCell = `<i class="fa-solid fa-circle-xmark status-icon" style="color: #f20202;"></i>`;
+      } else if (featureStatus == "skipped") {
+        statusCell = `<i class="fa-solid fa-circle-arrow-right status-icon" style="color: #c3c6cb;"></i>`;
+      } else if (featureStatus == "known failures") {
+        statusCell = `<i class="fa-solid fa-circle-exclamation status-icon" style="color: #f0cf75;"></i>`;
+      } else if (featureStatus == "passed with known failures") {
+        statusCell = `<i class="fa-solid fa-circle-exclamation status-icon" style="color: #73e2a7;"></i>`;
+      } else {
+        statusCell = "";
+      }
+      return statusCell;
+    }
 
-// jquery to click and open any image in fullscreen view
-// pressing escape will close image
-// $(document).ready(function () { $("img").click(function () { this.requestFullscreen() }) });
-$('img').on("click",function(){
-  var win = window.open();
-  var url = $(this).attr("src");
-  var html = $("body").html("<textarea>" + url +"</textarea>");
-  $(win.document.body).html(html);
-});
+    function getStepLineColorBasedOnStatus(stepStatus) {
+      var stepLineColor = "";
+      if (stepStatus == "passed") {
+        stepLineColor = "style='color: #008000'";
+      } else if (stepStatus == "failed") {
+        stepLineColor = "style='color: #e01e37'";
+      } else if (stepStatus == "skipped") {
+        stepLineColor = "style='color: #C0C0C0'";
+      } else if (stepStatus == "known failures") {
+        stepLineColor = "style='color: #FFC300'";
+      } else if (stepStatus == "pending") {
+        stepLineColor = "style='color: #f72585'";
+      } else if (stepStatus == "undefined") {
+        stepLineColor = "style='color: #124559'";
+      } else if (stepStatus == "ambiguous") {
+        stepLineColor = "style='color: #aed9e0'";
+      } else if (stepStatus == "unused") {
+        stepLineColor = "style='color: #8a817c'";
+      }
+      return stepLineColor;
+    }
 
-function getFeatureNavigationLineStatusColor(featureStatus) {
-  var statusCell = "";
-  if (featureStatus == "passed") {
-    statusCell = `<i class="fa-solid fa-circle-check status-icon" style="color: #0e920c;"></i>`;
-  } else if (featureStatus == "failed") {
-    statusCell = `<i class="fa-solid fa-circle-xmark status-icon" style="color: #f20202;"></i>`;
-  } else if (featureStatus == "skipped") {
-    statusCell = `<i class="fa-solid fa-circle-arrow-right status-icon" style="color: #c3c6cb;"></i>`;
-  } else if (featureStatus == "known failures") {
-    statusCell = `<i class="fa-solid fa-circle-exclamation status-icon" style="color: #f0cf75;"></i>`;
-  } else if (featureStatus == "passed with known failures") {
-    statusCell = `<i class="fa-solid fa-circle-exclamation status-icon" style="color: #73e2a7;"></i>`;
-  } else {
-    statusCell = "";
-  }
-  return statusCell;
-}
-
-function getStepLineColorBasedOnStatus(stepStatus) {
-  var stepLineColor = "";
-  if (stepStatus == "passed") {
-    stepLineColor = "style='color: #008000'";
-  } else if (stepStatus == "failed") {
-    stepLineColor = "style='color: #e01e37'";
-  } else if (stepStatus == "skipped") {
-    stepLineColor = "style='color: #C0C0C0'";
-  } else if (stepStatus == "known failures") {
-    stepLineColor = "style='color: #FFC300'";
-  } else if (stepStatus == "pending") {
-    stepLineColor = "style='color: #f72585'";
-  } else if (stepStatus == "undefined") {
-    stepLineColor = "style='color: #124559'";
-  } else if (stepStatus == "ambiguous") {
-    stepLineColor = "style='color: #aed9e0'";
-  } else if (stepStatus == "unused") {
-    stepLineColor = "style='color: #8a817c'";
-  }
-  return stepLineColor;
-}
-
-function getScenarioLineColorBasedOnStatus(scenarioStatus) {
-  var scLineColor = "";
-  if (scenarioStatus == "passed") {
-    scLineColor = "style='color: #008000'";
-  } else if (scenarioStatus == "failed") {
-    scLineColor = "style='color: #e01e37'";
-  } else if (scenarioStatus == "skipped") {
-    scLineColor = "style='color: #C0C0C0'";
-  } else if (scenarioStatus == "known failures") {
-    scLineColor = "style='color: #FFC300'";
-  } else if (scenarioStatus == "passed with known failures") {
-    scLineColor = "style='color: #73e2a7'";
-  }
-  return scLineColor;
-}
+    function getScenarioLineColorBasedOnStatus(scenarioStatus) {
+      var scLineColor = "";
+      if (scenarioStatus == "passed") {
+        scLineColor = "style='color: #008000'";
+      } else if (scenarioStatus == "failed") {
+        scLineColor = "style='color: #e01e37'";
+      } else if (scenarioStatus == "skipped") {
+        scLineColor = "style='color: #C0C0C0'";
+      } else if (scenarioStatus == "known failures") {
+        scLineColor = "style='color: #FFC300'";
+      } else if (scenarioStatus == "passed with known failures") {
+        scLineColor = "style='color: #73e2a7'";
+      }
+      return scLineColor;
+    }
 
 </script>
 

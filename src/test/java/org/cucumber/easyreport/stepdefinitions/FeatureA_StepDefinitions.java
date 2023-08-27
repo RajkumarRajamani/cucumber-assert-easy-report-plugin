@@ -7,8 +7,8 @@ import io.cucumber.java.en.When;
 
 public class FeatureA_StepDefinitions {
 
-    @Given("start1 {string}")
-    public void start(String testData) throws JsonProcessingException {
+    @Given("start1 {string} and {string}")
+    public void start(String testData, String data) throws JsonProcessingException {
         System.out.println("Start method");
     }
 
