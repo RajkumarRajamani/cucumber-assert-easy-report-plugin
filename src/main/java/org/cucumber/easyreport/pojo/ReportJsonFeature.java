@@ -2,28 +2,12 @@ package org.cucumber.easyreport.pojo;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 @Data
 public class ReportJsonFeature {
-
-//    private List<Feature> features;
-//
-//    @Data
-//    public static class Feature {
-//        private int line;
-//        private ArrayList<Element> elements;
-//        private String name;
-//        private String description;
-//        private String id;
-//        private String keyword;
-//        private String uri;
-//        private ArrayList<Tag> tags;
-//    }
 
     private int line;
     private ArrayList<Element> elements;
@@ -49,8 +33,17 @@ public class ReportJsonFeature {
         private String keyword;
         private ArrayList<Step> steps;
         private ArrayList<Tag> tags;
-        private String status;
+
+        /*
+         * Below are not cucumber json attributes.
+         * Added these for EasyReport
+         */
         private long totalScenarioDuration;
+        private String beforeStatus;
+        private String beforeError;
+        private String scenarioStatus;
+        private String afterStatus;
+        private String afterError;
     }
 
     @Data
@@ -59,11 +52,6 @@ public class ReportJsonFeature {
         private String type;
         private Location location;
     }
-
-//    @Data
-//    public static class ScenarioTag {
-//        private String name;
-//    }
 
     @Data
     public static class Embedding {
@@ -125,8 +113,19 @@ public class ReportJsonFeature {
         private Match match;
         private ArrayList<After> after;
         private String keyword;
-        private String status;
+
+        /*
+         * Below are not cucumber json attributes.
+         * Added these for EasyReport
+         */
         private long totalStepDuration;
+        private String beforeStatus;
+        private String beforeError;
+        private String stepStatus;
+        private String stepError;
+        private String afterStatus;
+        private String afterError;
+        private String stepFinalStatus;
     }
 
 }
