@@ -35,6 +35,10 @@ public class Test {
         String ss = new String(b, StandardCharsets.UTF_8);
         System.out.println(ss);
 
+        String path = "test-output/cucumber/easy-cucumber-report.html";
+        String parent = Paths.get(path).getParent().toString();
+        System.out.println(parent);
+
     }
 
     static List<String> getList(String... labels) {

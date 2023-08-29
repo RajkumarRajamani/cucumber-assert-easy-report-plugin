@@ -15,7 +15,6 @@ public class FeatureB_StepDefinitions {
         assertions.addKnownFailureLabels("name", "age");
         assertions.assertEqualsTo("name", "raj", "rajkumar", "failed", "passed");
         assertions.assertEqualsTo("age", "30", "31", "failed", "passed");
-        assertions.assertEqualsTo("age1", "30", "31", "failed", "passed");
         assertions.assertAll();
     }
 

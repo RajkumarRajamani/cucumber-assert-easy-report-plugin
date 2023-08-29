@@ -1,6 +1,7 @@
 package org.cucumber.easyreport.pojo;
 
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,40 +11,40 @@ import java.util.LinkedList;
 public class ReportJsonFeature {
 
     private int line;
-    private ArrayList<Element> elements;
+    private ArrayList<Element> elements = new ArrayList<>();
     private String name;
     private String description;
     private String id;
     private String keyword;
     private String uri;
-    private ArrayList<Tag> tags;
+    private ArrayList<Tag> tags = new ArrayList<>();
     private String status;
     private long totalFeatureDuration;
 
     @Data
     public static class Element {
         private Date start_timestamp;
-        private ArrayList<Before> before;
+        private ArrayList<Before> before = new ArrayList<>();
         private int line;
         private String name;
         private String description;
         private String id;
-        private ArrayList<After> after;
+        private ArrayList<After> after = new ArrayList<>();
         private String type;
         private String keyword;
-        private ArrayList<Step> steps;
-        private ArrayList<Tag> tags;
+        private ArrayList<Step> steps = new ArrayList<>();
+        private ArrayList<Tag> tags = new ArrayList<>();
 
         /*
          * Below are not cucumber json attributes.
          * Added these for EasyReport
          */
         private long totalScenarioDuration;
-        private String beforeStatus;
-        private String beforeError;
-        private String scenarioStatus;
-        private String afterStatus;
-        private String afterError;
+        private String beforeStatus = StringUtils.EMPTY;
+        private String beforeError = StringUtils.EMPTY;
+        private String scenarioStatus = StringUtils.EMPTY;
+        private String afterStatus = StringUtils.EMPTY;
+        private String afterError = StringUtils.EMPTY;
     }
 
     @Data
@@ -62,7 +63,7 @@ public class ReportJsonFeature {
 
     @Data
     public static class After{
-        private LinkedList<Embedding> embeddings;
+        private LinkedList<Embedding> embeddings = new LinkedList<>();
         private Result result;
         private Match match;
     }
@@ -75,7 +76,7 @@ public class ReportJsonFeature {
 
     @Data
     public static class Before {
-        private LinkedList<Embedding> embeddings;
+        private LinkedList<Embedding> embeddings = new LinkedList<>();
         private Result result;
         private Match match;
     }
@@ -94,7 +95,7 @@ public class ReportJsonFeature {
     @Data
     public static class Match {
         private String location;
-        private ArrayList<Argument> arguments;
+        private ArrayList<Argument> arguments = new ArrayList<>();
     }
 
     @Data
@@ -107,11 +108,11 @@ public class ReportJsonFeature {
     @Data
     public static class Step {
         private Result result;
-        private ArrayList<Before> before;
+        private ArrayList<Before> before = new ArrayList<>();
         private int line;
         private String name;
         private Match match;
-        private ArrayList<After> after;
+        private ArrayList<After> after = new ArrayList<>();
         private String keyword;
 
         /*
@@ -119,13 +120,13 @@ public class ReportJsonFeature {
          * Added these for EasyReport
          */
         private long totalStepDuration;
-        private String beforeStatus;
-        private String beforeError;
-        private String stepStatus;
-        private String stepError;
-        private String afterStatus;
-        private String afterError;
-        private String stepFinalStatus;
+        private String beforeStatus = StringUtils.EMPTY;
+        private String beforeError = StringUtils.EMPTY;
+        private String stepStatus = StringUtils.EMPTY;
+        private String stepError = StringUtils.EMPTY;
+        private String afterStatus = StringUtils.EMPTY;
+        private String afterError = StringUtils.EMPTY;
+        private String stepFinalStatus = StringUtils.EMPTY;
     }
 
 }

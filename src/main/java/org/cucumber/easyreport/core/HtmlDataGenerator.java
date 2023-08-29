@@ -82,25 +82,16 @@ public class HtmlDataGenerator {
                 .forEach(feature -> {
                     feature.getElements().forEach(testCase -> {
                         testCase.getSteps().forEach(step -> {
-                            List<ReportJsonFeature.Before> beforeList = Optional.ofNullable(step.getBefore()).orElse(new ArrayList<>());
-                            List<ReportJsonFeature.After> afterList = Optional.ofNullable(step.getAfter()).orElse(new ArrayList<>());
-
-                            ReportJsonFeature.Before failedBefore = beforeList.stream().filter(before -> before.getResult().getStatus().equals(FAILED.getStatus())).findFirst().orElse(null);
+                            ReportJsonFeature.Before failedBefore = step.getBefore().stream().filter(before -> before.getResult().getStatus().equals(FAILED.getStatus())).findFirst().orElse(null);
                             if(Objects.nonNull(failedBefore)) {
                                 step.setBeforeStatus(failedBefore.getResult().getStatus());
                                 step.setBeforeError(this.replaceEscapesWithHtml(failedBefore.getResult().getError_message()));
-                            } else {
-                                step.setBeforeStatus(StringUtils.EMPTY);
-                                step.setBeforeError(StringUtils.EMPTY);
                             }
 
-                            ReportJsonFeature.After failedAfter = afterList.stream().filter(after -> after.getResult().getStatus().equals(FAILED.getStatus())).findFirst().orElse(null);
+                            ReportJsonFeature.After failedAfter = step.getAfter().stream().filter(after -> after.getResult().getStatus().equals(FAILED.getStatus())).findFirst().orElse(null);
                             if(Objects.nonNull(failedAfter)) {
                                 step.setAfterStatus(failedAfter.getResult().getStatus());
                                 step.setAfterError(this.replaceEscapesWithHtml(failedAfter.getResult().getError_message()));
-                            } else {
-                                step.setAfterStatus(StringUtils.EMPTY);
-                                step.setAfterError(StringUtils.EMPTY);
                             }
 
                             if(step.getBeforeStatus().equals(FAILED.getStatus()) || step.getAfterStatus().equals(FAILED.getStatus()))
@@ -113,8 +104,8 @@ public class HtmlDataGenerator {
                             if (Objects.nonNull(step.getResult().getError_message())) {
                                 step.setStepError(this.replaceEscapesWithHtml(step.getResult().getError_message()));
                             }
-                            long beforeDuration = beforeList.stream().map(ReportJsonFeature.Before::getResult).map(ReportJsonFeature.Result::getDuration).mapToLong(Long::longValue).sum();
-                            long afterDuration = afterList.stream().map(ReportJsonFeature.After::getResult).map(ReportJsonFeature.Result::getDuration).mapToLong(Long::longValue).sum();
+                            long beforeDuration = step.getBefore().stream().map(ReportJsonFeature.Before::getResult).map(ReportJsonFeature.Result::getDuration).mapToLong(Long::longValue).sum();
+                            long afterDuration = step.getAfter().stream().map(ReportJsonFeature.After::getResult).map(ReportJsonFeature.Result::getDuration).mapToLong(Long::longValue).sum();
                             step.setTotalStepDuration(beforeDuration + step.getResult().getDuration() + afterDuration);
                         });
                     });
@@ -155,13 +146,8 @@ public class HtmlDataGenerator {
                                 testCase.setScenarioStatus(FAILED.getStatus());
                             else if (consolidatedStatus.stream().allMatch(status -> status.equals(PASSED.getStatus())))
                                 testCase.setScenarioStatus(PASSED.getStatus());
-                            else if (Set.of(KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(consolidatedStatus))
+                            else if (consolidatedStatus.contains(KNOWN_FAILURES.getStatus()))
                                 testCase.setScenarioStatus(KNOWN_FAILURES.getStatus());
-                            else if (consolidatedStatus.stream().allMatch(status -> status.equals(KNOWN_FAILURES.getStatus())))
-                                testCase.setScenarioStatus(KNOWN_FAILURES.getStatus());
-                            else if (Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(consolidatedStatus)
-                                    || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus()).containsAll(consolidatedStatus))
-                                testCase.setScenarioStatus(PASSED_WITH_KNOWN_FAILURES.getStatus());
                             else
                                 testCase.setScenarioStatus(SKIPPED.getStatus());
 
@@ -169,14 +155,16 @@ public class HtmlDataGenerator {
 //                                testCase.setScenarioStatus(FAILED.getStatus());
 //                            else if (consolidatedStatus.stream().allMatch(status -> status.equals(PASSED.getStatus())))
 //                                testCase.setScenarioStatus(PASSED.getStatus());
-//                            else if (consolidatedStatus.containsAll(Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()))
-//                                    || consolidatedStatus.containsAll(Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus())))
-//                                testCase.setScenarioStatus(PASSED_WITH_KNOWN_FAILURES.getStatus());
-//                            else if (consolidatedStatus.stream().allMatch(status -> status.equals(KNOWN_FAILURES.getStatus()))
-//                                    || consolidatedStatus.containsAll(Set.of(KNOWN_FAILURES.getStatus(), SKIPPED.getStatus())))
+//                            else if (Set.of(KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(consolidatedStatus))
 //                                testCase.setScenarioStatus(KNOWN_FAILURES.getStatus());
+//                            else if (consolidatedStatus.stream().allMatch(status -> status.equals(KNOWN_FAILURES.getStatus())))
+//                                testCase.setScenarioStatus(KNOWN_FAILURES.getStatus());
+//                            else if (Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(consolidatedStatus)
+//                                    || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus()).containsAll(consolidatedStatus))
+//                                testCase.setScenarioStatus(PASSED_WITH_KNOWN_FAILURES.getStatus());
 //                            else
 //                                testCase.setScenarioStatus(SKIPPED.getStatus());
+
                         }
 
                         long beforeDuration = beforeList.stream().map(ReportJsonFeature.Before::getResult).mapToLong(ReportJsonFeature.Result::getDuration).sum();
@@ -200,21 +188,32 @@ public class HtmlDataGenerator {
                         feature.setStatus(EasyReportStatus.FAILED.getStatus());
                     else if (testCaseStatus.stream().allMatch(status -> status.equals(EasyReportStatus.PASSED.getStatus())))
                         feature.setStatus(EasyReportStatus.PASSED.getStatus());
-                    else if (testCaseStatus.stream().allMatch(status -> status.equals(EasyReportStatus.KNOWN_FAILURES.getStatus())))
-                        feature.setStatus(EasyReportStatus.KNOWN_FAILURES.getStatus());
-                    else if (Set.of(KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus))
-                        feature.setStatus(EasyReportStatus.KNOWN_FAILURES.getStatus());
-                    else if (Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus)
-                            || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
-                            || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus)
-                            || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
-                            || Set.of(PASSED.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus)
-                            || Set.of(PASSED.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
-                            || Set.of(PASSED_WITH_KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
-                    )
+                    else if (testCaseStatus.containsAll(Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus())))
                         feature.setStatus(PASSED_WITH_KNOWN_FAILURES.getStatus());
+                    else if (testCaseStatus.contains(KNOWN_FAILURES.getStatus()))
+                        feature.setStatus(EasyReportStatus.KNOWN_FAILURES.getStatus());
                     else
                         feature.setStatus(EasyReportStatus.SKIPPED.getStatus());
+
+//                    if (testCaseStatus.contains(EasyReportStatus.FAILED.getStatus()))
+//                        feature.setStatus(EasyReportStatus.FAILED.getStatus());
+//                    else if (testCaseStatus.stream().allMatch(status -> status.equals(EasyReportStatus.PASSED.getStatus())))
+//                        feature.setStatus(EasyReportStatus.PASSED.getStatus());
+//                    else if (testCaseStatus.stream().allMatch(status -> status.equals(EasyReportStatus.KNOWN_FAILURES.getStatus())))
+//                        feature.setStatus(EasyReportStatus.KNOWN_FAILURES.getStatus());
+//                    else if (Set.of(KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus))
+//                        feature.setStatus(EasyReportStatus.KNOWN_FAILURES.getStatus());
+//                    else if (Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus)
+//                            || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
+//                            || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus)
+//                            || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
+//                            || Set.of(PASSED.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus)
+//                            || Set.of(PASSED.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
+//                            || Set.of(PASSED_WITH_KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
+//                    )
+//                        feature.setStatus(PASSED_WITH_KNOWN_FAILURES.getStatus());
+//                    else
+//                        feature.setStatus(EasyReportStatus.SKIPPED.getStatus());
 
                 });
     }
@@ -248,26 +247,22 @@ public class HtmlDataGenerator {
             long failCount = feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(FAILED.getStatus())).count();
             long skippedCount = feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(EasyReportStatus.SKIPPED.getStatus())).count();
             long knownFailCount = feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(KNOWN_FAILURES.getStatus())).count();
-            long passWithKnownFailCount = feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(PASSED_WITH_KNOWN_FAILURES.getStatus())).count();
 
             String passPercent = passCount != 0 ? df.format(((Long) passCount).doubleValue() / totalCases) : "0 %";
             String failPercent = failCount != 0 ? df.format(((Long) failCount).doubleValue() / totalCases) : "0 %";
             String skipPercent = skippedCount != 0 ? df.format(((Long) skippedCount).doubleValue() / totalCases) : "0 %";
             String knownFailPercent = knownFailCount != 0 ? df.format(((Long) knownFailCount).doubleValue() / totalCases) : "0 %";
-            String passWithKnownFailPercent = passWithKnownFailCount != 0 ? df.format(((Long) passWithKnownFailCount).doubleValue() / totalCases) : "0 %";
 
             featureStats.put("featureName", this.replaceEscapesWithHtml(featureName));
             featureStats.put("totalCases", String.valueOf(totalCases));
             featureStats.put(PASSED.getStatus(), String.valueOf(passCount));
             featureStats.put(FAILED.getStatus(), String.valueOf(failCount));
             featureStats.put(CaseUtils.toCamelCase(KNOWN_FAILURES.getStatus(), false), String.valueOf(knownFailCount));
-            featureStats.put(CaseUtils.toCamelCase(PASSED_WITH_KNOWN_FAILURES.getStatus(), false), String.valueOf(passWithKnownFailCount));
             featureStats.put(SKIPPED.getStatus(), String.valueOf(skippedCount));
             featureStats.put("passPercent", passPercent);
             featureStats.put("failPercent", failPercent);
             featureStats.put("skippedPercent", skipPercent);
             featureStats.put("knownFailPercent", knownFailPercent);
-            featureStats.put("passedWithKnownFailPercent", passWithKnownFailPercent);
             featureStats.put("status", feature.getStatus());
             System.out.println(feature.getTotalFeatureDuration());
             featureStats.put("duration", this.getReadableTime(feature.getTotalFeatureDuration()));
@@ -297,34 +292,29 @@ public class HtmlDataGenerator {
         long testCaseFailCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals("failed")).count()).sum();
         long testCaseSkipCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals("skipped")).count()).sum();
         long testCaseKnownFailureCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals("known failures")).count()).sum();
-        long testCasePassWithKnownFailureCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals("passed with known failures")).count()).sum();
 
         String passPercent = testCasePassCount != 0 ? df.format(((Long) testCasePassCount).doubleValue() / testCaseCount) : "0 %";
         String failPercent = testCaseFailCount != 0 ? df.format(((Long) testCaseFailCount).doubleValue() / testCaseCount) : "0 %";
         String skipPercent = testCaseSkipCount != 0 ? df.format(((Long) testCaseSkipCount).doubleValue() / testCaseCount) : "0 %";
         String knownFailPercent = testCaseKnownFailureCount != 0 ? df.format(((Long) testCaseKnownFailureCount).doubleValue() / testCaseCount) : "0 %";
-        String passWithKnownFailPercent = testCasePassWithKnownFailureCount != 0 ? df.format(((Long) testCasePassWithKnownFailureCount).doubleValue() / testCaseCount) : "0 %";
 
         // prepare data for testcase pie chart
         testCasePieChartDataMap.put("totalCases", testCaseCount);
         testCasePieChartDataMap.put(PASSED.getStatus(), testCasePassCount);
         testCasePieChartDataMap.put(FAILED.getStatus(), testCaseFailCount);
-        testCasePieChartDataMap.put(CaseUtils.toCamelCase(KNOWN_FAILURES.getStatus(), false), testCaseKnownFailureCount);
-        testCasePieChartDataMap.put(CaseUtils.toCamelCase(PASSED_WITH_KNOWN_FAILURES.getStatus(), false), testCasePassWithKnownFailureCount);
         testCasePieChartDataMap.put(SKIPPED.getStatus(), testCaseSkipCount);
+        testCasePieChartDataMap.put(CaseUtils.toCamelCase(KNOWN_FAILURES.getStatus(), false), testCaseKnownFailureCount);
 
         // prepare data for overall testcases table summary
         overallTestCaseStats.put("totalCases", String.valueOf(testCaseCount));
         overallTestCaseStats.put(PASSED.getStatus(), String.valueOf(testCasePassCount));
         overallTestCaseStats.put(FAILED.getStatus(), String.valueOf(testCaseFailCount));
-        overallTestCaseStats.put(CaseUtils.toCamelCase(KNOWN_FAILURES.getStatus(), false), String.valueOf(testCaseKnownFailureCount));
-        overallTestCaseStats.put(CaseUtils.toCamelCase(PASSED_WITH_KNOWN_FAILURES.getStatus(), false), String.valueOf(testCasePassWithKnownFailureCount));
         overallTestCaseStats.put(SKIPPED.getStatus(), String.valueOf(testCaseSkipCount));
+        overallTestCaseStats.put(CaseUtils.toCamelCase(KNOWN_FAILURES.getStatus(), false), String.valueOf(testCaseKnownFailureCount));
         overallTestCaseStats.put("passPercent", passPercent);
         overallTestCaseStats.put("failPercent", failPercent);
         overallTestCaseStats.put("skippedPercent", skipPercent);
         overallTestCaseStats.put("knownFailPercent", knownFailPercent);
-        overallTestCaseStats.put("passedWithKnownFailPercent", passWithKnownFailPercent);
 
         long totalDuration = features.stream().map(ReportJsonFeature::getElements).flatMap(Collection::stream).toList()
                 .stream().mapToLong(ReportJsonFeature.Element::getTotalScenarioDuration).sum();
@@ -337,17 +327,8 @@ public class HtmlDataGenerator {
             overallTestCaseStats.put("overAllStatus", FAILED.getStatus());
         else if (testCaseStatus.stream().allMatch(status -> status.equals(EasyReportStatus.PASSED.getStatus())))
             overallTestCaseStats.put("overAllStatus", PASSED.getStatus());
-        else if (Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus)
-                || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
-                || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus)
-                || Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
-                || Set.of(PASSED.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus(), SKIPPED.getStatus()).containsAll(testCaseStatus)
-                || Set.of(PASSED.getStatus(), PASSED_WITH_KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
-                || Set.of(PASSED_WITH_KNOWN_FAILURES.getStatus()).containsAll(testCaseStatus)
-        )
+        else if (testCaseStatus.contains(KNOWN_FAILURES.getStatus()))
             overallTestCaseStats.put("overAllStatus", PASSED_WITH_KNOWN_FAILURES.getStatus());
-        else if (testCaseStatus.stream().allMatch(status -> status.equals(EasyReportStatus.KNOWN_FAILURES.getStatus())))
-            overallTestCaseStats.put("overAllStatus", KNOWN_FAILURES.getStatus());
         else
             overallTestCaseStats.put("overAllStatus", SKIPPED.getStatus());
 

@@ -1,4 +1,4 @@
-@test
+@test @test-c
 Feature: Home Page pass with fails
 
   Scenario: scenario 7

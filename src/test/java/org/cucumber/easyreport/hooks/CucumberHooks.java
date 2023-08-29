@@ -22,12 +22,12 @@ public class CucumberHooks {
 
     @BeforeAll
     public static void beforeAllCucumberHook() {
-        driver = WebDriverManager.chromedriver().create();
+//        driver = WebDriverManager.chromedriver().create();
     }
 
     @Before
     public void easyReportInitScenario(Scenario scenario) {
-        driver.get("https://www.google.com");
+//        driver.get("https://www.google.com");
     }
 
     @Before
@@ -44,11 +44,11 @@ public class CucumberHooks {
     @AfterStep
     public void easyReportEndStep(Scenario scenario) {
 
-        final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+//        final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 //        final byte[] screenshot = "Screenshot Image".getBytes();
-        scenario.attach(screenshot, "image/png", "screenshot for " + getStepName(scenario));
+//        scenario.attach(screenshot, "image/png", "screenshot for " + getStepName(scenario));
 //        scenario.attach(screenshot, "image/png", "screenshot");
-//        scenario.attach("test screenshot".getBytes(), "image/png", "screenshot");
+        scenario.attach("test screenshot".getBytes(), "image/png", "screenshot");
 
         StringBuilder sb = new StringBuilder();
         sb.append("Total Number of cases = 5").append("\n")
@@ -70,7 +70,7 @@ public class CucumberHooks {
 
     @AfterAll
     public static void afterAllCucumberHook() {
-        driver.quit();
+//        driver.quit();
     }
 
     @SneakyThrows
