@@ -1532,7 +1532,7 @@ function getStepElements(steps) {
 
     var stepError = "";
 
-    if (step.error != null) {
+    if (step.error != null && step.error.length != 0) {
       var stepErrorDecoded = atob(step.error); // decodes the encoded error text
       stepError = `
         <div class="step-error">${stepErrorDecoded}</div>
