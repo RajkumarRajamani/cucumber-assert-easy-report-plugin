@@ -85,6 +85,9 @@ public class HtmlDataGenerator {
         projectInfo.put("projectManager", configReader.getProjectManger());
         projectInfo.put("dqManager", configReader.getDeliveryQualityManager());
         projectInfo.put("dqLead", configReader.getDeliveryQualityLead());
+        projectInfo.put("releaseName", configReader.getProdReleaseName());
+        projectInfo.put("releaseDate", configReader.getProdReleaseDate());
+        projectInfo.put("sprint", configReader.getSprintName());
 
         htmlDataSet.setProjectInfo(projectInfo);
     }

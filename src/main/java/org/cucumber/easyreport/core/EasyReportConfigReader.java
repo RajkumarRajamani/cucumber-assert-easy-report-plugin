@@ -97,6 +97,21 @@ public class EasyReportConfigReader {
         return dqLead == null ? "un-defined" : dqLead;
     }
 
+    public String getProdReleaseName() {
+        String releaseName = properties.getProperty("easyReport.project.info.release.name");
+        return releaseName == null ? "un-defined" : releaseName;
+    }
+
+    public String getProdReleaseDate() {
+        String releaseDate = properties.getProperty("easyReport.project.info.release.date");
+        return releaseDate == null ? "un-defined" : releaseDate;
+    }
+
+    public String getSprintName() {
+        String sprintName = properties.getProperty("easyReport.project.info.release.sprint");
+        return sprintName == null ? "un-defined" : sprintName;
+    }
+
     public static void main(String[] args) {
         EasyReportConfigReader config = new EasyReportConfigReader();
         System.out.println(config.getProperty("easyReport.format.html.customized"));
