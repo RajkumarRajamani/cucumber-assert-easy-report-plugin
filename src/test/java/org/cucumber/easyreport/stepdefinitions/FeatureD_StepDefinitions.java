@@ -11,7 +11,7 @@ public class FeatureD_StepDefinitions {
     @Given("start10")
     public void start() throws JsonProcessingException {
         System.out.println("Start method");
-//        throw new IllegalArgumentException("Forced Exception");
+        throw new IllegalArgumentException("Forced Exception");
     }
 
     @When("process10")
@@ -30,8 +30,8 @@ public class FeatureD_StepDefinitions {
     public void start5() throws JsonProcessingException {
         System.out.println("Start method");
         Assertions assertions = new Assertions();
-        assertions.addKnownFailureLabels("name", "age1");
-        assertions.assertEqualsTo("name", "raj", "rajkumar", "failed", "passed");
+        assertions.addKnownFailureLabels("LastName", "XLCTCD-1004");
+        assertions.assertEqualsTo("lastname", "raj", "rajkumar", "failed", "passed");
         assertions.assertEqualsTo("age", "30", "31", "failed", "passed");
         assertions.assertAll();
     }

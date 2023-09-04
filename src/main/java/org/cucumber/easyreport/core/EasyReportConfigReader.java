@@ -74,12 +74,27 @@ public class EasyReportConfigReader {
     }
 
     public String getProjectDescription() {
-        String projectDescription = properties.getProperty("easyReport.project.info.description");
+        String projectDescription = properties.getProperty("easyReport.project.info.descriptionOrReleaseNotes");
         return projectDescription == null ? "Default Description" : projectDescription;
     }
 
     public String getOs() {
         return System.getProperty("os.name");
+    }
+
+    public String getProjectManger() {
+        String projectManager = properties.getProperty("easyReport.project.info.project-manager");
+        return projectManager == null ? "un-defined" : projectManager;
+    }
+
+    public String getDeliveryQualityManager() {
+        String dqManager = properties.getProperty("easyReport.project.info.dq-manager");
+        return dqManager == null ? "un-defined" : dqManager;
+    }
+
+    public String getDeliveryQualityLead() {
+        String dqLead = properties.getProperty("easyReport.project.info.dq-lead");
+        return dqLead == null ? "un-defined" : dqLead;
     }
 
     public static void main(String[] args) {

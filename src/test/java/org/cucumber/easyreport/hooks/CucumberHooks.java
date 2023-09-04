@@ -6,6 +6,7 @@ import io.cucumber.plugin.event.PickleStepTestStep;
 import io.cucumber.plugin.event.TestCase;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.SneakyThrows;
+import org.cucumber.easyreport.assertions.Assertions;
 import org.cucumber.easyreport.exception.EasyReportException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -22,20 +23,27 @@ public class CucumberHooks {
 
     @BeforeAll
     public static void beforeAllCucumberHook() {
-//        driver = WebDriverManager.chromedriver().create();
+        driver = WebDriverManager.chromedriver().create();
     }
 
     @Before
     public void easyReportInitScenario(Scenario scenario) {
-//        driver.get("https://www.google.com");
+        driver.get("https://www.google.com");
     }
 
     @Before
     public void secondBeforeScenarioMethod() {
         System.out.println("second before scenario method");
 //        throw new EasyReportException("ForceFailCheck");
+//        Assertions assertions = new Assertions();
+//        assertions.addKnownFailureLabels("name", "XLCTCD-1001")
+//                .addKnownFailureLabels("age", "XLCTCD-1002");
+//        assertions.assertEqualsTo("name", "raj", "rajkumar", "failed", "passed");
+//        assertions.assertEqualsTo("age", "30", "31", "failed", "passed");
+//        assertions.assertEqualsTo("dob", "30-2-2023", "20-2-2023", "failed", "passed");
+//        assertions.assertAll();
     }
-
+//
     @BeforeStep
     public void easyReportInitStep(Scenario scenario) {
 //        throw new EasyReportException("ForceFailCheck");
@@ -44,11 +52,11 @@ public class CucumberHooks {
     @AfterStep
     public void easyReportEndStep(Scenario scenario) {
 
-//        final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-//        final byte[] screenshot = "Screenshot Image".getBytes();
-//        scenario.attach(screenshot, "image/png", "screenshot for " + getStepName(scenario));
-//        scenario.attach(screenshot, "image/png", "screenshot");
-        scenario.attach("test screenshot".getBytes(), "image/png", "screenshot");
+        final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        scenario.attach(screenshot, "image/png", "screenshot for " + getStepName(scenario));
+//        driver.get("https://www.chartjs.org/docs/latest/configuration/tooltip.html#external-custom-tooltips");
+//        final byte[] screenshot1 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+//        scenario.attach(screenshot1, "image/png", "screenshot for " + getStepName(scenario));
 
         StringBuilder sb = new StringBuilder();
         sb.append("Total Number of cases = 5").append("\n")
@@ -65,14 +73,14 @@ public class CucumberHooks {
 
     @After
     public void easyReportEndScenario(Scenario scenario) {
-
+//        throw new EasyReportException();
     }
-
+//
     @AfterAll
     public static void afterAllCucumberHook() {
-//        driver.quit();
+        driver.quit();
     }
-
+//
     @SneakyThrows
     private String getStepName(Scenario scenario) {
         Field f = scenario.getClass().getDeclaredField("delegate");

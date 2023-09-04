@@ -17,24 +17,26 @@ import java.util.*;
 @Slf4j
 public class Assertions implements Assertion {
 
-    private final ThreadLocal<Set<String>> knownFailureLabelSet = ThreadLocal.withInitial(HashSet::new);
+    private final ThreadLocal<Map<String, String>> knownFailureLabelSet = ThreadLocal.withInitial(HashMap::new);
 
-    private final ThreadLocal<Map<String, Map<String, String>>> failures = ThreadLocal.withInitial(HashMap::new);
+    private final ThreadLocal<Map<String, List<Map<String, String>>>> failures = ThreadLocal.withInitial(HashMap::new);
 
     private final ThreadLocal<SoftAssertions> assertions = ThreadLocal.withInitial(SoftAssertions::new);
 
     public Assertions() {}
 
-    public synchronized Assertions addKnownFailureLabels(String... labels) {
-        knownFailureLabelSet.get().addAll(List.of(labels));
+    public synchronized Assertions addKnownFailureLabels(String label, String trackingId) {
+        knownFailureLabelSet.get().put(label, Objects.nonNull(trackingId) && !trackingId.isEmpty() ? trackingId : "No Tracking Id");
         return this;
     }
 
-    public synchronized Set<String> getKnownFailureLabels() {
+    public synchronized Map<String, String> getKnownFailureLabels() {
         return knownFailureLabelSet.get();
     }
 
     private synchronized Assertions assertCurrentStep(String label, SoftAssertions assertion) {
+        String trackingId = getKnownFailureLabels().get(label);
+        trackingId = Objects.nonNull(trackingId) && !trackingId.isEmpty() ? trackingId : "No Tracking Id";
         try {
             assertion.assertAll();
         } catch (AssertJMultipleFailuresError e) {
@@ -42,35 +44,51 @@ public class Assertions implements Assertion {
                     .get(0).replaceAll("\n", " ")
                     .replaceAll("\r", " ")
                     .replaceAll("\"", "'");
-            this.addIntoFailures(label, failure);
+            this.addIntoFailures(label, trackingId, failure);
         } catch (SoftAssertionError error) {
             String failure = error.getErrors()
                     .get(0).replaceAll("\r", " ")
                     .replaceAll("\n", " ")
                     .replaceAll("\"", "'");
-            this.addIntoFailures(label, failure);
+            this.addIntoFailures(label, trackingId, failure);
         } finally {
             assertions.set(new SoftAssertions());
         }
         return this;
     }
 
-    private synchronized void addIntoFailures(String label, String failure) {
-        if(getKnownFailureLabels().contains(label)) {
-            if(failures.get().containsKey("knownFailures"))
-                failures.get().get("knownFailures").put(label, failure);
-            else {
-                Map<String, String> f = new HashMap<>();
-                f.put(label, failure);
-                failures.get().put("knownFailures", f);
+    private synchronized void addIntoFailures(String label, String trackingId, String failure) {
+        if(getKnownFailureLabels().keySet().contains(label)) {
+            if(failures.get().containsKey("knownFailures")) {
+                Map<String, String> fail = new HashMap<>();
+                fail.put("label", label);
+                fail.put("trackingId", trackingId);
+                fail.put("failureMessage", failure);
+                failures.get().get("knownFailures").add(fail);
+            } else {
+                List<Map<String, String>> failureList = new ArrayList<>();
+                Map<String, String> fail = new HashMap<>();
+                fail.put("label", label);
+                fail.put("trackingId", trackingId);
+                fail.put("failureMessage", failure);
+                failureList.add(fail);
+                failures.get().put("knownFailures", failureList);
             }
         } else {
-            if(failures.get().containsKey("failures"))
-                failures.get().get("failures").put(label, failure);
-            else {
-                Map<String, String> f = new HashMap<>();
-                f.put(label, failure);
-                failures.get().put("failures", f);
+            if(failures.get().containsKey("failures")) {
+                Map<String, String> fail = new HashMap<>();
+                fail.put("label", label);
+                fail.put("trackingId", trackingId);
+                fail.put("failureMessage", failure);
+                failures.get().get("failures").add(fail);
+            } else {
+                List<Map<String, String>> failureList = new ArrayList<>();
+                Map<String, String> fail = new HashMap<>();
+                fail.put("label", label);
+                fail.put("trackingId", trackingId);
+                fail.put("failureMessage", failure);
+                failureList.add(fail);
+                failures.get().put("failures", failureList);
             }
         }
     }

@@ -381,7 +381,7 @@ public final class EasyReportJsonFormatter implements EventListener {
         return matchMap;
     }
 
-    private Map<String, Object> createResultMap(Result result, TestStepFinished event) throws JsonProcessingException {
+    private Map<String, Object> createResultMap(Result result, TestStepFinished event) {
         Map<String, Object> resultMap = new HashMap<>();
 
         // customized her
@@ -393,7 +393,7 @@ public final class EasyReportJsonFormatter implements EventListener {
 
             Map<String, String> errorMap = new HashMap<>();
             try {
-                if(errorContent.contains("{") || errorContent.contains("}")) {
+                if(errorContent.contains("{") && errorContent.contains("}")) {
                     errorContent = errorContent.substring(errorContent.indexOf("{"), errorContent.lastIndexOf("}") + 1);
                     errorMap = new ObjectMapper().readValue(errorContent, Map.class);
                 }

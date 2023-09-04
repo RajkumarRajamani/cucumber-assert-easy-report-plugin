@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.cucumber.easyreport.exception.EasyReportException;
 
 public class FeatureC_StepDefinitions {
 
@@ -22,9 +23,12 @@ public class FeatureC_StepDefinitions {
     public void check() {
         System.out.println("Check method");
         Assertions assertions = new Assertions();
-        assertions.addKnownFailureLabels("name");
+        assertions.addKnownFailureLabels("name", "XLCTCD-1001");
+        assertions.addKnownFailureLabels("place", "");
         assertions.assertEqualsTo("name", "raj", "rajkumar", "failed", "passed");
-        assertions.assertEqualsTo("name", "30", "31", "failed", "passed");
+        assertions.assertEqualsTo("place", "30", "31", "failed", "passed");
+        assertions.assertEqualsTo("place2", "30", "31", "failed", "passed");
+        assertions.assertEqualsTo("place3", "30", "31", "failed", "passed");
         assertions.assertAll();
     }
 
@@ -60,5 +64,6 @@ public class FeatureC_StepDefinitions {
     @Then("check9")
     public void check6() {
         System.out.println("Check method");
+        throw new EasyReportException();
     }
 }

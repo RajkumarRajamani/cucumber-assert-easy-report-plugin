@@ -3,6 +3,10 @@ package org.cucumber.easyreport.test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -38,6 +42,16 @@ public class Test {
         String path = "test-output/cucumber/easy-cucumber-report.html";
         String parent = Paths.get(path).getParent().toString();
         System.out.println(parent);
+
+        BufferedImage bImage = ImageIO.read(new File("src/main/resources/easy-cucumber-report-logo.png"));
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ImageIO.write(bImage, "png", bos );
+        byte [] data = bos.toByteArray();
+        System.out.println(data);
+
+        File fi = new File("src/main/resources/easy-cucumber-report-logo.png");
+        byte[] fileContent = Files.readAllBytes(fi.toPath());
+        System.out.println(fileContent);
 
     }
 

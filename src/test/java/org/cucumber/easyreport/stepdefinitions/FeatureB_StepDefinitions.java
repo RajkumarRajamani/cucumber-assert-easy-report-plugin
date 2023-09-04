@@ -12,7 +12,8 @@ public class FeatureB_StepDefinitions {
     public void start() throws JsonProcessingException {
         System.out.println("Start method");
         Assertions assertions = new Assertions();
-        assertions.addKnownFailureLabels("name", "age");
+        assertions.addKnownFailureLabels("name", "XLCTCD-1001")
+                    .addKnownFailureLabels("age", "XLCTCD-1002");
         assertions.assertEqualsTo("name", "raj", "rajkumar", "failed", "passed");
         assertions.assertEqualsTo("age", "30", "31", "failed", "passed");
         assertions.assertAll();
@@ -34,9 +35,8 @@ public class FeatureB_StepDefinitions {
     public void start5() {
         System.out.println("Start method");
         Assertions assertions = new Assertions();
-        assertions.addKnownFailureLabels("name", "age");
+        assertions.addKnownFailureLabels("name", "XLCTCD-1001");
         assertions.assertEqualsTo("name", "raj", "raj", "starts5 is failed - logging failed", "starts5 is passed - logging passed");
-        assertions.assertEqualsTo("age", "30", "31", "failed", "passed");
         assertions.assertAll();
     }
 
@@ -56,9 +56,9 @@ public class FeatureB_StepDefinitions {
     public void start6() {
         System.out.println("Start method");
         Assertions assertions = new Assertions();
-        assertions.addKnownFailureLabels("name value", "age");
+        assertions.addKnownFailureLabels("name value", "XLCTCD-1003");
         assertions.assertEqualsTo("name value", "raj", "rajkumar", "failed", "passed");
-        assertions.assertEqualsTo("age", "30", "31", "failed", "passed");
+//        assertions.assertEqualsTo("age", "30", "31", "failed", "passed");
         assertions.assertAll();
     }
 
