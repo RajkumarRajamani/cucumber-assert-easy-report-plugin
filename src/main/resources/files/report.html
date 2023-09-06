@@ -706,7 +706,7 @@
     <<json-input>>
     `;
 
-    // Read Json Data
+   // Read Json Data
 var data = JSON.parse(json);
 
 // populate overall status on top of the report
@@ -1269,10 +1269,10 @@ const stepChartConfig = {
 
 };
 
-const stepDoughnutChart = new Chart(
-  document.querySelector("#testStepePieChart"),
-  stepChartConfig
-)
+// const stepDoughnutChart = new Chart(
+//   document.querySelector("#testStepePieChart"),
+//   stepChartConfig
+// )
 
 // defect pie chart
 const reducer = (accumulator, curr) => accumulator + curr;
@@ -1679,11 +1679,12 @@ function getContentToDisplayOnRightWhenClickingFeatureNavLink(features) {
   for (let feature of features) {
     // get all scenario elements to be displayed on right side page
     var scenarioElements = getScenarioElements(feature.scenarios);
+    var featureId = replaceEscapesAndHtmlWithHyphen(feature.id);
 
     // then build the content panel section with above scenario elements
     // for every feature
     displayOnClickContent += `
-      <div id="${feature.id}" class="displayOnClick">
+      <div id="${featureId}" class="displayOnClick">
         ${scenarioElements}
       </div>
       `;
@@ -1931,8 +1932,9 @@ function loadScenarioContent(selector) {
 // when document becomes ready, it selects and highlights
 // the first feature navigation option
 $(document).ready(function () {
-  var firstFeatureId = features[0].id
-  document.querySelector("li a[href='#" + features[0].id + "']").parentNode.classList.add("side-nav-item-active");
+  // var firstFeatureId = features[0].id;
+  var firstFeatureId = replaceEscapesAndHtmlWithHyphen(features[0].id);
+  document.querySelector("li a[href='#" + firstFeatureId + "']").parentNode.classList.add("side-nav-item-active");
   loadScenarioContent("#" + firstFeatureId);
 
 });
