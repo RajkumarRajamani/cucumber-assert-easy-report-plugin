@@ -706,8 +706,7 @@
     <<json-input>>
     `;
 
-
-// Read Json Data
+    // Read Json Data
 var data = JSON.parse(json);
 
 // populate overall status on top of the report
@@ -1846,6 +1845,7 @@ function replaceEscapesAndHtmlWithHyphen(value) {
     .replaceAll("&emsp", "-")
     .replaceAll("'", "-")
     .replaceAll(";", "-")
+    .replaceAll(":", "-")
     .replaceAll(" ", "-")
     .replaceAll("\\", "-")
     .replaceAll("/", "-")
@@ -1859,11 +1859,12 @@ function getStepEmbeddingElements(embeddings, stepStatus) {
   if (embeddings != null && embeddings.length > 0) {
     for (let embedding of embeddings) {
       index = index+1;
-      var attachmentSource = getStepScreenshotElement(embedding.mime_type, embedding.data, embedding.name, index);
+      var embeddingName = atob(embedding.name);
+      var attachmentSource = getStepScreenshotElement(embedding.mime_type, embedding.data, embeddingName, index);
       if (isStepStatusIngnorable(stepStatus)) {
         stepEmbeddingElement += `
           <div>
-          <div class="embedding-name">${embedding.name}</div>
+          <div class="embedding-name">${embeddingName}</div>
           <div class="embedding-src">${attachmentSource}</div>
           <div class="embedding-name">${stepStatus} step</div>
           </div>
@@ -1871,7 +1872,7 @@ function getStepEmbeddingElements(embeddings, stepStatus) {
       } else {
         stepEmbeddingElement += `
           <div>
-            <div class="embedding-name">${embedding.name}</div>
+            <div class="embedding-name">${embeddingName}</div>
             <div class="embedding-src">${attachmentSource}</div>
           </div>
         `;
@@ -2029,7 +2030,6 @@ lightbox.option({
   'resizeDuration': 600,
   'wrapAround': true
 })
-
 
 </script>
 
