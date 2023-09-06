@@ -54,10 +54,6 @@ public class CucumberHooks {
 
         final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
         scenario.attach(screenshot, "image/png", "screenshot for " + getStepName(scenario));
-//        driver.get("https://www.chartjs.org/docs/latest/configuration/tooltip.html#external-custom-tooltips");
-//        final byte[] screenshot1 = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-//        scenario.attach(screenshot1, "image/png", "screenshot for " + getStepName(scenario));
-
         StringBuilder sb = new StringBuilder();
         sb.append("Total Number of cases = 5").append("\n")
                 .append("Total Number of cases = 5").append("\n")

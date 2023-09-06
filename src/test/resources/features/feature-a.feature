@@ -7,9 +7,9 @@ Feature: Home Page All Pass
     Then check1
 
     Examples:
-    |testdataA| column2|
-    |case1       |    casea |
-    |case2       |   caseb  |
+      | testdataA | column2                                 |
+      | case1     | casea                                   |
+      | case2     | src/test/resources/htmlformatter/b.json |
 
   Scenario: scenario 2
     Given start2

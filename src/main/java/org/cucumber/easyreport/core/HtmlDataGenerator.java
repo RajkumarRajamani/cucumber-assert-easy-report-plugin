@@ -357,7 +357,7 @@ public class HtmlDataGenerator {
                                 steps
                                         .forEach(step -> {
                                             Map<String, Object> stepMap = new HashMap<>();
-                                            stepMap.put("name", this.replaceEscapesWithHtml(step.getName()));
+                                            stepMap.put("name", this.getEncodedText(this.replaceEscapesWithHtml(step.getName())));
                                             stepMap.put("line", step.getLine());
                                             stepMap.put("duration", this.getReadableTime(step.getTotalStepDuration()));
                                             stepMap.put("beforeStatus", step.getBeforeStatus());
@@ -389,7 +389,7 @@ public class HtmlDataGenerator {
                                             stepMapList.add(stepMap);
                                         });
                                 scenariosSet.put("id", this.replaceEscapesWithHtml(scenario.getId()));
-                                scenariosSet.put("name", this.replaceEscapesWithHtml(scenario.getName()));
+                                scenariosSet.put("name", this.getEncodedText(this.replaceEscapesWithHtml(scenario.getName())));
                                 scenariosSet.put("duration", this.getReadableTime(scenario.getTotalScenarioDuration()));
                                 scenariosSet.put("beforeStatus", scenario.getBeforeStatus());
                                 scenariosSet.put("beforeError", this.getEncodedText(scenario.getBeforeError()));
@@ -400,7 +400,7 @@ public class HtmlDataGenerator {
                                 scenarioMapList.add(scenariosSet);
                             });
                     featuresSet.put("id", this.replaceEscapesWithHtml(feature.getId()));
-                    featuresSet.put("name", this.replaceEscapesWithHtml(feature.getName()));
+                    featuresSet.put("name", this.getEncodedText(this.replaceEscapesWithHtml(feature.getName())));
                     featuresSet.put("status", feature.getStatus());
                     featuresSet.put("duration", this.getReadableTime(feature.getTotalFeatureDuration()));
                     featuresSet.put("scenarios", scenarioMapList);
