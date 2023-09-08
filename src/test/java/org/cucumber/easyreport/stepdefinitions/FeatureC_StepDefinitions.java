@@ -25,8 +25,10 @@ public class FeatureC_StepDefinitions {
         Assertions assertions = new Assertions();
         assertions.addKnownFailureLabels("name", "XLCTCD-1001");
         assertions.addKnownFailureLabels("place", "");
+        assertions.addKnownFailureLabels("place2", "");
         assertions.assertEqualsTo("name", "raj", "rajkumar", "failed", "passed");
         assertions.assertEqualsTo("place", "30", "31", "failed", "passed");
+        assertions.assertEqualsTo("place", "33", "34", "failed", "passed");
         assertions.assertEqualsTo("place2", "30", "31", "failed", "passed");
         assertions.assertEqualsTo("place3", "30", "31", "failed", "passed");
         assertions.assertAll();

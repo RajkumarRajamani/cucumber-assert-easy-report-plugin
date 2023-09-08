@@ -17,7 +17,7 @@ Feature: Home Page All Pass
     Then check2
 
   Scenario: scenario 3
-    Given start2
-    When process2
-    Then check2
+    Given start3
+    When process3
+    Then check3
 

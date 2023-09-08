@@ -23,6 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.groupingBy;
 import static org.cucumber.easyreport.core.EasyReportStatus.*;
 import static java.util.stream.Collectors.toSet;
 
@@ -97,6 +98,7 @@ public class HtmlDataGenerator {
                 .forEach(feature -> {
                     feature.getElements().forEach(testCase -> {
                         testCase.getSteps().forEach(step -> {
+                            step.setStepSeq("Step " + (testCase.getSteps().indexOf(step) + 1));
                             ReportJsonFeature.Before failedBefore = step.getBefore().stream().filter(before -> !Set.of(PASSED.getStatus(), SKIPPED.getStatus()).contains(before.getResult().getStatus())).findFirst().orElse(null);
                             if(Objects.nonNull(failedBefore)) {
                                 step.setBeforeStatus(failedBefore.getResult().getStatus());
@@ -131,6 +133,7 @@ public class HtmlDataGenerator {
         features
                 .forEach(feature -> {
                     feature.getElements().forEach(testCase -> {
+                        testCase.setScenarioSeq("Scenario " + (feature.getElements().indexOf(testCase) + 1));
                         List<ReportJsonFeature.Before> beforeList = Optional.ofNullable(testCase.getBefore()).orElse(new ArrayList<>());
                         List<ReportJsonFeature.After> afterList = Optional.ofNullable(testCase.getAfter()).orElse(new ArrayList<>());
 
@@ -172,6 +175,7 @@ public class HtmlDataGenerator {
     private void processFeature() {
         features
                 .forEach(feature -> {
+                    feature.setFeatureSeq("Feature " + (features.indexOf(feature) + 1));
                     long featureDuration = feature.getElements().stream().mapToLong(ReportJsonFeature.Element::getTotalScenarioDuration).sum();
                     feature.setTotalFeatureDuration(featureDuration);
 
@@ -357,7 +361,8 @@ public class HtmlDataGenerator {
                                 steps
                                         .forEach(step -> {
                                             Map<String, Object> stepMap = new HashMap<>();
-                                            stepMap.put("name", this.getEncodedText(this.replaceEscapesWithHtml(step.getName())));
+                                            stepMap.put("stepSeq", step.getStepSeq());
+                                            stepMap.put("name", this.getEncodedText(step.getStepSeq() + " : " + this.replaceEscapesWithHtml(step.getName())));
                                             stepMap.put("line", step.getLine());
                                             stepMap.put("duration", this.getReadableTime(step.getTotalStepDuration()));
                                             stepMap.put("beforeStatus", step.getBeforeStatus());
@@ -389,7 +394,8 @@ public class HtmlDataGenerator {
                                             stepMapList.add(stepMap);
                                         });
                                 scenariosSet.put("id", this.replaceEscapesWithHtml(scenario.getId()));
-                                scenariosSet.put("name", this.getEncodedText(this.replaceEscapesWithHtml(scenario.getName())));
+                                scenariosSet.put("scenarioSeq", scenario.getScenarioSeq());
+                                scenariosSet.put("name", this.getEncodedText(scenario.getScenarioSeq() + " : " + this.replaceEscapesWithHtml(scenario.getName())));
                                 scenariosSet.put("duration", this.getReadableTime(scenario.getTotalScenarioDuration()));
                                 scenariosSet.put("beforeStatus", scenario.getBeforeStatus());
                                 scenariosSet.put("beforeError", this.getEncodedText(scenario.getBeforeError()));
@@ -400,7 +406,8 @@ public class HtmlDataGenerator {
                                 scenarioMapList.add(scenariosSet);
                             });
                     featuresSet.put("id", this.replaceEscapesWithHtml(feature.getId()));
-                    featuresSet.put("name", this.getEncodedText(this.replaceEscapesWithHtml(feature.getName())));
+                    featuresSet.put("featureSeq", feature.getFeatureSeq());
+                    featuresSet.put("name", this.getEncodedText(feature.getFeatureSeq() + " : " + this.replaceEscapesWithHtml(feature.getName())));
                     featuresSet.put("status", feature.getStatus());
                     featuresSet.put("duration", this.getReadableTime(feature.getTotalFeatureDuration()));
                     featuresSet.put("scenarios", scenarioMapList);
@@ -426,81 +433,95 @@ public class HtmlDataGenerator {
     private void generateDefectsStats(HtmlDataSet htmlDataSet) throws JsonProcessingException {
         features
                 .forEach( feature -> {
+                    String featureNameReference = feature.getFeatureSeq() + " : " + feature.getName();
                     List<ReportJsonFeature.Element> scenarios = feature.getElements();
 
                     scenarios.stream()
                             .filter(scenario -> !Set.of(PASSED.getStatus(), SKIPPED.getStatus()).contains(scenario.getScenarioStatus()))
                             .forEach(failedScenario -> {
                                 List<ReportJsonFeature.Step> steps = failedScenario.getSteps();
-                                ReportJsonFeature.Step failedStep = steps.stream().filter(step -> !step.getStepFinalStatus().equals(PASSED.getStatus())).findFirst().orElse(new ReportJsonFeature.Step());
-                                this.categorizeFailures(failedScenario, failedStep);
+                                ReportJsonFeature.Step failedStep = steps.stream().filter(step -> !ignorableStatus.contains(step.getStepFinalStatus())).findFirst().orElse(new ReportJsonFeature.Step());
+                                this.categorizeFailures(featureNameReference, failedScenario, failedStep);
                             });
                 });
 
         Map<String, List<Cause>> knownFailuresGroupedByTrackId = knownFailures.stream().collect(Collectors.groupingBy(Cause::getTrackingId, Collectors.toList()));
         long trackedKnownDefects = knownFailuresGroupedByTrackId.keySet().stream().filter(id -> !id.equals("No Tracking Id")).count();
-        long unTrackedKnownDefects = Optional.ofNullable(knownFailuresGroupedByTrackId.get("No Tracking Id")).orElse(new ArrayList<>()).size();
+        long unTrackedKnownDefects = Optional.ofNullable(knownFailuresGroupedByTrackId.get("No Tracking Id")).orElse(new ArrayList<>())
+                .stream().collect(groupingBy(Cause::getLabel, Collectors.toList())).keySet().size();
 
         long newDefects = newFailures.size();
         long otherDefects = otherFailures.size();
-        knownFailuresGroupedByTrackId.entrySet().forEach(System.out::println);
-        System.out.println(trackedKnownDefects);
-        System.out.println(unTrackedKnownDefects);
-        newFailures.forEach(System.out::println);
-        System.out.println(newDefects);
-        otherFailures.forEach(System.out::println);
-        System.out.println(otherDefects);
+//        knownFailuresGroupedByTrackId.entrySet().forEach(System.out::println);
+//        System.out.println(trackedKnownDefects);
+//        System.out.println(unTrackedKnownDefects);
+//        newFailures.forEach(System.out::println);
+//        System.out.println(newDefects);
+//        otherFailures.forEach(System.out::println);
+//        System.out.println(otherDefects);
 
         htmlDataSet.getDefectPieChartDataMap().put("trackedKnownDefects", trackedKnownDefects);
         htmlDataSet.getDefectPieChartDataMap().put("unTrackedKnownDefects", unTrackedKnownDefects);
         htmlDataSet.getDefectPieChartDataMap().put("newDefects", newDefects);
         htmlDataSet.getDefectPieChartDataMap().put("otherDefects", otherDefects);
 
+        defectDetails.put("trackedKnownDefectIds", knownFailuresGroupedByTrackId.keySet().stream().filter(id -> !id.equals("No Tracking Id")).toList());
+        defectDetails.put("knownFailures", knownFailures);
+        defectDetails.put("newFailures", newFailures);
+        defectDetails.put("otherFailures", otherFailures);
+        htmlDataSet.setDefectDetails(defectDetails);
     }
 
-    Map<String, Object> defectStats = new HashMap<>();
+    Map<String, Object> defectDetails = new HashMap<>();
     List<Cause> knownFailures = new ArrayList<>();
     List<Cause> newFailures = new ArrayList<>();
     List<Cause> otherFailures = new ArrayList<>();
+    Set<String> ignorableStatus = Set.of(PASSED.getStatus(), SKIPPED.getStatus());
 
-    private void categorizeFailures(ReportJsonFeature.Element failedScenario, ReportJsonFeature.Step failedStep) {
+    private void categorizeFailures(String featureName, ReportJsonFeature.Element failedScenario, ReportJsonFeature.Step failedStep) {
 
-        Set<String> ignorableStatus = Set.of(PASSED.getStatus(), SKIPPED.getStatus());
+        String scenarioNameReference = failedScenario.getScenarioSeq() + " : " + failedScenario.getName();
 
         List<ReportJsonFeature.Before> scenarioBeforeList = Optional.ofNullable(failedScenario.getBefore()).orElse(new ArrayList<>());
         if(!scenarioBeforeList.isEmpty()) {
             ReportJsonFeature.Before scenarioBeforeFailure = scenarioBeforeList.stream().filter(before -> !ignorableStatus.contains(before.getResult().getStatus())).findFirst().orElse(null);
             String scenarioBeforeError = Objects.nonNull(scenarioBeforeFailure) ? scenarioBeforeFailure.getResult().getError_message() : StringUtils.EMPTY;
-            this.addFailuresIntoCategory(scenarioBeforeError);
+            this.addFailuresIntoCategory(featureName, scenarioNameReference, "scenario before hook", scenarioBeforeError);
         }
 
         List<ReportJsonFeature.Before> stepBeforeList = Optional.ofNullable(failedStep.getBefore()).orElse(new ArrayList<>());
         if(!stepBeforeList.isEmpty()) {
+            String stepNameRef = failedStep.getStepSeq() + " before hook error";
             ReportJsonFeature.Before stepBeforeFailure = stepBeforeList.stream().filter(before -> !ignorableStatus.contains(before.getResult().getStatus())).findFirst().orElse(null);
             String stepBeforeError = Objects.nonNull(stepBeforeFailure) ? stepBeforeFailure.getResult().getError_message() : StringUtils.EMPTY;
-            this.addFailuresIntoCategory(stepBeforeError);
+            this.addFailuresIntoCategory(featureName, scenarioNameReference, stepNameRef, stepBeforeError);
         }
 
         String stepError = Optional.ofNullable(failedStep.getResult()).orElse(new ReportJsonFeature.Result()).getError_message();
+        String stepNameReference = "";
+        if(Objects.nonNull(failedStep.getStepSeq())) {
+            stepNameReference = failedStep.getStepSeq() + " : " + failedStep.getName();
+        }
         stepError = Objects.nonNull(stepError) ? stepError : StringUtils.EMPTY;
-        this.addFailuresIntoCategory(stepError);
+        this.addFailuresIntoCategory(featureName, scenarioNameReference, stepNameReference, stepError);
 
         List<ReportJsonFeature.After> stepAfterList = Optional.ofNullable(failedStep.getAfter()).orElse(new ArrayList<>());
         if(!stepAfterList.isEmpty()) {
+            String stepNameRef = failedStep.getStepSeq() + " after hook error";
             ReportJsonFeature.After stepAfterFailure = stepAfterList.stream().filter(after -> !ignorableStatus.contains(after.getResult().getStatus())).findFirst().orElse(null);
             String stepAfterError = Objects.nonNull(stepAfterFailure) ? stepAfterFailure.getResult().getError_message() : StringUtils.EMPTY;
-            this.addFailuresIntoCategory(stepAfterError);
+            this.addFailuresIntoCategory(featureName, scenarioNameReference, stepNameRef, stepAfterError);
         }
 
         List<ReportJsonFeature.After> scenarioAfterList = Optional.ofNullable(failedScenario.getAfter()).orElse(new ArrayList<>());
         if(!scenarioAfterList.isEmpty()) {
             ReportJsonFeature.After scenarioAfterFailure = scenarioAfterList.stream().filter(after -> !ignorableStatus.contains(after.getResult().getStatus())).findFirst().orElse(null);
             String scenarioAfterError = Objects.nonNull(scenarioAfterFailure) ? scenarioAfterFailure.getResult().getError_message() : StringUtils.EMPTY;
-            this.addFailuresIntoCategory(scenarioAfterError);
+            this.addFailuresIntoCategory(featureName, scenarioNameReference, "scenario after hook", scenarioAfterError);
         }
     }
 
-    private void addFailuresIntoCategory(String errorText) {
+    private void addFailuresIntoCategory(String featureName, String scenarioName, String stepName, String errorText) {
         try {
             if(errorText.contains("{") && errorText.contains("}")) {
                 errorText = errorText.substring(errorText.indexOf("{"), errorText.lastIndexOf("}") + 1);
@@ -509,17 +530,32 @@ public class HtmlDataGenerator {
                 Error error = oMapper.readValue(errorText, Error.class);
 
                 if(!error.getKnownFailures().isEmpty()) {
+                    error.getKnownFailures().forEach(f -> {
+                        f.setFeatureName(featureName);
+                        f.setScenarioName(scenarioName);
+                        f.setStepName(stepName);
+                        f.setFailureMessage(this.getEncodedText(f.getFailureMessage()));
+                    });
                     knownFailures.addAll(error.getKnownFailures());
                 }
 
                 if(!error.getFailures().isEmpty()){
+                    error.getFailures().forEach(f -> {
+                        f.setFeatureName(featureName);
+                        f.setScenarioName(scenarioName);
+                        f.setStepName(stepName);
+                        f.setFailureMessage(this.getEncodedText(f.getFailureMessage()));
+                    });
                     newFailures.addAll(error.getFailures());
                 }
             } else if(!errorText.isBlank()){
                 Cause cause = new Cause();
+                cause.setFeatureName(featureName);
+                cause.setScenarioName(scenarioName);
+                cause.setStepName(stepName);
                 cause.setLabel("otherFailures");
                 cause.setTrackingId("No Tracking Id");
-                cause.setFailureMessage(errorText);
+                cause.setFailureMessage(this.getEncodedText(errorText));
                 otherFailures.add(cause);
             }
         } catch (JsonProcessingException e) {
@@ -542,6 +578,10 @@ public class HtmlDataGenerator {
         private String label;
         private String failureMessage;
         private String trackingId;
+
+        private String featureName;
+        private String scenarioName;
+        private String stepName;
     }
 
 }

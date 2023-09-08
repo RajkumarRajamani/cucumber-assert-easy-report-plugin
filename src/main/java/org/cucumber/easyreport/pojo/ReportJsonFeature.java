@@ -20,6 +20,7 @@ public class ReportJsonFeature {
     private ArrayList<Tag> tags = new ArrayList<>();
     private String status;
     private long totalFeatureDuration;
+    private String featureSeq;
 
     @Data
     public static class Element {
@@ -39,6 +40,7 @@ public class ReportJsonFeature {
          * Below are not cucumber json attributes.
          * Added these for EasyReport
          */
+        private String scenarioSeq;
         private long totalScenarioDuration;
         private String beforeStatus = StringUtils.EMPTY;
         private String beforeError = StringUtils.EMPTY;
@@ -119,6 +121,7 @@ public class ReportJsonFeature {
          * Below are not cucumber json attributes.
          * Added these for EasyReport
          */
+        private String stepSeq;
         private long totalStepDuration;
         private String beforeStatus = StringUtils.EMPTY;
         private String beforeError = StringUtils.EMPTY;

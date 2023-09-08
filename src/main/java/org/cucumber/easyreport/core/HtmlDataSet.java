@@ -17,5 +17,6 @@ public class HtmlDataSet {
     private Map<String, Long> defectPieChartDataMap = new HashMap<>();
     private Map<String, String> overallTestCaseStats = new HashMap<>();
     private List<Map<String, String>> featuresStats = new ArrayList<>();
-    List<Object> featureMapList = new ArrayList<>();
+    private List<Object> featureMapList = new ArrayList<>();
+    private Map<String, Object> defectDetails = new HashMap<>();
 }

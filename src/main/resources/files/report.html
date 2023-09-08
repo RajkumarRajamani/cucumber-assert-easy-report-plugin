@@ -34,580 +34,717 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
         :root {
-          --border-color: #d9d9d9;
-          --passed-status-color: #008000;
-          --failed-status-color: #e01e37;
-          --skipped-status-color: #C0C0C0;
-          --known-failures-status-color: #FFC300;
-          --passed-with-known-failure-color: #73e2a7;
-        }
-
-        html {
-          font-family: Roboto, Arial;
-          margin-top: 0;
-          margin-bottom: 0;
-          font-size: small;
-        }
-
-        .content {
-          display: flex;
-          flex-direction: column;
-          margin-top: 5px;
-          margin-left: 20px;
-          margin-right: 20px;
-          margin-bottom: 0px;
-        }
-
-        .report-title {
-          display: block;
-          color: #03256c;
-          font-weight: bold;
-          font-size: larger;
-          text-align: center;
-        }
-
-        .logo {
-          height: 30px;
-          width: 60px;
-          float: left;
-          border-radius: 10px;
-        }
-
-        .version {
-          font-size: smaller;
-          color: dimgray;
-          font-weight: lighter;
-        }
-
-        .over-all-highlight-section {
-          margin-right: 10px;
-        }
-
-        .over-all-highlight {
-          height: 30px;
-          color: white;
-          font-size: large;
-          font-weight: bolder;
-          text-align: center;
-          border-radius: 10px;
-          padding-top: 5px;
-        }
-
-        .project-info-header {
-          font-weight: bold;
-          color: #1d3557;
-          text-align: left;
-          padding-bottom: 8px;
-          padding-top: 5px;
-          margin-top: 10px;
-        }
-
-
-
-
-        /* new project details section */
-        .project-details-container {
-          display: block;
-          padding: 20px;
-          margin-top: 0px;
-          margin-right: 10px;
-          background-color: #eaecf0;
-          border-radius: 8px;
-        }
-
-        .project-info-flex {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          background-color: white;
-          padding: 15px;
-          border-radius: 8px;
-          column-gap: 30px;
-        }
-
-        .info-section {
-          display: grid;
-          grid-template-columns: 120px 5px 1fr;
-          row-gap: 10px;
-          column-gap: 10px;
-          align-items: start;
-          max-width: 33%;
-        }
-
-        .project-info-element {
-          max-height: 30px;
-          padding: 5px;
-        }
-
-        .project-info-key {
-          font-weight: 700;
-          color: #0b3954;
-          max-width: 100%;
-        }
-
-        .project-info-value {
-          color: #8d99ae;
-          min-width: 200px;
-          max-width: 100%;
-          max-height: fit-content;
-          overflow: visible;
-        }
-
-        .description-section {
-          background-color: white;
-          padding: 15px;
-          margin-top: 5px;
-          border-radius: 8px;
-        }
-
-        .project-desc-header {
-          margin-bottom: 10px;
-        }
-
-        .project-desc-value {
-          max-height: 150px;
-          overflow: scroll;
-        }
-
-        .chart-section-header {
-          margin-top: 10px;
-          font-weight: bold;
-          color: #1d3557;
-          text-align: left;
-          padding-bottom: 8px;
-          padding-top: 5px;
-        }
-
-        .chart-area {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap;
-          gap: 10px;
-          margin-top: 0px;
-          margin-bottom: 0px;
-          background-color: #eaecf0;
-          padding: 20px;
-          margin-right: 10px;
-          border-radius: 8px;
-        }
-
-        .chart-section-element {
-          flex: 1;
-          border: solid;
-          border-color: var(--border-color);
-          border-width: 1px;
-          box-shadow: 0px 2px 15px 2px #efeeee;
-          border-radius: 15px;
-          padding-top: 10px;
-          background-color: white;
-        }
-
-        .pie-chart {
-          padding: 0px;
-          height: 200px;
-        }
-
-        .stats-tables {
-          margin-top: 10px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          margin-right: 10px;
-          border-radius: 15px;
-        }
-
-        .overall-stats-header,
-        .feature-stats-header {
-          font-weight: bold;
-          color: #1d3557;
-          text-align: left;
-          padding-bottom: 8px;
-          padding-top: 5px;
-        }
-
-        .overall-stats-section,
-        .feature-stats-section {
-          margin-top: 20px;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-around;
-          border-radius: 15px;
-        }
-
-        .complete-result-section-header {
-          font-weight: bold;
-          color: #1d3557;
-          text-align: left;
-          padding-bottom: 0px;
-          padding-top: 5px;
-          margin-top: 15px;
-        }
-
-        .complete-result-section-container {
-          margin-top: 10px;
-          margin-right: 10px;
-          padding: 20px;
-          background-color: #eaecf0;
-          border-radius: 8px;
-        }
-
-        .complete-result-section {
-          border-color: var(--border-color);
-          border-width: 1px;
-          margin-top: 10px;
-          box-shadow: 2px 2px 10px 2px #9DB2BF;
-          border-radius: 15px;
-          border-right: 0.5px solid var(--border-color);
-          min-height: 700px;
-        }
-
-        .feature-column,
-        .scenario-and-step-results-column {
-          height: 20px;
-          background-color: #6B728E;
-          color: white;
-          /* margin: 8px; */
-          padding-top: 5px;
-          padding-bottom: 3px;
-          text-align: center;
-          align-items: center;
-          border-radius: 4px;
-          ;
-        }
-
-        .scenario-and-step-results-column {
-          margin-right: 10px;
-        }
-
-        section {
-          display: grid;
-          grid-template-columns: 30% 70%;
-          row-gap: 10px;
-          column-gap: 10px;
-          padding: 10px;
-          background-color: white;
-          border-radius: 8px;
-
-        }
-
-        nav {
-          flex: auto;
-          border: 0.5px solid var(--border-color);
-          border-top: none;
-          margin-top: 0px;
-          margin-right: 0px;
-          line-height: 40px;
-          background-color: white;
-          min-height: 650px;
-          border-radius: 8px;
-        }
-
-        nav ul {
-          list-style-type: none;
-          padding-top: 0px;
-          padding-left: 0px;
-          margin: 0px;
-          border-bottom: none;
-          border-top: none;
-        }
-
-        nav ul li {
-          padding-top: 0px;
-          border-bottom: 0.01px solid var(--border-color);
-          border-left: none;
-          border-right: none;
-        }
-
-        nav ul li:first-child,
-        nav ul li:first-child a {
-          border-top-left-radius: 8px;
-          border-top-right-radius: 8px;
-        }
-
-        nav ul li span {
-          color: #adb5bd;
-          font-size: xx-small;
-          border-left: none;
-          border-right: none;
-        }
-
-        nav ul a {
-          display: block;
-          text-decoration: none;
-          line-height: 30px;
-          padding-left: 5px;
-          font-size: small;
-          color: black;
-          cursor: pointer;
-          border-left: none;
-          border-right: none;
-        }
-
-        .side-nav-item {
-          display: grid;
-          grid-template-columns: 1fr 15% 5%;
-          flex-wrap: nowrap;
-          justify-content: space-between;
-          align-items: first baseline;
-          border-left: none;
-          border-right: none;
-        }
-
-        .status-icon {
-          font-size: 15px;
-          padding-right: 10px;
-          color: white;
-        }
-
-        .side-nav-item-active {
-          border: 0.3px solid var(--border-color);
-          background-color: #03045e;
-          color: white;
-        }
-
-        .side-nav-item-active a {
-          background-color: #03045e;
-          color: white;
-        }
-
-        .feature-specific-sc-container {
-          width: inherit;
-          margin-top: 0px;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          row-gap: 10px;
-          border-left: none;
-          padding-top: 0px;
-          padding-left: 0px;
-          padding-right: 10px;
-          padding-bottom: 10px;
-          min-height: 650px;
-          background-color: white;
-          border-top-right-radius: 15px;
-        }
-
-        .displayOnClick {
-          display: none;
-        }
-
-        .scenario-item-box {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          border: 0.1px solid var(--border-color);
-          padding: 10px;
-          box-shadow: 2px 2px 15px 2px #e3e2e2;
-        }
-
-        .scenario-item {
-          display: flex;
-          flex-direction: column;
-          row-gap: 0px;
-          border-right: 0.1px solid var(--border-color);
-          border-left: 0.1px solid var(--border-color);
-          border-bottom: 0.1px solid var(--border-color);
-        }
-
-        .scenario-name {
-          min-height: 40px;
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          padding-left: 10px;
-          border-bottom: 0.1px solid var(--border-color);
-          border-top: 0.1px solid var(--border-color);
-          cursor: pointer;
-        }
-
-        .scenario-name:hover,
-        .step-name:hover {
-          background-color: #DDE6ED;
-        }
-
-        .scenario-hook-section {
-          height: fit-content;
-          display: grid;
-          grid-template-columns: 20% 1fr;
-          padding-left: 10px;
-          border: 0.1px solid var(--border-color);
-          cursor: pointer;
-          background-color: #f4acb7;
-          color: white;
-          line-height: 19px;
-          font-size: small;
-        }
-
-        .scenario-hook-error-value {
-          line-height: 18px;
-          font-size: smaller;
-          max-height: fit-content;
-          overflow: scroll;
-          resize: vertical;
-        }
-
-        .scenario-expand-icon {
-          margin-right: 20px;
-        }
-
-        .step-items {
-          display: none;
-          flex-direction: column;
-          justify-content: space-between;
-          row-gap: 10px;
-          margin-left: 20px;
-          margin-top: 10px;
-          margin-right: 10px;
-          border: 0.1px solid var(--border-color);
-          margin-bottom: 10px;
-          padding: 10px;
-          box-shadow: 2px 2px 15px 2px #f0eded;
-        }
-
-        .step-item {
-          line-height: 40px;
-          padding-left: 0px;
-          border: 0.1px solid var(--border-color);
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          box-shadow: 2px 2px 15px 2px #e3e2e2;
-        }
-
-        .step-name {
-          min-height: 40px;
-          border-bottom: 0.1px solid var(--border-color);
-          padding-left: 20px;
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
-          padding-right: 30px;
-          cursor: pointer;
-        }
-
-        .step-hook-error-section {
-          flex: 1;
-          display: grid;
-          grid-template-columns: 20% 1fr;
-          background-color: #f4acb7;
-          color: white;
-          line-height: 18px;
-          height: fit-content;
-        }
-
-        .step-hook-error-value {
-          line-height: 18px;
-          font-size: small;
-          max-height: fit-content;
-          overflow: scroll;
-          resize: vertical;
-        }
-
-        .step-info-section {
-          display: none;
-          flex-direction: column;
-          justify-content: space-between;
-          margin-bottom: 10px;
-          margin-left: 40px;
-          margin-top: 10px;
-          margin-right: 10px;
-          padding-left: 0px;
-          border: 0.1px solid var(--border-color);
-        }
-
-        .step-error {
-          background-color: #f4acb7;
-          color: white;
-          line-height: 18px;
-          font-size: small;
-          display: block;
-          padding: 10px;
-          max-height: fit-content;
-          overflow: scroll;
-          resize: vertical;
-          cursor: text
-        }
-
-        .embedding-name {
-          background-color: #f5edf0;
-          padding-left: 20px;
-        }
-
-        .embedding-src {
-          padding-left: 40px;
-          color: #2660a4;
-        }
-
-        img {
-          max-height: 100px;
-          max-width: 150px;
-          cursor: pointer;
-        }
-
-
-
-        /* New Grid.Js */
-
-
-
-        #overall-stats-data-output-container,
-        #feature-stats-data-output-container {
-          background-color: #eaecf0;
-          border-radius: 5px;
-          padding: 20px;
-        }
-
-        #overall-stats-data-output-container table tbody tr td {
-          text-align: center !important;
-        }
-
-        #feature-stats-data-output-container table tbody tr td:first-child {
-          text-align: left !important;
-          word-break: break-all !important;
-          word-wrap: break-word !important;
-          width: 30%;
-        }
-
-        #feature-stats-data-output-container table tbody tr td:nth-child(11) {
-          text-align: left !important;
-        }
-
-        .gridjs-sort {
-          background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA9UlEQVR4nOWWvQrCUAyF+wKCIDgItkmLCC4OTi5OTq6+g68jqDd18IlcOrg4ODg4CILSREUnpYoKgvjXBsQDZ/5uwklyLevvhcTNyIk2AknqQLwDw3vXXzcSgTj9sAokgiSHs3kLPa7FCgF/XUaS5Q0iJwNJ6NGmEgvE9cMCGJ7fQ/ACM7KwfS59BfHMNo/E00cQvNjwzO6s8LNKSLJoZPwUQtfKJvnuJvcWxGmv0kgcvArBK4xHuW6YeQlSHCxSQDx8F4K3NAbRQ5+CohQBcesbe3El8bek1rqiVhjU4q06sKorSHWpqp4J1cOnespVPyfWL+gInQoGedSzUpkAAAAASUVORK5CYII=) !important;
-          opacity: 1 !important;
-        }
-
-        .passed-status {
-          color: #008000;
-          text-align: center;
-          font-weight: bold;
-        }
-
-        .failed-status {
-          color: #e01e37;
-          text-align: center;
-          font-weight: bold;
-        }
-
-        .skipped-status {
-          color: #C0C0C0;
-          text-align: center;
-          font-weight: bold;
-        }
-
-        .known-failures-status {
-          color: #FFC300;
-          text-align: center;
-          font-weight: bold;
-        }
-
-        .passed-with-known-failures-status {
-          color: #73e2a7;
-          text-align: center;
-          font-weight: bold;
-        }
+  --border-color: #d9d9d9;
+  --passed-status-color: #008000;
+  --failed-status-color: #e01e37;
+  --skipped-status-color: #C0C0C0;
+  --known-failures-status-color: #FFC300;
+  --passed-with-known-failure-color: #73e2a7;
+}
+
+html {
+  font-family: Roboto, Arial;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: small;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 0px;
+}
+
+.report-title {
+  display: block;
+  color: #03256c;
+  font-weight: bold;
+  font-size: larger;
+  text-align: center;
+}
+
+.logo {
+  height: 30px;
+  width: 60px;
+  float: left;
+  border-radius: 10px;
+}
+
+.version {
+  font-size: smaller;
+  color: dimgray;
+  font-weight: lighter;
+}
+
+.over-all-highlight-section {
+  margin-right: 10px;
+}
+
+.over-all-highlight {
+  height: 30px;
+  color: white;
+  font-size: large;
+  font-weight: bolder;
+  text-align: center;
+  border-radius: 10px;
+  padding-top: 5px;
+}
+
+.project-info-header {
+  font-weight: bold;
+  color: #1d3557;
+  text-align: left;
+  padding-bottom: 8px;
+  padding-top: 5px;
+  margin-top: 10px;
+}
+
+
+
+
+/* new project details section */
+.project-details-container {
+  display: block;
+  padding: 20px;
+  margin-top: 0px;
+  margin-right: 10px;
+  background-color: #eaecf0;
+  border-radius: 8px;
+}
+
+.project-info-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  column-gap: 30px;
+}
+
+.info-section {
+  display: grid;
+  grid-template-columns: 120px 5px 1fr;
+  row-gap: 10px;
+  column-gap: 10px;
+  align-items: start;
+  max-width: 33%;
+}
+
+.project-info-element {
+  max-height: 30px;
+  padding: 5px;
+}
+
+.project-info-key {
+  font-weight: 700;
+  color: #0b3954;
+  max-width: 100%;
+}
+
+.project-info-value {
+  color: #8d99ae;
+  min-width: 200px;
+  max-width: 100%;
+  max-height: fit-content;
+  overflow: visible;
+}
+
+.description-section {
+  background-color: white;
+  padding: 15px;
+  margin-top: 5px;
+  border-radius: 8px;
+}
+
+.project-desc-header {
+  margin-bottom: 10px;
+}
+
+.project-desc-value {
+  max-height: 150px;
+  overflow: scroll;
+}
+
+.chart-section-header {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #1d3557;
+  text-align: left;
+  padding-bottom: 8px;
+  padding-top: 5px;
+}
+
+.chart-area {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  background-color: #eaecf0;
+  padding: 20px;
+  margin-right: 10px;
+  border-radius: 8px;
+}
+
+.chart-section-element {
+  flex: 1;
+  border: solid;
+  border-color: var(--border-color);
+  border-width: 1px;
+  box-shadow: 0px 2px 15px 2px #efeeee;
+  border-radius: 15px;
+  padding-top: 10px;
+  background-color: white;
+}
+
+.pie-chart {
+  padding: 0px;
+  height: 200px;
+}
+
+.stats-tables {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 10px;
+  border-radius: 15px;
+}
+
+.overall-stats-header,
+.feature-stats-header {
+  font-weight: bold;
+  color: #1d3557;
+  text-align: left;
+  padding-bottom: 8px;
+  padding-top: 5px;
+}
+
+.overall-stats-section,
+.feature-stats-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 15px;
+}
+
+.complete-result-section-header {
+  font-weight: bold;
+  color: #1d3557;
+  text-align: left;
+  padding-bottom: 0px;
+  padding-top: 5px;
+  margin-top: 15px;
+}
+
+.complete-result-section-container {
+  margin-top: 10px;
+  margin-right: 10px;
+  padding: 20px;
+  background-color: #eaecf0;
+  border-radius: 8px;
+}
+
+.complete-result-section {
+  border-color: var(--border-color);
+  border-width: 1px;
+  margin-top: 10px;
+  box-shadow: 2px 2px 10px 2px #9DB2BF;
+  border-radius: 15px;
+  border-right: 0.5px solid var(--border-color);
+  min-height: 700px;
+}
+
+.feature-column,
+.scenario-and-step-results-column {
+  height: 20px;
+  background-color: #6B728E;
+  color: white;
+  /* margin: 8px; */
+  padding-top: 5px;
+  padding-bottom: 3px;
+  text-align: center;
+  align-items: center;
+  border-radius: 4px;
+  ;
+}
+
+.scenario-and-step-results-column {
+  margin-right: 10px;
+}
+
+section {
+  display: grid;
+  grid-template-columns: 30% 70%;
+  row-gap: 10px;
+  column-gap: 10px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 8px;
+
+}
+
+nav {
+  flex: auto;
+  border: 0.5px solid var(--border-color);
+  border-top: none;
+  margin-top: 0px;
+  margin-right: 0px;
+  line-height: 40px;
+  background-color: white;
+  min-height: 650px;
+  border-radius: 8px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding-top: 0px;
+  padding-left: 0px;
+  margin: 0px;
+  border-bottom: none;
+  border-top: none;
+}
+
+nav ul li {
+  padding-top: 0px;
+  border-bottom: 0.01px solid var(--border-color);
+  border-left: none;
+  border-right: none;
+}
+
+nav ul li:first-child,
+nav ul li:first-child a {
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+nav ul li span {
+  color: #adb5bd;
+  font-size: xx-small;
+  border-left: none;
+  border-right: none;
+}
+
+nav ul a {
+  display: block;
+  text-decoration: none;
+  line-height: 30px;
+  padding-left: 5px;
+  font-size: small;
+  color: black;
+  cursor: pointer;
+  border-left: none;
+  border-right: none;
+}
+
+.side-nav-item {
+  display: grid;
+  grid-template-columns: 1fr 15% 5%;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: first baseline;
+  border-left: none;
+  border-right: none;
+}
+
+.status-icon {
+  font-size: 15px;
+  padding-right: 10px;
+  color: white;
+}
+
+.side-nav-item-active {
+  border: 0.3px solid var(--border-color);
+  background-color: #03045e;
+  color: white;
+}
+
+.side-nav-item-active a {
+  background-color: #03045e;
+  color: white;
+}
+
+.feature-specific-sc-container {
+  width: inherit;
+  margin-top: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  row-gap: 10px;
+  border-left: none;
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  min-height: 650px;
+  background-color: white;
+  border-top-right-radius: 15px;
+}
+
+.displayOnClick {
+  display: none;
+}
+
+.scenario-item-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 0.1px solid var(--border-color);
+  padding: 10px;
+  box-shadow: 2px 2px 15px 2px #e3e2e2;
+}
+
+.scenario-item {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0px;
+  border-right: 0.1px solid var(--border-color);
+  border-left: 0.1px solid var(--border-color);
+  border-bottom: 0.1px solid var(--border-color);
+}
+
+.scenario-name {
+  min-height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  border-bottom: 0.1px solid var(--border-color);
+  border-top: 0.1px solid var(--border-color);
+  cursor: pointer;
+}
+
+.scenario-name:hover,
+.step-name:hover {
+  background-color: #DDE6ED;
+}
+
+.scenario-hook-section {
+  height: fit-content;
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  padding-left: 10px;
+  border: 0.1px solid var(--border-color);
+  cursor: pointer;
+  background-color: #f4acb7;
+  color: white;
+  line-height: 19px;
+  font-size: small;
+}
+
+.scenario-hook-error-value {
+  line-height: 18px;
+  font-size: smaller;
+  max-height: fit-content;
+  overflow: scroll;
+  resize: vertical;
+}
+
+.scenario-expand-icon {
+  margin-right: 20px;
+}
+
+.step-items {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 10px;
+  margin-left: 20px;
+  margin-top: 10px;
+  margin-right: 10px;
+  border: 0.1px solid var(--border-color);
+  margin-bottom: 10px;
+  padding: 10px;
+  box-shadow: 2px 2px 15px 2px #f0eded;
+}
+
+.step-item {
+  line-height: 40px;
+  padding-left: 0px;
+  border: 0.1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 2px 2px 15px 2px #e3e2e2;
+}
+
+.step-name {
+  min-height: 40px;
+  border-bottom: 0.1px solid var(--border-color);
+  padding-left: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.step-hook-error-section {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  background-color: #f4acb7;
+  color: white;
+  line-height: 18px;
+  height: fit-content;
+}
+
+.step-hook-error-value {
+  line-height: 18px;
+  font-size: small;
+  max-height: fit-content;
+  overflow: scroll;
+  resize: vertical;
+}
+
+.step-info-section {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  margin-left: 40px;
+  margin-top: 10px;
+  margin-right: 10px;
+  padding-left: 0px;
+  border: 0.1px solid var(--border-color);
+}
+
+.step-error {
+  background-color: #f4acb7;
+  color: white;
+  line-height: 18px;
+  font-size: small;
+  display: block;
+  padding: 10px;
+  max-height: fit-content;
+  overflow: scroll;
+  resize: vertical;
+  cursor: text
+}
+
+.embedding-name {
+  background-color: #f5edf0;
+  padding-left: 20px;
+}
+
+.embedding-src {
+  padding-left: 40px;
+  color: #2660a4;
+}
+
+img {
+  max-height: 100px;
+  max-width: 150px;
+  cursor: pointer;
+}
+
+
+
+/* New Grid.Js */
+
+
+
+#overall-stats-data-output-container,
+#feature-stats-data-output-container {
+  background-color: #eaecf0;
+  border-radius: 5px;
+  padding: 20px;
+}
+
+#overall-stats-data-output-container table tbody tr td {
+  text-align: center !important;
+}
+
+#feature-stats-data-output-container table tbody tr td:first-child {
+  text-align: left !important;
+  word-break: break-all !important;
+  word-wrap: break-word !important;
+  width: 30%;
+}
+
+#feature-stats-data-output-container table tbody tr td:nth-child(11) {
+  text-align: left !important;
+}
+
+.gridjs-sort {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA9UlEQVR4nOWWvQrCUAyF+wKCIDgItkmLCC4OTi5OTq6+g68jqDd18IlcOrg4ODg4CILSREUnpYoKgvjXBsQDZ/5uwklyLevvhcTNyIk2AknqQLwDw3vXXzcSgTj9sAokgiSHs3kLPa7FCgF/XUaS5Q0iJwNJ6NGmEgvE9cMCGJ7fQ/ACM7KwfS59BfHMNo/E00cQvNjwzO6s8LNKSLJoZPwUQtfKJvnuJvcWxGmv0kgcvArBK4xHuW6YeQlSHCxSQDx8F4K3NAbRQ5+CohQBcesbe3El8bek1rqiVhjU4q06sKorSHWpqp4J1cOnespVPyfWL+gInQoGedSzUpkAAAAASUVORK5CYII=) !important;
+  opacity: 1 !important;
+}
+
+.passed-status {
+  color: #008000;
+  text-align: center;
+  font-weight: bold;
+}
+
+.failed-status {
+  color: #e01e37;
+  text-align: center;
+  font-weight: bold;
+}
+
+.skipped-status {
+  color: #C0C0C0;
+  text-align: center;
+  font-weight: bold;
+}
+
+.known-failures-status {
+  color: #FFC300;
+  text-align: center;
+  font-weight: bold;
+}
+
+.passed-with-known-failures-status {
+  color: #73e2a7;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Defect Details */
+.defect-details-section-header {
+  font-weight: bold;
+  color: #1d3557;
+  text-align: left;
+  padding-bottom: 8px;
+  padding-top: 5px;
+  margin-top: 20px;
+}
+
+.defect-details-section {
+  background-color: #eaecf0;
+  margin-top: 10px;
+  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 10px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.defect-category {
+  height: 30px;
+  box-shadow: 0px 2px 15px 2px #efeeee;
+  background-color: white;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  text-align: left;
+  padding-top: 15px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.tracked-known-failures {
+  background-color: #08a045;
+}
+
+.untracked-known-failures {
+  background-color: #6bbf59;
+}
+
+.new-failures {
+  background-color: #ff5a5f;
+}
+
+.other-failures {
+  background-color: #c81d25;
+}
+
+.tracked-known-failures-list,
+.untracked-known-failures-list,
+.new-failures-list,
+.other-failures-list {
+  margin-top: 0px;
+  margin-left: 20px;
+  margin-right: 20px;
+  display: none;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.known-defect-item-header,
+.new-defect-item-header,
+.other-defect-item-header {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1.5fr 1fr  3fr;
+  background-color: #aad2ba;
+  border: 0.5px solid var(--border-color);
+  color: white;
+  font-weight: bolder;
+}
+
+.new-defect-item-header {
+  background-color: #ea8689;
+}
+
+.other-defect-item-header {
+  background-color: #df6468;
+}
+
+.known-defect-item-header div,
+.new-defect-item-header div,
+.other-defect-item-header div {
+  height: 30px;
+  padding-top: 12px;
+  padding-left: 15px;
+  border: 0.5px solid var(--border-color);
+}
+
+.known-defect-id-header {
+  height: 30px;
+  background-color: #d8eee1;
+  padding-top: 12px;
+  padding-left: 10px;
+}
+
+.known-defect-item-row,
+.new-defect-item-row,
+.other-defect-item-row {
+  height: fit-content;
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1.5fr 1fr 3fr;
+  background-color: white;
+}
+
+.known-defect-item-row div,
+.new-defect-item-row div,
+.other-defect-item-row div {
+  height: auto;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: 0.5px solid var(--border-color);
+  word-break: break-all;
+}
+
+.defect-feature-name-column {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+}
+
+.defect-feature-name-column div {
+  border: none;
+  margin-right: 5px;
+  padding: 0px;
+  width: 20px;
+  height: inherit;
+  /* background-color: yellow; */
+}
     </style>
     <title>Easy Cucumber Report</title>
 
@@ -693,6 +830,12 @@
         <div id="complete-result-section" class="complete-result-section"></div>
     </div>
 
+    <!-- Defect Details Sections -->
+    <div class="defect-details-section-header">Defect Details</div>
+    <div class="defect-details-section-container">
+        <div id="defect-details-section" class="defect-details-section"></div>
+    </div>
+
 </div>
 <!-- https://gridjs.io/docs -->
 <script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
@@ -706,7 +849,7 @@
     <<json-input>>
     `;
 
-   // Read Json Data
+  // Read Json Data
 var data = JSON.parse(json);
 
 // populate overall status on top of the report
@@ -837,7 +980,7 @@ projectDescInfoParentElemnt.innerHTML = projectInfoGridInnerElement;
 // CenterText Plugin
 const featureCenterText = {
   afterDatasetsDraw(chart) {
-    const {ctx} = chart;
+    const { ctx } = chart;
     const text = data.featurePieChartDataMap.totalFeatures;
     ctx.save();
     const x = chart.getDatasetMeta(0).data[0].x;
@@ -987,7 +1130,7 @@ const featureDoughnutChart = new Chart(
 // CenterText Plugin
 const testCaseCenterText = {
   afterDatasetsDraw(chart) {
-    const {ctx} = chart;
+    const { ctx } = chart;
     const text = data.testCasePieChartDataMap.totalCases;
     ctx.save();
     const x = chart.getDatasetMeta(0).data[0].x;
@@ -1126,7 +1269,7 @@ const doughnutChart = new Chart(
 // CenterText Plugin
 const testStepCenterText = {
   afterDatasetsDraw(chart) {
-    const {ctx} = chart;
+    const { ctx } = chart;
     const text = data.testStepPieChartDataMap.totalSteps;
     ctx.save();
     const x = chart.getDatasetMeta(0).data[0].x;
@@ -1277,15 +1420,15 @@ const stepChartConfig = {
 // defect pie chart
 const reducer = (accumulator, curr) => accumulator + curr;
 var totalDefects = data.defectPieChartDataMap.trackedKnownDefects
-+ data.defectPieChartDataMap.unTrackedKnownDefects
-+ data.defectPieChartDataMap.newDefects
-+ data.defectPieChartDataMap.otherDefects;
+  + data.defectPieChartDataMap.unTrackedKnownDefects
+  + data.defectPieChartDataMap.newDefects
+  + data.defectPieChartDataMap.otherDefects;
 totalDefects = totalDefects > 0 ? totalDefects : 'No Defects';
 
 // CenterText Plugin
 const defectCenterText = {
   afterDatasetsDraw(chart) {
-    const {ctx} = chart;
+    const { ctx } = chart;
     const text = totalDefects; //chart.data.datasets[0].data.reduce(reducer);
     ctx.save();
     const x = chart.getDatasetMeta(0).data[0].x;
@@ -1643,6 +1786,19 @@ var table = new gridjs.Grid({
 table.render(document.getElementById("feature-stats-data-output-container"));
 // load feature stats table - ends
 
+const replaceAccentsChars = (str, charWith = '-', regexType = 'NO_SPECIAL') => {
+
+  if (!str) return
+
+  const REGEX_TYPE = {
+    'ALL': / /g,
+    'NO_SPECIAL': /[^A-Z0-9]/ig,
+    'SINGLE_FOR_MULTI': /[^A-Z0-9]+/ig,
+  }
+
+  return str.replace(REGEX_TYPE[regexType], charWith).toLowerCase()
+}
+
 // Display features, its scenarios, its steps and its screenshots
 var features = data.featureMapList;
 
@@ -1672,14 +1828,38 @@ var testResultSectionContainerElement = `
 
 completeResultSectionParentElement.innerHTML = testResultSectionContainerElement;
 
-$(document).ready(function () { $("img").click(function () { this.requestFullscreen() }) });
+function getFeatureElements(features) {
+  var featureListElement = "";
+
+  for (let feature of features) {
+    var statusCell = getFeatureNavigationLineStatusColor(feature.status);
+    var featureId = replaceAccentsChars(feature.id, '', 'SINGLE_FOR_MULTI');
+
+    // prepare left side features link as li
+    featureListElement += `
+    <li class="side-nav-item">
+      <a
+        id="${featureId}-a"
+        href="#${featureId}"
+        class="featureLinks"
+        onclick='loadScenarioContent("#${featureId}")'>
+        ${atob(feature.name)}
+      </a>
+      <span>${feature.duration}</span>
+      ${statusCell}
+    </li>
+    `;
+
+  }
+  return featureListElement;
+}
 
 function getContentToDisplayOnRightWhenClickingFeatureNavLink(features) {
   var displayOnClickContent = "";
   for (let feature of features) {
     // get all scenario elements to be displayed on right side page
     var scenarioElements = getScenarioElements(feature.scenarios);
-    var featureId = replaceEscapesAndHtmlWithHyphen(feature.id);
+    var featureId = replaceAccentsChars(feature.id, '', 'SINGLE_FOR_MULTI');
 
     // then build the content panel section with above scenario elements
     // for every feature
@@ -1692,47 +1872,21 @@ function getContentToDisplayOnRightWhenClickingFeatureNavLink(features) {
   return displayOnClickContent;
 }
 
-function getFeatureElements(features) {
-  var featureListElement = "";
-  var i = 1;
-  for (let feature of features) {
-    var statusCell = getFeatureNavigationLineStatusColor(feature.status);
-    var featureId = replaceEscapesAndHtmlWithHyphen(feature.id);
-
-    // prepare left side features link as li
-    featureListElement += `
-    <li class="side-nav-item">
-      <a
-        id="${featureId}-a"
-        href="#${featureId}"
-        class="featureLinks"
-        onclick='loadScenarioContent("#${featureId}")'>
-        Feature ${i} : ${atob(feature.name)}
-      </a>
-      <span>${feature.duration}</span>
-      ${statusCell}
-    </li>
-    `;
-    i++;
-  }
-  return featureListElement;
-}
-
 function getScenarioElements(scenarios) {
   var scenarioElements = "";
-  var i = 1;
+
   for (let scenario of scenarios) {
     var steps = scenario.steps;
     var stepElements = getStepElements(steps);
     var scLineColor = getScenarioLineColorBasedOnStatus(scenario.status);
-    var scenarioId = replaceEscapesAndHtmlWithHyphen(scenario.id);
+    var scenarioId = replaceAccentsChars(scenario.id, '', 'SINGLE_FOR_MULTI');
 
     var beforeScenarioError = "";
     if (scenario.beforeError.length != 0) {
       var beforeScenarioErrorDecoded = atob(scenario.beforeError);
       beforeScenarioError = `
         <div class="scenario-hook-section">
-          <div class="scenario-hook-error-key">Scenario ${i} BeforeScenario-Hook-Error : </div>
+          <div class="scenario-hook-error-key">${scenario.scenarioSeq} BeforeScenario-Hook-Error : </div>
           <div class="scenario-hook-error-value">${beforeScenarioErrorDecoded}</div>
         </div>
       `;
@@ -1743,7 +1897,7 @@ function getScenarioElements(scenarios) {
       var afterScenarioErrorDecoded = atob(scenario.afterError);
       afterScenarioError = `
         <div class="scenario-hook-section">
-          <div class="scenario-hook-error-key">Scenario ${i} AfterScenario-Hook-Error : </div>
+          <div class="scenario-hook-error-key">${scenario.scenarioSeq} AfterScenario-Hook-Error : </div>
           <div class="scenario-hook-error-value">${afterScenarioErrorDecoded}</div>
         </div>
       `;
@@ -1757,7 +1911,7 @@ function getScenarioElements(scenarios) {
         ${beforeScenarioError}
         <div id="#${scenarioId}" class="scenario-item">
           <div id="#${scenarioId}-collapsible" class="scenario-name collapsible" onclick="collapseExpandScenario('#${scenarioId}-collapsible-content')">
-            <div ${scLineColor}>Scenario ${i} : ${atob(scenario.name)}</div>
+            <div ${scLineColor}>${atob(scenario.name)}</div>
             <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: #9eb3c2;"></span>
           </div>
           <div id="#${scenarioId}-collapsible-content" class="step-items">
@@ -1767,14 +1921,14 @@ function getScenarioElements(scenarios) {
         ${afterScenarioError}
     </div>
       `;
-    i++;
+
   }
   return scenarioElements;
 }
 
 function getStepElements(steps) {
   var stepElements = "";
-  var i = 1;
+
   for (let step of steps) {
     var stepLineColor = getStepLineColorBasedOnStatus(step.status);
     var beforeStepError = "";
@@ -1783,7 +1937,7 @@ function getStepElements(steps) {
       beforeStepError = `
         <div class="step-name">
           <div class="step-hook-error-section">
-            <div>Step ${i} BeforeStep-Hook-Error : </div>
+            <div>${step.stepSeq} BeforeStep-Hook-Error : </div>
             <div class="step-hook-error-value">${beforeStepErrorDecoded}</div>
           </div>
         </div>
@@ -1796,7 +1950,7 @@ function getStepElements(steps) {
       afterStepError = `
       <div class="step-name">
         <div class="step-hook-error-section">
-          <div>Step ${i} AfterStep-Hook-Error : </div>
+          <div>${step.stepSeq} AfterStep-Hook-Error : </div>
           <div class="step-hook-error-value">${afterStepErrorDecoded}</div>
         </div>
       </div>
@@ -1814,7 +1968,7 @@ function getStepElements(steps) {
 
     var stepEmbeddings = getStepEmbeddingElements(step.embeddings, step.status);
     var stepName = atob(step.name);
-    var stepNameForId = replaceEscapesAndHtmlWithHyphen(stepName);
+    var stepNameForId = replaceAccentsChars(stepName, '', 'SINGLE_FOR_MULTI');
 
     stepElements += `
       <div id="#${stepNameForId}-${step.line}" class="step-item">
@@ -1823,7 +1977,7 @@ function getStepElements(steps) {
           id="#step-${stepNameForId}-${step.line}-collapsible"
           class="step-name" ${stepLineColor}
           onclick="collapseExpandStep('#step-${stepNameForId}-${step.line}-collapsible-content')">
-            <div>Step ${i} : ${stepName}</div>
+            <div>${stepName}</div>
             <div><i class="fa-sharp fa-solid fa-circle"></i></div>
         </div>
 
@@ -1836,30 +1990,16 @@ function getStepElements(steps) {
         ${afterStepError}
       </div>
     `;
-    i++;
   }
   return stepElements;
 }
-
-function replaceEscapesAndHtmlWithHyphen(value) {
-  return value.replaceAll("<br>", "-")
-    .replaceAll("&emsp", "-")
-    .replaceAll("'", "-")
-    .replaceAll(";", "-")
-    .replaceAll(":", "-")
-    .replaceAll(" ", "-")
-    .replaceAll("\\", "-")
-    .replaceAll("/", "-")
-    .replaceAll("\"", "-")
-    .replaceAll(".", "-");
-  }
 
 function getStepEmbeddingElements(embeddings, stepStatus) {
   var stepEmbeddingElement = "";
   let index = 0;
   if (embeddings != null && embeddings.length > 0) {
     for (let embedding of embeddings) {
-      index = index+1;
+      index = index + 1;
       var embeddingName = atob(embedding.name);
       var attachmentSource = getStepScreenshotElement(embedding.mime_type, embedding.data, embeddingName, index);
       if (isStepStatusIngnorable(stepStatus)) {
@@ -1933,7 +2073,8 @@ function loadScenarioContent(selector) {
 // the first feature navigation option
 $(document).ready(function () {
   // var firstFeatureId = features[0].id;
-  var firstFeatureId = replaceEscapesAndHtmlWithHyphen(features[0].id);
+  var firstFeatureId = replaceAccentsChars(features[0].id, '', 'SINGLE_FOR_MULTI');
+
   document.querySelector("li a[href='#" + firstFeatureId + "']").parentNode.classList.add("side-nav-item-active");
   loadScenarioContent("#" + firstFeatureId);
 
@@ -1957,16 +2098,14 @@ function collapseExpandStep(id) {
   }
 }
 
-// jquery to click and open any image in fullscreen view
-// pressing escape will close image
-// $(document).ready(function () { $("img").click(function () { this.requestFullscreen() }) });
-$('img').on("click", function () {
-  var win = window.open();
-  var url = $(this).attr("src");
-  // var html = $("body").html("<textarea>" + url + "</textarea>");
-  var html = $("body").html("<img src='" + url + "' target='_blank'");
-  $(win.document.body).html(html);
-});
+function collapseExpandDefect(id) {
+
+  if (document.getElementById(id).style.display == "flex") {
+    document.getElementById(id).style.display = "none";
+  } else {
+    document.getElementById(id).style.display = "flex";
+  }
+}
 
 function getFeatureNavigationLineStatusColor(featureStatus) {
   var statusCell = "";
@@ -2032,6 +2171,226 @@ lightbox.option({
   'resizeDuration': 600,
   'wrapAround': true
 })
+
+// Defect Details Section
+var defectDetails = data.defectDetails;
+
+// it consist of whole elements
+var defectDetailsSectionParentElement = document.querySelector("#defect-details-section");
+
+
+var defectDetailsSectionContainerElement = `
+
+  <div
+    class="defect-category tracked-known-failures"
+    onclick="collapseExpandDefect('tracked-known-failures-list-collapsible-content')">
+      <div>Tracked Known Failures</div>
+      <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: white;"></span>
+  </div>
+  <div class="tracked-known-failures-list" id="tracked-known-failures-list-collapsible-content">
+    ${getTrackedKnownFailureSection()}
+  </div>
+
+
+  <div
+    class="defect-category untracked-known-failures"
+    onclick="collapseExpandDefect('untracked-known-failures-list-collapsible-content')">
+      <div>Un-Tracked Known Failures</div>
+      <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: white;"></span>
+  </div>
+  <div class="untracked-known-failures-list" id="untracked-known-failures-list-collapsible-content">
+    ${getUnTrackedKnownFailureSection()}
+  </div>
+
+
+  <div
+    class="defect-category new-failures"
+    onclick="collapseExpandDefect('new-failures-list-collapsible-content')">
+      <div>New Failures</div>
+      <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: white;"></span>
+  </div>
+  <div class="new-failures-list" id="new-failures-list-collapsible-content">
+    ${getNewFailureSection()}
+  </div>
+
+  <div
+    class="defect-category other-failures"
+    onclick="collapseExpandDefect('other-failures-list-collapsible-content')">
+      <div>Other Failures</div>
+      <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: white;"></span>
+  </div>
+  <div class="other-failures-list" id="other-failures-list-collapsible-content">
+    ${getOtherFailureSection()}
+  </div>
+
+  `;
+
+defectDetailsSectionParentElement.innerHTML = defectDetailsSectionContainerElement;
+
+function getTrackedKnownFailureSection() {
+  var knownDefectIds = data.defectDetails.trackedKnownDefectIds;
+  var knownFailures = data.defectDetails.knownFailures;
+
+  var knownDefectIdItem = "";
+  var i = 1
+  for (let defectId of knownDefectIds) {
+    var knownDefectIdRow = "";
+    for (let knownFail of knownFailures) {
+      if (knownFail.trackingId == defectId) {
+        knownDefectIdRow += `
+
+          <div class="known-defect-item-row">
+            <div>${knownFail.featureName}</div>
+            <div>${knownFail.scenarioName}</div>
+            <div>${knownFail.stepName}</div>
+            <div>${knownFail.label}</div>
+            <div>${atob(knownFail.failureMessage)}</div>
+          </div>
+
+          `;
+      }
+    }
+    knownDefectIdItem += `
+      <div>
+        <div class="known-defect-id-header">${i} . ${defectId}</div>
+        ${knownDefectIdRow}
+      </div>
+    `;
+    i++;
+
+  }
+
+  var knownDefectsBox = `
+
+    <div class="known-defect-item-header">
+      <div>Feature</div>
+      <div>Scenario</div>
+      <div>Step</div>
+      <div>Assert Label</div>
+      <div>Failure Details</div>
+    </div>
+    ${knownDefectIdItem}
+    `;
+
+  return knownDefectsBox;
+}
+
+function getUnTrackedKnownFailureSection() {
+  var knownFailures = data.defectDetails.knownFailures;
+
+
+  var knownDefectIdRow = "";
+  var i = 1;
+  for (let knownFail of knownFailures) {
+    if (knownFail.trackingId == "No Tracking Id") {
+      knownDefectIdRow += `
+
+          <div class="known-defect-item-row">
+            <div class="defect-feature-name-column"><div>${i}. </div>${knownFail.featureName} asdhfalsdjflaksjdlfjasjkdf;lahjsdflkasdfhkaslkdjflasjdhl;</div>
+            <div>${knownFail.scenarioName}</div>
+            <div>${knownFail.stepName}</div>
+            <div>${knownFail.label}</div>
+            <div>${atob(knownFail.failureMessage)}</div>
+          </div>
+
+          `;
+          i++;
+    }
+  }
+
+  var knownDefectIdItem = `
+      <div>
+        <div class="known-defect-id-header">No Tracking Id</div>
+        ${knownDefectIdRow}
+      </div>
+    `;
+
+  var knownDefectsBox = `
+
+    <div class="known-defect-item-header">
+      <div>Feature</div>
+      <div>Scenario</div>
+      <div>Step</div>
+      <div>Assert Label</div>
+      <div>Failure Details</div>
+    </div>
+    ${knownDefectIdItem}
+    `;
+
+  return knownDefectsBox;
+}
+
+function getNewFailureSection() {
+  var newFailures = data.defectDetails.newFailures;
+
+
+  var newDefectIdRow = "";
+  var i = 1;
+  for (let newFail of newFailures) {
+    newDefectIdRow += `
+
+          <div class="new-defect-item-row">
+            <div class="defect-feature-name-column"><div>${i}. </div>${newFail.featureName}</div>
+            <div>${newFail.scenarioName}</div>
+            <div>${newFail.stepName}</div>
+            <div>${newFail.label}</div>
+            <div>${atob(newFail.failureMessage)}</div>
+          </div>
+
+          `;
+          i++;
+  }
+
+  var newDefectsBox = `
+
+    <div class="new-defect-item-header">
+      <div>Feature</div>
+      <div>Scenario</div>
+      <div>Step</div>
+      <div>Assert Label</div>
+      <div>Failure Details</div>
+    </div>
+    ${newDefectIdRow}
+    `;
+
+  return newDefectsBox;
+}
+
+function getOtherFailureSection() {
+  var otherFailures = data.defectDetails.otherFailures;
+
+
+  var otherDefectIdRow = "";
+  var i = 1;
+  for (let otherFail of otherFailures) {
+    otherDefectIdRow += `
+
+          <div class="other-defect-item-row">
+            <div class="defect-feature-name-column"><div>${i}. </div>${otherFail.featureName}</div>
+            <div>${otherFail.scenarioName}</div>
+            <div>${otherFail.stepName}</div>
+            <div>${otherFail.label}</div>
+            <div>${atob(otherFail.failureMessage)}</div>
+          </div>
+
+          `;
+          i++;
+  }
+
+  var otherDefectsBox = `
+
+    <div class="other-defect-item-header">
+      <div>Feature</div>
+      <div>Scenario</div>
+      <div>Step</div>
+      <div>Assert Label</div>
+      <div>Failure Details</div>
+    </div>
+    ${otherDefectIdRow}
+    `;
+
+  return otherDefectsBox;
+}
 
 </script>
 

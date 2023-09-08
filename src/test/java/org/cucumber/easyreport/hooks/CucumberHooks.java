@@ -65,6 +65,7 @@ public class CucumberHooks {
 //            throw new EasyReportException("ForceFailCheck");
 
         counter++;
+//        throw new EasyReportException("ForceFailCheck");
     }
 
     @After
