@@ -2240,9 +2240,9 @@ function getTrackedKnownFailureSection() {
         knownDefectIdRow += `
 
           <div class="known-defect-item-row">
-            <div>${knownFail.featureName}</div>
-            <div>${knownFail.scenarioName}</div>
-            <div>${knownFail.stepName}</div>
+            <div>${atob(knownFail.featureName)}</div>
+            <div>${atob(knownFail.scenarioName)}</div>
+            <div>${atob(knownFail.stepName)}</div>
             <div>${knownFail.label}</div>
             <div>${atob(knownFail.failureMessage)}</div>
           </div>
@@ -2286,9 +2286,9 @@ function getUnTrackedKnownFailureSection() {
       knownDefectIdRow += `
 
           <div class="known-defect-item-row">
-            <div class="defect-feature-name-column"><div>${i}. </div>${knownFail.featureName} asdhfalsdjflaksjdlfjasjkdf;lahjsdflkasdfhkaslkdjflasjdhl;</div>
-            <div>${knownFail.scenarioName}</div>
-            <div>${knownFail.stepName}</div>
+            <div class="defect-feature-name-column"><div>${i}. </div>${atob(knownFail.featureName)} asdhfalsdjflaksjdlfjasjkdf;lahjsdflkasdfhkaslkdjflasjdhl;</div>
+            <div>${atob(knownFail.scenarioName)}</div>
+            <div>${atob(knownFail.stepName)}</div>
             <div>${knownFail.label}</div>
             <div>${atob(knownFail.failureMessage)}</div>
           </div>
@@ -2330,9 +2330,9 @@ function getNewFailureSection() {
     newDefectIdRow += `
 
           <div class="new-defect-item-row">
-            <div class="defect-feature-name-column"><div>${i}. </div>${newFail.featureName}</div>
-            <div>${newFail.scenarioName}</div>
-            <div>${newFail.stepName}</div>
+            <div class="defect-feature-name-column"><div>${i}. </div>${atob(newFail.featureName)}</div>
+            <div>${atob(newFail.scenarioName)}</div>
+            <div>${atob(newFail.stepName)}</div>
             <div>${newFail.label}</div>
             <div>${atob(newFail.failureMessage)}</div>
           </div>
@@ -2366,9 +2366,9 @@ function getOtherFailureSection() {
     otherDefectIdRow += `
 
           <div class="other-defect-item-row">
-            <div class="defect-feature-name-column"><div>${i}. </div>${otherFail.featureName}</div>
-            <div>${otherFail.scenarioName}</div>
-            <div>${otherFail.stepName}</div>
+            <div class="defect-feature-name-column"><div>${i}. </div>${atob(otherFail.featureName)}</div>
+            <div>${atob(otherFail.scenarioName)}</div>
+            <div>${atob(otherFail.stepName)}</div>
             <div>${otherFail.label}</div>
             <div>${atob(otherFail.failureMessage)}</div>
           </div>

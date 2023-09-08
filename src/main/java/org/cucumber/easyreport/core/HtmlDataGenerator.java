@@ -531,9 +531,9 @@ public class HtmlDataGenerator {
 
                 if(!error.getKnownFailures().isEmpty()) {
                     error.getKnownFailures().forEach(f -> {
-                        f.setFeatureName(featureName);
-                        f.setScenarioName(scenarioName);
-                        f.setStepName(stepName);
+                        f.setFeatureName(this.getEncodedText(featureName));
+                        f.setScenarioName(this.getEncodedText(scenarioName));
+                        f.setStepName(this.getEncodedText(stepName));
                         f.setFailureMessage(this.getEncodedText(f.getFailureMessage()));
                     });
                     knownFailures.addAll(error.getKnownFailures());
@@ -541,18 +541,18 @@ public class HtmlDataGenerator {
 
                 if(!error.getFailures().isEmpty()){
                     error.getFailures().forEach(f -> {
-                        f.setFeatureName(featureName);
-                        f.setScenarioName(scenarioName);
-                        f.setStepName(stepName);
+                        f.setFeatureName(this.getEncodedText(featureName));
+                        f.setScenarioName(this.getEncodedText(scenarioName));
+                        f.setStepName(this.getEncodedText(stepName));
                         f.setFailureMessage(this.getEncodedText(f.getFailureMessage()));
                     });
                     newFailures.addAll(error.getFailures());
                 }
             } else if(!errorText.isBlank()){
                 Cause cause = new Cause();
-                cause.setFeatureName(featureName);
-                cause.setScenarioName(scenarioName);
-                cause.setStepName(stepName);
+                cause.setFeatureName(this.getEncodedText(featureName));
+                cause.setScenarioName(this.getEncodedText(scenarioName));
+                cause.setStepName(this.getEncodedText(stepName));
                 cause.setLabel("otherFailures");
                 cause.setTrackingId("No Tracking Id");
                 cause.setFailureMessage(this.getEncodedText(errorText));
