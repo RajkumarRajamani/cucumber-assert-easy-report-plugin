@@ -559,8 +559,16 @@ public class HtmlDataGenerator {
                 otherFailures.add(cause);
             }
         } catch (JsonProcessingException e) {
-            // swallow exception. In case of parse exception, mark it failed
-            e.printStackTrace();
+            // in case of un-parsable error, it could be some exception failure.
+            // capture it as a other failure category
+            Cause cause = new Cause();
+            cause.setFeatureName(this.getEncodedText(featureName));
+            cause.setScenarioName(this.getEncodedText(scenarioName));
+            cause.setStepName(this.getEncodedText(stepName));
+            cause.setLabel("otherFailures");
+            cause.setTrackingId("No Tracking Id");
+            cause.setFailureMessage(this.getEncodedText(errorText));
+            otherFailures.add(cause);
         } catch (Exception e) {
             // for other exceptions, throw it
             throw new EasyReportException(e.getMessage());
