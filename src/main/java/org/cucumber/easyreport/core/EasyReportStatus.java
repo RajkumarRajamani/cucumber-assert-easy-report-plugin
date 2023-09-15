@@ -7,9 +7,8 @@ public enum EasyReportStatus {
 
     PASSED("passed"),
     FAILED("failed"),
+    FAILED_DEFERRED("failed with deferred issue"),
     SKIPPED("skipped"),
-    KNOWN_FAILURES("known failures"),
-    PASSED_WITH_KNOWN_FAILURES("passed with known failures"),
     PENDING("pending"),
     UNDEFINED("undefined"),
     AMBIGUOUS("ambiguous"),

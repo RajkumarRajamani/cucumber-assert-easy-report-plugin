@@ -3,15 +3,13 @@ package org.cucumber.easyreport.core;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.cucumber.core.exception.ExceptionUtils;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
-import org.cucumber.easyreport.exception.EasyReportException;
-import org.cucumber.easyreport.pojo.ReportJsonFeature;
 import lombok.Getter;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.CaseUtils;
+import org.cucumber.easyreport.exception.EasyReportException;
+import org.cucumber.easyreport.pojo.ReportJsonFeature;
 
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
@@ -24,13 +22,13 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
-import static org.cucumber.easyreport.core.EasyReportStatus.*;
 import static java.util.stream.Collectors.toSet;
+import static org.cucumber.easyreport.core.EasyReportStatus.*;
 
 public class HtmlDataGenerator {
 
     private static final Map<String, Object> htmlDataMap = new HashMap<>();
-    private List<ReportJsonFeature> features = new ArrayList<>();
+    private final List<ReportJsonFeature> features;
 
     @Getter
     private HtmlDataSet htmlDataSet;
@@ -158,8 +156,8 @@ public class HtmlDataGenerator {
                                 testCase.setScenarioStatus(FAILED.getStatus());
                             else if (consolidatedStatus.stream().allMatch(status -> status.equals(PASSED.getStatus())))
                                 testCase.setScenarioStatus(PASSED.getStatus());
-                            else if (consolidatedStatus.contains(KNOWN_FAILURES.getStatus()))
-                                testCase.setScenarioStatus(KNOWN_FAILURES.getStatus());
+                            else if (consolidatedStatus.contains(FAILED_DEFERRED.getStatus()))
+                                testCase.setScenarioStatus(FAILED_DEFERRED.getStatus());
                             else
                                 testCase.setScenarioStatus(SKIPPED.getStatus());
                         }
@@ -186,10 +184,8 @@ public class HtmlDataGenerator {
                         feature.setStatus(EasyReportStatus.FAILED.getStatus());
                     else if (testCaseStatus.stream().allMatch(status -> status.equals(EasyReportStatus.PASSED.getStatus())))
                         feature.setStatus(EasyReportStatus.PASSED.getStatus());
-                    else if (testCaseStatus.containsAll(Set.of(PASSED.getStatus(), KNOWN_FAILURES.getStatus())))
-                        feature.setStatus(PASSED_WITH_KNOWN_FAILURES.getStatus());
-                    else if (testCaseStatus.contains(KNOWN_FAILURES.getStatus()))
-                        feature.setStatus(EasyReportStatus.KNOWN_FAILURES.getStatus());
+                    else if (testCaseStatus.contains(FAILED_DEFERRED.getStatus()))
+                        feature.setStatus(FAILED_DEFERRED.getStatus());
                     else
                         feature.setStatus(EasyReportStatus.SKIPPED.getStatus());
                 });
@@ -202,16 +198,14 @@ public class HtmlDataGenerator {
         long featureCount = features.size();
         long featurePassCount = features.stream().filter(feature -> feature.getStatus().equals(EasyReportStatus.PASSED.getStatus())).count();
         long featureFailCount = features.stream().filter(feature -> feature.getStatus().equals(EasyReportStatus.FAILED.getStatus())).count();
-        long featureKnownFailureCount = features.stream().filter(feature -> feature.getStatus().equals(EasyReportStatus.KNOWN_FAILURES.getStatus())).count();
-        long featurePassWithKnownFailureCount = features.stream().filter(feature -> feature.getStatus().equals(PASSED_WITH_KNOWN_FAILURES.getStatus())).count();
+        long featureKnownFailureCount = features.stream().filter(feature -> feature.getStatus().equals(FAILED_DEFERRED.getStatus())).count();
         long featureSkipCount = features.stream().filter(feature -> feature.getStatus().equals(EasyReportStatus.SKIPPED.getStatus())).count();
 
         // prepare data for feature pie chart
         featurePieChartDataMap.put("totalFeatures", featureCount);
         featurePieChartDataMap.put(PASSED.getStatus(), featurePassCount);
         featurePieChartDataMap.put(FAILED.getStatus(), featureFailCount);
-        featurePieChartDataMap.put(CaseUtils.toCamelCase(KNOWN_FAILURES.getStatus(), false), featureKnownFailureCount);
-        featurePieChartDataMap.put(CaseUtils.toCamelCase(PASSED_WITH_KNOWN_FAILURES.getStatus(), false), featurePassWithKnownFailureCount);
+        featurePieChartDataMap.put(CaseUtils.toCamelCase(FAILED_DEFERRED.getStatus(), false), featureKnownFailureCount);
         featurePieChartDataMap.put(SKIPPED.getStatus(), featureSkipCount);
 
         // prepare data for feature specific status for "Feature Status Summary" table
@@ -222,8 +216,8 @@ public class HtmlDataGenerator {
             long totalCases = feature.getElements().size();
             long passCount = feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(PASSED.getStatus())).count();
             long failCount = feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(FAILED.getStatus())).count();
+            long knownFailCount = feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(FAILED_DEFERRED.getStatus())).count();
             long skippedCount = feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(EasyReportStatus.SKIPPED.getStatus())).count();
-            long knownFailCount = feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(KNOWN_FAILURES.getStatus())).count();
 
             String passPercent = passCount != 0 ? df.format(((Long) passCount).doubleValue() / totalCases) : "0 %";
             String failPercent = failCount != 0 ? df.format(((Long) failCount).doubleValue() / totalCases) : "0 %";
@@ -234,12 +228,12 @@ public class HtmlDataGenerator {
             featureStats.put("totalCases", String.valueOf(totalCases));
             featureStats.put(PASSED.getStatus(), String.valueOf(passCount));
             featureStats.put(FAILED.getStatus(), String.valueOf(failCount));
-            featureStats.put(CaseUtils.toCamelCase(KNOWN_FAILURES.getStatus(), false), String.valueOf(knownFailCount));
+            featureStats.put(CaseUtils.toCamelCase(FAILED_DEFERRED.getStatus(), false), String.valueOf(knownFailCount));
             featureStats.put(SKIPPED.getStatus(), String.valueOf(skippedCount));
             featureStats.put("passPercent", passPercent);
             featureStats.put("failPercent", failPercent);
             featureStats.put("skippedPercent", skipPercent);
-            featureStats.put("knownFailPercent", knownFailPercent);
+            featureStats.put("failedWithDeferredIssuePercent", knownFailPercent);
             featureStats.put("status", feature.getStatus());
             System.out.println(feature.getTotalFeatureDuration());
             featureStats.put("duration", this.getReadableTime(feature.getTotalFeatureDuration()));
@@ -265,10 +259,10 @@ public class HtmlDataGenerator {
         DecimalFormat df = new DecimalFormat("## %");
 
         long testCaseCount = features.stream().mapToLong(feature -> feature.getElements().size()).sum();
-        long testCasePassCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals("passed")).count()).sum();
-        long testCaseFailCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals("failed")).count()).sum();
-        long testCaseSkipCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals("skipped")).count()).sum();
-        long testCaseKnownFailureCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals("known failures")).count()).sum();
+        long testCasePassCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(PASSED.getStatus())).count()).sum();
+        long testCaseFailCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(FAILED.getStatus())).count()).sum();
+        long testCaseKnownFailureCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(FAILED_DEFERRED.getStatus())).count()).sum();
+        long testCaseSkipCount = features.stream().mapToLong(feature -> feature.getElements().stream().filter(testCase -> testCase.getScenarioStatus().equals(SKIPPED.getStatus())).count()).sum();
 
         String passPercent = testCasePassCount != 0 ? df.format(((Long) testCasePassCount).doubleValue() / testCaseCount) : "0 %";
         String failPercent = testCaseFailCount != 0 ? df.format(((Long) testCaseFailCount).doubleValue() / testCaseCount) : "0 %";
@@ -280,18 +274,18 @@ public class HtmlDataGenerator {
         testCasePieChartDataMap.put(PASSED.getStatus(), testCasePassCount);
         testCasePieChartDataMap.put(FAILED.getStatus(), testCaseFailCount);
         testCasePieChartDataMap.put(SKIPPED.getStatus(), testCaseSkipCount);
-        testCasePieChartDataMap.put(CaseUtils.toCamelCase(KNOWN_FAILURES.getStatus(), false), testCaseKnownFailureCount);
+        testCasePieChartDataMap.put(CaseUtils.toCamelCase(FAILED_DEFERRED.getStatus(), false), testCaseKnownFailureCount);
 
         // prepare data for overall testcases table summary
         overallTestCaseStats.put("totalCases", String.valueOf(testCaseCount));
         overallTestCaseStats.put(PASSED.getStatus(), String.valueOf(testCasePassCount));
         overallTestCaseStats.put(FAILED.getStatus(), String.valueOf(testCaseFailCount));
         overallTestCaseStats.put(SKIPPED.getStatus(), String.valueOf(testCaseSkipCount));
-        overallTestCaseStats.put(CaseUtils.toCamelCase(KNOWN_FAILURES.getStatus(), false), String.valueOf(testCaseKnownFailureCount));
+        overallTestCaseStats.put(CaseUtils.toCamelCase(FAILED_DEFERRED.getStatus(), false), String.valueOf(testCaseKnownFailureCount));
         overallTestCaseStats.put("passPercent", passPercent);
         overallTestCaseStats.put("failPercent", failPercent);
         overallTestCaseStats.put("skippedPercent", skipPercent);
-        overallTestCaseStats.put("knownFailPercent", knownFailPercent);
+        overallTestCaseStats.put("failedWithDeferredIssuePercent", knownFailPercent);
 
         long totalDuration = features.stream().map(ReportJsonFeature::getElements).flatMap(Collection::stream).toList()
                 .stream().mapToLong(ReportJsonFeature.Element::getTotalScenarioDuration).sum();
@@ -304,8 +298,8 @@ public class HtmlDataGenerator {
             overallTestCaseStats.put("overAllStatus", FAILED.getStatus());
         else if (testCaseStatus.stream().allMatch(status -> status.equals(EasyReportStatus.PASSED.getStatus())))
             overallTestCaseStats.put("overAllStatus", PASSED.getStatus());
-        else if (testCaseStatus.contains(KNOWN_FAILURES.getStatus()))
-            overallTestCaseStats.put("overAllStatus", PASSED_WITH_KNOWN_FAILURES.getStatus());
+        else if (testCaseStatus.contains(FAILED_DEFERRED.getStatus()))
+            overallTestCaseStats.put("overAllStatus", FAILED_DEFERRED.getStatus());
         else
             overallTestCaseStats.put("overAllStatus", SKIPPED.getStatus());
 
@@ -323,7 +317,7 @@ public class HtmlDataGenerator {
         long stepPassCount = steps.stream().filter(step -> step.getStepFinalStatus().equals(PASSED.getStatus())).count();
         long stepFailCount = steps.stream().filter(step -> step.getStepFinalStatus().equals(FAILED.getStatus())).count();
         long stepSkipCount = steps.stream().filter(step -> step.getStepFinalStatus().equals(SKIPPED.getStatus())).count();
-        long stepKnownFailCount = steps.stream().filter(step -> step.getStepFinalStatus().equals(KNOWN_FAILURES.getStatus())).count();
+        long stepKnownFailCount = steps.stream().filter(step -> step.getStepFinalStatus().equals(FAILED_DEFERRED.getStatus())).count();
         long stepPendingCount = steps.stream().filter(step -> step.getStepFinalStatus().equals(PENDING.getStatus())).count();
         long stepUndefinedCount = steps.stream().filter(step -> step.getStepFinalStatus().equals(UNDEFINED.getStatus())).count();
         long stepAmbiguousCount = steps.stream().filter(step -> step.getStepFinalStatus().equals(AMBIGUOUS.getStatus())).count();
@@ -333,7 +327,7 @@ public class HtmlDataGenerator {
         testStepPieChartDataMap.put(PASSED.getStatus(), stepPassCount);
         testStepPieChartDataMap.put(FAILED.getStatus(), stepFailCount);
         testStepPieChartDataMap.put(SKIPPED.getStatus(), stepSkipCount);
-        testStepPieChartDataMap.put(CaseUtils.toCamelCase(KNOWN_FAILURES.getStatus(), false), stepKnownFailCount);
+        testStepPieChartDataMap.put(CaseUtils.toCamelCase(FAILED_DEFERRED.getStatus(), false), stepKnownFailCount);
         testStepPieChartDataMap.put(PENDING.getStatus(), stepPendingCount);
         testStepPieChartDataMap.put(UNDEFINED.getStatus(), stepUndefinedCount);
         testStepPieChartDataMap.put(AMBIGUOUS.getStatus(), stepAmbiguousCount);
@@ -373,10 +367,8 @@ public class HtmlDataGenerator {
                                             stepMap.put("afterError", this.getEncodedText(step.getAfterError()));
                                             stepMap.put("finalStatus", step.getStepFinalStatus());
 
-                                            List<ReportJsonFeature.Embedding> beforeScreenshots = new ArrayList<>();
-                                            List<ReportJsonFeature.Embedding> afterScreenshots = new ArrayList<>();
-                                            beforeScreenshots = Optional.of(step.getBefore().stream().filter(Objects::nonNull).map(ReportJsonFeature.Before::getEmbeddings).filter(Objects::nonNull).flatMap(Collection::stream).toList()).orElse(new ArrayList<>());
-                                            afterScreenshots = Optional.of(step.getAfter().stream().filter(Objects::nonNull).map(ReportJsonFeature.After::getEmbeddings).filter(Objects::nonNull).flatMap(Collection::stream).toList()).orElse(new ArrayList<>());
+                                            List<ReportJsonFeature.Embedding> beforeScreenshots = Optional.of(step.getBefore().stream().filter(Objects::nonNull).map(ReportJsonFeature.Before::getEmbeddings).filter(Objects::nonNull).flatMap(Collection::stream).toList()).orElse(new ArrayList<>());
+                                            List<ReportJsonFeature.Embedding> afterScreenshots = Optional.of(step.getAfter().stream().filter(Objects::nonNull).map(ReportJsonFeature.After::getEmbeddings).filter(Objects::nonNull).flatMap(Collection::stream).toList()).orElse(new ArrayList<>());
                                             List<ReportJsonFeature.Embedding> screenshots = Stream.concat(beforeScreenshots.stream(), afterScreenshots.stream()).toList();
 
                                             if(!screenshots.isEmpty()) {
@@ -430,7 +422,7 @@ public class HtmlDataGenerator {
         return Objects.nonNull(value) ? Base64.getEncoder().encodeToString(value.getBytes()) : value;
     }
 
-    private void generateDefectsStats(HtmlDataSet htmlDataSet) throws JsonProcessingException {
+    private void generateDefectsStats(HtmlDataSet htmlDataSet) {
         features
                 .forEach( feature -> {
                     String featureNameReference = feature.getFeatureSeq() + " : " + feature.getName();
@@ -447,35 +439,24 @@ public class HtmlDataGenerator {
 
         Map<String, List<Cause>> knownFailuresGroupedByTrackId = knownFailures.stream().collect(Collectors.groupingBy(Cause::getTrackingId, Collectors.toList()));
         long trackedKnownDefects = knownFailuresGroupedByTrackId.keySet().stream().filter(id -> !id.equals("No Tracking Id")).count();
-        long unTrackedKnownDefects = Optional.ofNullable(knownFailuresGroupedByTrackId.get("No Tracking Id")).orElse(new ArrayList<>())
-                .stream().collect(groupingBy(Cause::getLabel, Collectors.toList())).keySet().size();
+        long unTrackedKnownDefects = Optional.ofNullable(knownFailuresGroupedByTrackId.get("No Tracking Id")).orElse(new ArrayList<>()).size();
 
+//        long knownDefects = knownFailures.size();
+        long knownDefects = trackedKnownDefects + unTrackedKnownDefects;
         long newDefects = newFailures.size();
-        long otherDefects = otherFailures.size();
-//        knownFailuresGroupedByTrackId.entrySet().forEach(System.out::println);
-//        System.out.println(trackedKnownDefects);
-//        System.out.println(unTrackedKnownDefects);
-//        newFailures.forEach(System.out::println);
-//        System.out.println(newDefects);
-//        otherFailures.forEach(System.out::println);
-//        System.out.println(otherDefects);
 
-        htmlDataSet.getDefectPieChartDataMap().put("trackedKnownDefects", trackedKnownDefects);
-        htmlDataSet.getDefectPieChartDataMap().put("unTrackedKnownDefects", unTrackedKnownDefects);
+        htmlDataSet.getDefectPieChartDataMap().put("deferredDefects", knownDefects);
         htmlDataSet.getDefectPieChartDataMap().put("newDefects", newDefects);
-        htmlDataSet.getDefectPieChartDataMap().put("otherDefects", otherDefects);
 
-        defectDetails.put("trackedKnownDefectIds", knownFailuresGroupedByTrackId.keySet().stream().filter(id -> !id.equals("No Tracking Id")).toList());
+        defectDetails.put("trackedKnownDefectIds", knownFailuresGroupedByTrackId.keySet());
         defectDetails.put("knownFailures", knownFailures);
         defectDetails.put("newFailures", newFailures);
-        defectDetails.put("otherFailures", otherFailures);
         htmlDataSet.setDefectDetails(defectDetails);
     }
 
     Map<String, Object> defectDetails = new HashMap<>();
     List<Cause> knownFailures = new ArrayList<>();
     List<Cause> newFailures = new ArrayList<>();
-    List<Cause> otherFailures = new ArrayList<>();
     Set<String> ignorableStatus = Set.of(PASSED.getStatus(), SKIPPED.getStatus());
 
     private void categorizeFailures(String featureName, ReportJsonFeature.Element failedScenario, ReportJsonFeature.Step failedStep) {
@@ -553,10 +534,10 @@ public class HtmlDataGenerator {
                 cause.setFeatureName(this.getEncodedText(featureName));
                 cause.setScenarioName(this.getEncodedText(scenarioName));
                 cause.setStepName(this.getEncodedText(stepName));
-                cause.setLabel("otherFailures");
+                cause.setLabel("ExceptionFailure");
                 cause.setTrackingId("No Tracking Id");
                 cause.setFailureMessage(this.getEncodedText(errorText));
-                otherFailures.add(cause);
+                newFailures.add(cause);
             }
         } catch (JsonProcessingException e) {
             // in case of un-parsable error, it could be some exception failure.
@@ -565,10 +546,10 @@ public class HtmlDataGenerator {
             cause.setFeatureName(this.getEncodedText(featureName));
             cause.setScenarioName(this.getEncodedText(scenarioName));
             cause.setStepName(this.getEncodedText(stepName));
-            cause.setLabel("otherFailures");
+            cause.setLabel("ExceptionFailure");
             cause.setTrackingId("No Tracking Id");
             cause.setFailureMessage(this.getEncodedText(errorText));
-            otherFailures.add(cause);
+            newFailures.add(cause);
         } catch (Exception e) {
             // for other exceptions, throw it
             throw new EasyReportException(e.getMessage());
