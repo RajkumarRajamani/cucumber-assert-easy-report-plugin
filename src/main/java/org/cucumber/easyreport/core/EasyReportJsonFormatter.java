@@ -181,7 +181,7 @@ public final class EasyReportJsonFormatter implements EventListener {
             String sourceHtml = "/files/report.html";
             InputStream resource = EasyReportJsonFormatter.class.getResourceAsStream(sourceHtml);
             Objects.requireNonNull(resource, sourceHtml + " could not be loaded");
-            this.writeHtmlReport(resource, reportJsonData);
+            this.writeHtmlReports(resource, reportJsonData);
 
             // customized here
             EasyReportJackson.OBJECT_MAPPER.writeValue(this.jsonReportwriter, this.featureMaps);
@@ -191,18 +191,34 @@ public final class EasyReportJsonFormatter implements EventListener {
         }
     }
 
-    private void writeHtmlReport(InputStream resource, String replaceWith) throws IOException {
+    private void writeHtmlReports(InputStream htmlIns, String dataSource) throws IOException {
 
-        try(BufferedReader in = new BufferedReader(new InputStreamReader(resource));
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(htmlReportOutputStream))) {
+        String cssSource = "/files/report.css";
+        String jsSource = "/files/report.js";
+        try(BufferedReader htmlIn = new BufferedReader(new InputStreamReader(htmlIns));
+
+            InputStream cssIns = EasyReportJsonFormatter.class.getResourceAsStream(cssSource);
+            BufferedReader cssIn = new BufferedReader(new InputStreamReader(Optional.ofNullable(cssIns).orElseThrow()));
+
+            InputStream jsIns = EasyReportJsonFormatter.class.getResourceAsStream(jsSource);
+            BufferedReader jsIn = new BufferedReader(new InputStreamReader(Optional.ofNullable(jsIns).orElseThrow()));
+
+            BufferedWriter htmlOutputReport = new BufferedWriter(new OutputStreamWriter(htmlReportOutputStream))) {
             String line;
-            String stringToReplace = "<<json-input>>";
+            String cssToReplace = "<<css-input>>";
+            String jsonToReplace = "<<json-input>>";
+            String jsToReplace = "<<js-input>>";
 
-            while((line=in.readLine())!=null)  {
-                if (line.contains(stringToReplace))
-                    line = line.replace(stringToReplace, replaceWith);
-                out.write(line);
-                out.newLine();
+            String js = jsIn.lines().collect(Collectors.joining("\n")).replace(jsonToReplace, dataSource);
+
+            while((line=htmlIn.readLine())!=null)  {
+                if (line.contains(cssToReplace))
+                    line = line.replace(cssToReplace, cssIn.lines().collect(Collectors.joining("\n")));
+
+                if (line.contains(jsToReplace))
+                    line = line.replace(jsToReplace, js);
+                htmlOutputReport.write(line);
+                htmlOutputReport.newLine();
             }
         }
     }

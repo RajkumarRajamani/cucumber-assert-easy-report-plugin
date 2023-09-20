@@ -1,7 +1,4 @@
-var json = `
- <<json-input>>
-`;
-
+var json = `<<json-input>>`;
 // Read Json Data
 var data = JSON.parse(json);
 
@@ -15,10 +12,9 @@ if (overallStatus == "passed") {
   overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#e01e37;">${overallStatus.toUpperCase()}</div>`;
 } else if (overallStatus == "skipped") {
   overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#C0C0C0 ; color:white; font-weight:bold;">${overallStatus.toUpperCase()}</div>`;
-} else if (overallStatus == "known failures") {
-  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#FFC300 ; color:#008000; font-weight:bold;">${overallStatus.toUpperCase()}</div>`;
-} else if (overallStatus == "passed with known failures") {
-  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#85e74d ; color:white; font-weight:bold;">${overallStatus.toUpperCase()}</div>`;
+} else if (overallStatus == "failed with deferred issue") {
+  // overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#FFC300 ; color:#008000; font-weight:bold;">${overallStatus.toUpperCase()}</div>`;
+  overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#74c69d ; color:white; font-weight:bold;">RESULT CONTAINS BOTH PASSED AND KNOWN FAILURES</div>`;
 } else {
   overAllStatusInnerElement = `<div class="over-all-highlight" style="background-color:#C0C0C0 ; color:white; font-weight:bold;">No Results Found</div>`;
 }
@@ -28,74 +24,112 @@ overallStatusParentElement.innerHTML = overAllStatusInnerElement;
 // project info section
 var projectInfo = data.projectInfo;
 
-// project into content column a
-let projectInfoContentDetailsParentElement = document.querySelector("#project-info-content-details-a");
-var projectInfoContentDetailsInnerElement = " ";
+let projectInfoFlexParentElemnt = document.querySelector("#project-info-flex");
+var projectInfoGridInnerElement = " ";
 
-projectInfoContentDetailsInnerElement = `
-<div class="project-info-element project-info-key">Environment</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.environment}</div>
+projectInfoGridInnerElement = `
 
-<div class="project-info-element project-info-key">Browser</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.browser}</div>
+<div class="info-section info-section-a">
+  <div class="project-info-element project-info-key">Environment</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.environment}</div>
 
-<div class="project-info-element project-info-key">Application</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.appName}</div>
+  <div class="project-info-element project-info-key">Browser</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.browser}</div>
 
-<div class="project-info-element project-info-key">OS</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.os}</div>
+  <div class="project-info-element project-info-key">Application</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.appName}</div>
+
+  <div class="project-info-element project-info-key last-row">OS</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.os}</div>
+</div>
+
+<div class="info-section info-section-b">
+  <div class="project-info-element project-info-key">Start Time</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.startTime}</div>
+
+  <div class="project-info-element project-info-key">End Time</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.endTime}</div>
+
+  <div class="project-info-element project-info-key">Elapsed Time</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.totalDuration}</div>
+
+  <div class="project-info-element project-info-key"></div>
+  <div class="project-info-element project-info-separator"></div>
+  <div class="project-info-element project-info-value"></div>
+
+</div>
+
+<div class="info-section info-section-b">
+  <div class="project-info-element project-info-key">Release Name</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.releaseName}</div>
+
+  <div class="project-info-element project-info-key">Release Date</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.releaseDate}</div>
+
+  <div class="project-info-element project-info-key">Sprint Name</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.sprint}</div>
+
+  <div class="project-info-element project-info-key"></div>
+  <div class="project-info-element project-info-separator"></div>
+  <div class="project-info-element project-info-value"></div>
+
+</div>
+
+<div class="info-section info-section-c">
+  <div class="project-info-element project-info-key">Project Manager</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.projectManager}</div>
+
+  <div class="project-info-element project-info-key">DQ Manager</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.dqManager}</div>
+
+  <div class="project-info-element project-info-key">DQ Lead</div>
+  <div class="project-info-element project-info-separator">:</div>
+  <div class="project-info-element project-info-value">${projectInfo.dqLead}</div>
+
+  <div class="project-info-element project-info-key"></div>
+  <div class="project-info-element project-info-separator"></div>
+  <div class="project-info-element project-info-value"></div>
+</div>
+
+
 
 `;
+projectInfoFlexParentElemnt.innerHTML = projectInfoGridInnerElement;
 
-projectInfoContentDetailsParentElement.innerHTML = projectInfoContentDetailsInnerElement;
+// project description section
+let projectDescInfoParentElemnt = document.querySelector("#project-desc-info");
+var projectDescInfoInnerElement = " ";
 
-// project info content column b
-
-let projectInfoContentDetailsBParentElement = document.querySelector("#project-info-content-details-b");
-var projectInfoContentDetailsBInnerElement = " ";
-
-projectInfoContentDetailsBInnerElement = `
-<div class="project-info-element project-info-key">Start Time</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.startTime}</div>
-
-<div class="project-info-element project-info-key">End Time</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.endTime}</div>
-
-<div class="project-info-element project-info-key">Elapsed Time</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value">${projectInfo.totalDuration}</div>
-
+projectInfoGridInnerElement = `
+<div class="description-section info-section-d">
+  <div class="project-info-element project-info-key project-desc-header">Project Description / Release Notes :</div>
+  <div class="project-info-element project-info-value project-desc-value">${projectInfo.descriptionOrReleaseNotes}</div>
+</div>
 `;
 
-projectInfoContentDetailsBParentElement.innerHTML = projectInfoContentDetailsBInnerElement;
+projectDescInfoParentElemnt.innerHTML = projectInfoGridInnerElement;
 
-// project info content column c
-
-let projectInfoContentDescriptionParentElement = document.querySelector("#project-info-content-description");
-var projectInfoContentDescriptionInnerElement = " ";
-
-projectInfoContentDescriptionInnerElement = `
-<div class="project-info-element project-info-key">Description</div>
-<div class="project-info-element project-info-separator">:</div>
-<div class="project-info-element project-info-value project-info-content-description-value">${projectInfo.description}</div>
-
-`;
-
-projectInfoContentDescriptionParentElement.innerHTML = projectInfoContentDescriptionInnerElement;
 
 // Load pie charts for feature, test case and test steps on loading the page
 // refer Chart.js library : https://www.chartjs.org/docs/latest/samples/other-charts/doughnut.html
 
 // feature pie chart
+// CenterText Plugin
 const featureCenterText = {
   afterDatasetsDraw(chart) {
-    const {ctx} = chart;
+    const { ctx } = chart;
     const text = data.featurePieChartDataMap.totalFeatures;
     ctx.save();
     const x = chart.getDatasetMeta(0).data[0].x;
@@ -109,18 +143,16 @@ const featureCenterText = {
 
 let featureLabels = [
   "Passed",
-  "Failed",
-  "Skipped",
-  "Known Failures",
-  "Passed With Known Failures"
+  "Failed - New Issue",
+  "Failed - Deffered Issue",
+  "Skipped"
 ];
 
 let featurePieDataSet = [
   data.featurePieChartDataMap.passed,
   data.featurePieChartDataMap.failed,
-  data.featurePieChartDataMap.skipped,
-  data.featurePieChartDataMap.knownFailures,
-  data.featurePieChartDataMap.passedWithKnownFailures
+  data.featurePieChartDataMap.failedWithDeferredIssue,
+  data.featurePieChartDataMap.skipped
 ];
 
 const featureChartConfig = {
@@ -134,9 +166,8 @@ const featureChartConfig = {
         backgroundColor: [
           '#008000',
           '#e01e37',
-          '#C0C0C0',
           '#FFC300',
-          '#73e2a7'
+          '#C0C0C0'
         ]
       }
     ]
@@ -242,9 +273,10 @@ const featureDoughnutChart = new Chart(
 )
 
 // testcase pie chart
+// CenterText Plugin
 const testCaseCenterText = {
   afterDatasetsDraw(chart) {
-    const {ctx} = chart;
+    const { ctx } = chart;
     const text = data.testCasePieChartDataMap.totalCases;
     ctx.save();
     const x = chart.getDatasetMeta(0).data[0].x;
@@ -256,12 +288,17 @@ const testCaseCenterText = {
   }
 }
 
-let testCaseLabels = ["Passed", "Failed", "Skipped", "Known Failures"];
+let testCaseLabels = [
+  "Passed",
+  "Failed - New Issue",
+  "Failed - Deferred Issue",
+  "Skipped"
+];
 let testCasePieDataSet = [
   data.testCasePieChartDataMap.passed,
   data.testCasePieChartDataMap.failed,
-  data.testCasePieChartDataMap.skipped,
-  data.testCasePieChartDataMap.knownFailures
+  data.testCasePieChartDataMap.failedWithDeferredIssue,
+  data.testCasePieChartDataMap.skipped
 ];
 
 const testCaseChartConfig = {
@@ -275,8 +312,8 @@ const testCaseChartConfig = {
         backgroundColor: [
           '#008000',
           '#e01e37',
-          '#C0C0C0',
-          '#FFC300'
+          '#FFC300',
+          '#C0C0C0'
         ]
       }
     ]
@@ -380,9 +417,10 @@ const doughnutChart = new Chart(
 )
 
 // testStep pie chart
+// CenterText Plugin
 const testStepCenterText = {
   afterDatasetsDraw(chart) {
-    const {ctx} = chart;
+    const { ctx } = chart;
     const text = data.testStepPieChartDataMap.totalSteps;
     ctx.save();
     const x = chart.getDatasetMeta(0).data[0].x;
@@ -394,12 +432,21 @@ const testStepCenterText = {
   }
 }
 
-let testStepLabels = ["Passed", "Failed", "Skipped", "Known Failures", "Pending", "Undefined", "Ambiguous", "Unused"];
+let testStepLabels = [
+  "Passed",
+  "Failed - New Issue",
+  "Failed - Deferred Issue",
+  "Skipped",
+  "Pending",
+  "Undefined",
+  "Ambiguous",
+  "Unused"
+];
 let testStepPieDataSet = [
   data.testStepPieChartDataMap.passed,
   data.testStepPieChartDataMap.failed,
+  data.testStepPieChartDataMap.failedWithDeferredIssue,
   data.testStepPieChartDataMap.skipped,
-  data.testStepPieChartDataMap.knownFailures,
   data.testStepPieChartDataMap.pending,
   data.testStepPieChartDataMap.undefined,
   data.testStepPieChartDataMap.ambiguous,
@@ -417,8 +464,8 @@ const stepChartConfig = {
         backgroundColor: [
           '#008000',
           '#e01e37',
-          '#C0C0C0',
           '#FFC300',
+          '#C0C0C0',
           '#f72585',
           '#124559',
           '#aed9e0',
@@ -525,22 +572,21 @@ const stepChartConfig = {
 
 };
 
-const stepDoughnutChart = new Chart(
-  document.querySelector("#testStepePieChart"),
-  stepChartConfig
-)
+// const stepDoughnutChart = new Chart(
+//   document.querySelector("#testStepePieChart"),
+//   stepChartConfig
+// )
 
 // defect pie chart
 const reducer = (accumulator, curr) => accumulator + curr;
-var totalDefects = data.defectPieChartDataMap.trackedKnownDefects
-+ data.defectPieChartDataMap.unTrackedKnownDefects
-+ data.defectPieChartDataMap.newDefects
-+ data.defectPieChartDataMap.otherDefects;
+var totalDefects = data.defectPieChartDataMap.deferredDefects
+  + data.defectPieChartDataMap.newDefects;
 totalDefects = totalDefects > 0 ? totalDefects : 'No Defects';
 
+// CenterText Plugin
 const defectCenterText = {
   afterDatasetsDraw(chart) {
-    const {ctx} = chart;
+    const { ctx } = chart;
     const text = totalDefects; //chart.data.datasets[0].data.reduce(reducer);
     ctx.save();
     const x = chart.getDatasetMeta(0).data[0].x;
@@ -552,12 +598,10 @@ const defectCenterText = {
   }
 }
 
-let defectCategoryLabel = ["Tracked-KnownFailure", "UnTracked-KnownFailure", "NewFailure", "Other Failures"];
+let defectCategoryLabel = ["Deferred Defect", "New Defect"];
 let defectPieDataSet = [
-  data.defectPieChartDataMap.trackedKnownDefects,
-  data.defectPieChartDataMap.unTrackedKnownDefects,
-  data.defectPieChartDataMap.newDefects,
-  data.defectPieChartDataMap.otherDefects
+  data.defectPieChartDataMap.deferredDefects,
+  data.defectPieChartDataMap.newDefects
 ];
 
 const defectChartConfig = {
@@ -569,10 +613,8 @@ const defectChartConfig = {
         label: 'Count',
         data: defectPieDataSet,
         backgroundColor: [
-          '#60d394',
-          '#aaf683',
-          '#ff5a5f',
-          '#c81d25'
+          '#ff758f',
+          '#d90429'
         ]
       }
     ]
@@ -657,7 +699,6 @@ const defectChartConfig = {
         position: 'outside',
         textShadow: true,
         arc: true
-        // fontColor: data.datasets[0].backgroundColor
       }
     },
     layout: {
@@ -695,32 +736,42 @@ var overAllStatsTable = new gridjs.Grid({
       name: "Pass"
     },
     {
-      id: "failed",
-      name: "Fail"
+      name: "Fail",
+      columns: [
+        {
+          id: "failed",
+          name: "New"
+        },
+        {
+          id: "failedWithDeferredIssue",
+          name: "Deferred"
+        }
+      ]
     },
     {
       id: "skipped",
       name: "Skip"
     },
     {
-      id: "knownFailures",
-      name: "Known Fails"
-    },
-    {
       id: "passPercent",
       name: "Pass %"
     },
     {
-      id: "failPercent",
-      name: "Fail %"
+      name: "Fail %",
+      columns: [
+        {
+          id: "failPercent",
+          name: "New"
+        },
+        {
+          id: "failedWithDeferredIssuePercent",
+          name: "Deferred"
+        }
+      ]
     },
     {
       id: "skippedPercent",
       name: "Skip %"
-    },
-    {
-      id: "knownFailPercent",
-      name: "Known Fail %"
     },
     {
       id: "overAllStatus",
@@ -741,13 +792,9 @@ var overAllStatsTable = new gridjs.Grid({
           return {
             'class': 'gridjs-td skipped-status'
           };
-        } else if (cell == "known failures") {
+        } else if (cell == "failed with deferred issue") {
           return {
             'class': 'gridjs-td known-failures-status'
-          };
-        } else if (cell == "passed with known failures") {
-          return {
-            'class': 'gridjs-td passed-with-known-failures-status'
           };
         }
       }
@@ -803,32 +850,42 @@ var table = new gridjs.Grid({
       name: "Pass"
     },
     {
-      id: "failed",
-      name: "Fail"
+      name: "Fail",
+      columns: [
+        {
+          id: "failed",
+          name: "New"
+        },
+        {
+          id: "failedWithDeferredIssue",
+          name: "Deferred"
+        }
+      ]
     },
     {
       id: "skipped",
       name: "Skip"
     },
     {
-      id: "knownFailures",
-      name: "Known Fails"
-    },
-    {
       id: "passPercent",
       name: "Pass %"
     },
     {
-      id: "failPercent",
-      name: "Fail %"
+      name: "Fail %",
+      columns: [
+        {
+          id: "failPercent",
+          name: "New"
+        },
+        {
+          id: "failedWithDeferredIssuePercent",
+          name: "Deferred"
+        }
+      ]
     },
     {
       id: "skippedPercent",
       name: "Skip %"
-    },
-    {
-      id: "knownFailPercent",
-      name: "Known Fail %"
     },
     {
       id: "status",
@@ -850,13 +907,9 @@ var table = new gridjs.Grid({
           return {
             'class': 'gridjs-td skipped-status'
           };
-        } else if (cell == "known failures") {
+        } else if (cell == "failed with deferred issue") {
           return {
             'class': 'gridjs-td known-failures-status'
-          };
-        } else if (cell == "passed with known failures") {
-          return {
-            'class': 'gridjs-td passed-with-known-failures-status'
           };
         }
       }
@@ -874,6 +927,17 @@ var table = new gridjs.Grid({
   search: true,
   autowidth: true,
   resizable: true,
+  // language: {
+  //   'search': {
+  //     'placeholder': '🔍 Search...'
+  //   },
+  //   'pagination': {
+  //     'previous': '⬅️',
+  //     'next': '➡️',
+  //     'showing': '😃 Displaying',
+  //     'results': () => 'Records'
+  //   }
+  // },
   style: {
     table: {
       'box-shadow': '2px 2px 15px 2px #C0C0C0'
@@ -897,6 +961,19 @@ var table = new gridjs.Grid({
 });
 table.render(document.getElementById("feature-stats-data-output-container"));
 // load feature stats table - ends
+
+const replaceAccentsChars = (str, charWith = '-', regexType = 'NO_SPECIAL') => {
+
+  if (!str) return
+
+  const REGEX_TYPE = {
+    'ALL': / /g,
+    'NO_SPECIAL': /[^A-Z0-9]/ig,
+    'SINGLE_FOR_MULTI': /[^A-Z0-9]+/ig,
+  }
+
+  return str.replace(REGEX_TYPE[regexType], charWith).toLowerCase()
+}
 
 // Display features, its scenarios, its steps and its screenshots
 var features = data.featureMapList;
@@ -927,31 +1004,12 @@ var testResultSectionContainerElement = `
 
 completeResultSectionParentElement.innerHTML = testResultSectionContainerElement;
 
-$(document).ready(function () { $("img").click(function () { this.requestFullscreen() }) });
-
-function getContentToDisplayOnRightWhenClickingFeatureNavLink(features) {
-  var displayOnClickContent = "";
-  for (let feature of features) {
-    // get all scenario elements to be displayed on right side page
-    var scenarioElements = getScenarioElements(feature.scenarios);
-
-    // then build the content panel section with above scenario elements
-    // for every feature
-    displayOnClickContent += `
-      <div id="${feature.id}" class="displayOnClick">
-        ${scenarioElements}
-      </div>
-      `;
-  }
-  return displayOnClickContent;
-}
-
 function getFeatureElements(features) {
   var featureListElement = "";
-  var i = 1;
+
   for (let feature of features) {
     var statusCell = getFeatureNavigationLineStatusColor(feature.status);
-    var featureId = replaceEscapesAndHtmlWithHyphen(feature.id);
+    var featureId = replaceAccentsChars(feature.id, '', 'SINGLE_FOR_MULTI');
 
     // prepare left side features link as li
     featureListElement += `
@@ -961,32 +1019,50 @@ function getFeatureElements(features) {
         href="#${featureId}"
         class="featureLinks"
         onclick='loadScenarioContent("#${featureId}")'>
-        Feature ${i} : ${feature.name}
+        ${atob(feature.name)}
       </a>
       <span>${feature.duration}</span>
       ${statusCell}
     </li>
     `;
-    i++;
+
   }
   return featureListElement;
 }
 
+function getContentToDisplayOnRightWhenClickingFeatureNavLink(features) {
+  var displayOnClickContent = "";
+  for (let feature of features) {
+    // get all scenario elements to be displayed on right side page
+    var scenarioElements = getScenarioElements(feature.scenarios);
+    var featureId = replaceAccentsChars(feature.id, '', 'SINGLE_FOR_MULTI');
+
+    // then build the content panel section with above scenario elements
+    // for every feature
+    displayOnClickContent += `
+      <div id="${featureId}" class="displayOnClick">
+        ${scenarioElements}
+      </div>
+      `;
+  }
+  return displayOnClickContent;
+}
+
 function getScenarioElements(scenarios) {
   var scenarioElements = "";
-  var i = 1;
+
   for (let scenario of scenarios) {
     var steps = scenario.steps;
     var stepElements = getStepElements(steps);
     var scLineColor = getScenarioLineColorBasedOnStatus(scenario.status);
-    var scenarioId = replaceEscapesAndHtmlWithHyphen(scenario.id);
+    var scenarioId = replaceAccentsChars(scenario.id, '', 'SINGLE_FOR_MULTI') + "-" + createUUID();
 
     var beforeScenarioError = "";
     if (scenario.beforeError.length != 0) {
       var beforeScenarioErrorDecoded = atob(scenario.beforeError);
       beforeScenarioError = `
         <div class="scenario-hook-section">
-          <div class="scenario-hook-error-key">Scenario ${i} BeforeScenario-Hook-Error : </div>
+          <div class="scenario-hook-error-key">${scenario.scenarioSeq} BeforeScenario-Hook-Error : </div>
           <div class="scenario-hook-error-value">${beforeScenarioErrorDecoded}</div>
         </div>
       `;
@@ -997,7 +1073,7 @@ function getScenarioElements(scenarios) {
       var afterScenarioErrorDecoded = atob(scenario.afterError);
       afterScenarioError = `
         <div class="scenario-hook-section">
-          <div class="scenario-hook-error-key">Scenario ${i} AfterScenario-Hook-Error : </div>
+          <div class="scenario-hook-error-key">${scenario.scenarioSeq} AfterScenario-Hook-Error : </div>
           <div class="scenario-hook-error-value">${afterScenarioErrorDecoded}</div>
         </div>
       `;
@@ -1011,7 +1087,7 @@ function getScenarioElements(scenarios) {
         ${beforeScenarioError}
         <div id="#${scenarioId}" class="scenario-item">
           <div id="#${scenarioId}-collapsible" class="scenario-name collapsible" onclick="collapseExpandScenario('#${scenarioId}-collapsible-content')">
-            <div ${scLineColor}>Scenario ${i} : ${scenario.name}</div>
+            <div ${scLineColor}>${atob(scenario.name)}</div>
             <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: #9eb3c2;"></span>
           </div>
           <div id="#${scenarioId}-collapsible-content" class="step-items">
@@ -1021,14 +1097,14 @@ function getScenarioElements(scenarios) {
         ${afterScenarioError}
     </div>
       `;
-    i++;
+
   }
   return scenarioElements;
 }
 
 function getStepElements(steps) {
   var stepElements = "";
-  var i = 1;
+
   for (let step of steps) {
     var stepLineColor = getStepLineColorBasedOnStatus(step.status);
     var beforeStepError = "";
@@ -1037,7 +1113,7 @@ function getStepElements(steps) {
       beforeStepError = `
         <div class="step-name">
           <div class="step-hook-error-section">
-            <div>Step ${i} BeforeStep-Hook-Error : </div>
+            <div>${step.stepSeq} BeforeStep-Hook-Error : </div>
             <div class="step-hook-error-value">${beforeStepErrorDecoded}</div>
           </div>
         </div>
@@ -1050,7 +1126,7 @@ function getStepElements(steps) {
       afterStepError = `
       <div class="step-name">
         <div class="step-hook-error-section">
-          <div>Step ${i} AfterStep-Hook-Error : </div>
+          <div>${step.stepSeq} AfterStep-Hook-Error : </div>
           <div class="step-hook-error-value">${afterStepErrorDecoded}</div>
         </div>
       </div>
@@ -1067,8 +1143,8 @@ function getStepElements(steps) {
     }
 
     var stepEmbeddings = getStepEmbeddingElements(step.embeddings, step.status);
-    var stepName = step.name;
-    var stepNameForId = replaceEscapesAndHtmlWithHyphen(stepName);
+    var stepName = atob(step.name);
+    var stepNameForId = replaceAccentsChars(stepName, '', 'SINGLE_FOR_MULTI')  + "-" + createUUID();
 
     stepElements += `
       <div id="#${stepNameForId}-${step.line}" class="step-item">
@@ -1077,7 +1153,7 @@ function getStepElements(steps) {
           id="#step-${stepNameForId}-${step.line}-collapsible"
           class="step-name" ${stepLineColor}
           onclick="collapseExpandStep('#step-${stepNameForId}-${step.line}-collapsible-content')">
-            <div>Step ${i} : ${stepName}</div>
+            <div>${stepName}</div>
             <div><i class="fa-sharp fa-solid fa-circle"></i></div>
         </div>
 
@@ -1090,17 +1166,8 @@ function getStepElements(steps) {
         ${afterStepError}
       </div>
     `;
-    i++;
   }
   return stepElements;
-}
-
-function replaceEscapesAndHtmlWithHyphen(value) {
-  return value.replaceAll("<br>", "-")
-    .replaceAll("&emsp", "-")
-    .replaceAll("'", "-")
-    .replaceAll(";", "-")
-    .replaceAll(" ", "-");
 }
 
 function getStepEmbeddingElements(embeddings, stepStatus) {
@@ -1108,12 +1175,13 @@ function getStepEmbeddingElements(embeddings, stepStatus) {
   let index = 0;
   if (embeddings != null && embeddings.length > 0) {
     for (let embedding of embeddings) {
-      index = index+1;
-      var attachmentSource = getStepScreenshotElement(embedding.mime_type, embedding.data, embedding.name, index);
+      index = index + 1;
+      var embeddingName = atob(embedding.name);
+      var attachmentSource = getStepScreenshotElement(embedding.mime_type, embedding.data, embeddingName, index);
       if (isStepStatusIngnorable(stepStatus)) {
         stepEmbeddingElement += `
           <div>
-          <div class="embedding-name">${embedding.name}</div>
+          <div class="embedding-name">${embeddingName}</div>
           <div class="embedding-src">${attachmentSource}</div>
           <div class="embedding-name">${stepStatus} step</div>
           </div>
@@ -1121,7 +1189,7 @@ function getStepEmbeddingElements(embeddings, stepStatus) {
       } else {
         stepEmbeddingElement += `
           <div>
-            <div class="embedding-name">${embedding.name}</div>
+            <div class="embedding-name">${embeddingName}</div>
             <div class="embedding-src">${attachmentSource}</div>
           </div>
         `;
@@ -1180,8 +1248,10 @@ function loadScenarioContent(selector) {
 // when document becomes ready, it selects and highlights
 // the first feature navigation option
 $(document).ready(function () {
-  var firstFeatureId = features[0].id
-  document.querySelector("li a[href='#" + features[0].id + "']").parentNode.classList.add("side-nav-item-active");
+  // var firstFeatureId = features[0].id;
+  var firstFeatureId = replaceAccentsChars(features[0].id, '', 'SINGLE_FOR_MULTI');
+
+  document.querySelector("li a[href='#" + firstFeatureId + "']").parentNode.classList.add("side-nav-item-active");
   loadScenarioContent("#" + firstFeatureId);
 
 });
@@ -1204,16 +1274,21 @@ function collapseExpandStep(id) {
   }
 }
 
-// jquery to click and open any image in fullscreen view
-// pressing escape will close image
-// $(document).ready(function () { $("img").click(function () { this.requestFullscreen() }) });
-$('img').on("click", function () {
-  var win = window.open();
-  var url = $(this).attr("src");
-  // var html = $("body").html("<textarea>" + url + "</textarea>");
-  var html = $("body").html("<img src='" + url + "' target='_blank'");
-  $(win.document.body).html(html);
-});
+function collapseExpandDefect(id) {
+
+  if (document.getElementById(id).style.display == "flex") {
+    document.getElementById(id).style.display = "none";
+  } else {
+    document.getElementById(id).style.display = "flex";
+  }
+}
+
+function createUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
 
 function getFeatureNavigationLineStatusColor(featureStatus) {
   var statusCell = "";
@@ -1223,10 +1298,8 @@ function getFeatureNavigationLineStatusColor(featureStatus) {
     statusCell = `<i class="fa-solid fa-circle-xmark status-icon" style="color: #f20202;"></i>`;
   } else if (featureStatus == "skipped") {
     statusCell = `<i class="fa-solid fa-circle-arrow-right status-icon" style="color: #c3c6cb;"></i>`;
-  } else if (featureStatus == "known failures") {
+  } else if (featureStatus == "failed with deferred issue") {
     statusCell = `<i class="fa-solid fa-circle-exclamation status-icon" style="color: #f0cf75;"></i>`;
-  } else if (featureStatus == "passed with known failures") {
-    statusCell = `<i class="fa-solid fa-circle-exclamation status-icon" style="color: #73e2a7;"></i>`;
   } else {
     statusCell = "";
   }
@@ -1241,7 +1314,7 @@ function getStepLineColorBasedOnStatus(stepStatus) {
     stepLineColor = "style='color: #e01e37'";
   } else if (stepStatus == "skipped") {
     stepLineColor = "style='color: #C0C0C0'";
-  } else if (stepStatus == "known failures") {
+  } else if (stepStatus == "failed with deferred issue") {
     stepLineColor = "style='color: #FFC300'";
   } else if (stepStatus == "pending") {
     stepLineColor = "style='color: #f72585'";
@@ -1263,10 +1336,8 @@ function getScenarioLineColorBasedOnStatus(scenarioStatus) {
     scLineColor = "style='color: #e01e37'";
   } else if (scenarioStatus == "skipped") {
     scLineColor = "style='color: #C0C0C0'";
-  } else if (scenarioStatus == "known failures") {
+  } else if (scenarioStatus == "failed with deferred issue") {
     scLineColor = "style='color: #FFC300'";
-  } else if (scenarioStatus == "passed with known failures") {
-    scLineColor = "style='color: #73e2a7'";
   }
   return scLineColor;
 }
@@ -1279,3 +1350,140 @@ lightbox.option({
   'resizeDuration': 600,
   'wrapAround': true
 })
+
+// Defect Details Section
+var defectDetails = data.defectDetails;
+
+// it consist of whole elements
+var defectDetailsSectionParentElement = document.querySelector("#defect-details-section");
+
+var defectDetailsSectionContainerElement = `
+
+  <div
+    class="defect-category deferred-failures"
+    id="tracked-known-failures"
+    onclick="collapseExpandDefect('deferred-failures-list-collapsible-content')">
+      <div>Deferred Defects</div>
+      <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: black;"></span>
+  </div>
+  <div class="deferred-failures-list" id="deferred-failures-list-collapsible-content">
+    ${getTrackedKnownFailureSection()}
+  </div>
+
+
+
+
+
+  <div
+    class="defect-category new-failures"
+    onclick="collapseExpandDefect('new-failures-list-collapsible-content')">
+      <div>New Defects</div>
+      <span class="fa-solid fa-angle-down scenario-expand-icon" style="color: black;"></span>
+  </div>
+  <div class="new-failures-list" id="new-failures-list-collapsible-content">
+    ${getNewFailureSection()}
+  </div>
+
+
+
+  `;
+
+defectDetailsSectionParentElement.innerHTML = defectDetailsSectionContainerElement;
+
+function getTrackedKnownFailureSection() {
+  var knownDefectIds = data.defectDetails.trackedKnownDefectIds;
+  var knownFailures = data.defectDetails.knownFailures;
+
+  var knownDefectIdItem = "";
+  var i = 1
+  for (let defectId of knownDefectIds) {
+    var knownDefectIdRow = "";
+    for (let knownFail of knownFailures) {
+      if (knownFail.trackingId == defectId) {
+        knownDefectIdRow += `
+
+          <div class="deferred-defect-item-row">
+            <div>${atob(knownFail.featureName)}</div>
+            <div>${atob(knownFail.scenarioName)}</div>
+            <div>${atob(knownFail.stepName)}</div>
+            <div>${knownFail.label}</div>
+            <div>${atob(knownFail.failureMessage)}</div>
+          </div>
+
+          `;
+      }
+    }
+    knownDefectIdItem += `
+      <div>
+        <div class="deferred-defect-id-header">${i} . ${defectId}</div>
+        ${knownDefectIdRow}
+      </div>
+    `;
+    i++;
+
+  }
+
+  var knownDefectsBox = "";
+  if(knownFailures.length == 0) {
+    knownDefectsBox = `
+    <div class="no-defects-found">No Known Failures Identified</div>
+    `;
+  } else {
+    knownDefectsBox = `
+
+    <div class="deferred-defect-item-header">
+      <div>Feature</div>
+      <div>Scenario</div>
+      <div>Step</div>
+      <div>Assert Label</div>
+      <div>Error Details</div>
+    </div>
+    ${knownDefectIdItem}
+    `;
+  }
+
+  return knownDefectsBox;
+}
+
+function getNewFailureSection() {
+  var newFailures = data.defectDetails.newFailures;
+
+
+  var newDefectIdRow = "";
+  var i = 1;
+  for (let newFail of newFailures) {
+    newDefectIdRow += `
+
+          <div class="new-defect-item-row">
+            <div class="defect-feature-name-column"><div>${i}. </div>${atob(newFail.featureName)}</div>
+            <div>${atob(newFail.scenarioName)}</div>
+            <div>${atob(newFail.stepName)}</div>
+            <div>${newFail.label}</div>
+            <div>${atob(newFail.failureMessage)}</div>
+          </div>
+
+          `;
+          i++;
+  }
+
+  var newDefectsBox = "";
+  if(newFailures.length == 0) {
+    newDefectsBox = `
+      <div class="no-defects-found">No New Failures Identified</div>
+    `;
+  } else {
+    newDefectsBox = `
+
+    <div class="new-defect-item-header">
+      <div>Feature</div>
+      <div>Scenario</div>
+      <div>Step</div>
+      <div>Assert Label</div>
+      <div>Error Details</div>
+    </div>
+    ${newDefectIdRow}
+    `;
+  }
+
+  return newDefectsBox;
+}
