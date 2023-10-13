@@ -14,6 +14,11 @@ public class DateUtils {
 
     public static boolean isDateValue(String dateString) {
         if (Objects.nonNull(dateString)) {
+//            for(DateFormats format : DateFormats.values()) {
+//                if(GenericValidator.isDate(dateString, format.get(), false)) {
+//                    return true;
+//                }
+//            }
             return GenericValidator.isDate(dateString, YYYYMMDD_HYPHEN.get(), false) ||
                     GenericValidator.isDate(dateString, YYYYMMDD_SLASH.get(), false) ||
                     GenericValidator.isDate(dateString, YYYYMMMDD_HYPHEN.get(), false) ||
@@ -44,5 +49,9 @@ public class DateUtils {
         }
 
         return dateString;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isDateValue("03333333-05-1992"));
     }
 }

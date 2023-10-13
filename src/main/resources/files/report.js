@@ -145,7 +145,7 @@ let featureLabels = [
   "Passed",
   "Failed - New Issue",
   "Failed - Deffered Issue",
-  "Skipped"
+  "Not Executed"
 ];
 
 let featurePieDataSet = [
@@ -292,7 +292,7 @@ let testCaseLabels = [
   "Passed",
   "Failed - New Issue",
   "Failed - Deferred Issue",
-  "Skipped"
+  "Not Executed"
 ];
 let testCasePieDataSet = [
   data.testCasePieChartDataMap.passed,
@@ -750,7 +750,7 @@ var overAllStatsTable = new gridjs.Grid({
     },
     {
       id: "skipped",
-      name: "Skip"
+      name: "Not Executed"
     },
     {
       id: "passPercent",
@@ -864,7 +864,7 @@ var table = new gridjs.Grid({
     },
     {
       id: "skipped",
-      name: "Skip"
+      name: "Not Executed"
     },
     {
       id: "passPercent",

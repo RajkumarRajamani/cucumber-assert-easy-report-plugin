@@ -14,7 +14,7 @@ import org.testng.annotations.DataProvider;
         features = {"src/test/resources/features"},
         glue = {"org.cucumber.easyreport"
         },
-        tags = "@test"
+        tags = "@test-a"
 )
 public class CucumberTestCase extends AbstractTestNGCucumberTests {
 

@@ -14,7 +14,8 @@ import java.util.stream.Stream;
 public class EasyReportConfigReader {
 
     private static Properties properties;
-    private static final String defaultReportDirectory = System.getProperty("user.dir") + System.getProperty("file.separator") + "easy-report" + System.getProperty("file.separator");
+//    private static final String defaultReportDirectory = System.getProperty("user.dir") + System.getProperty("file.separator") + "easy-report" + System.getProperty("file.separator");
+    private static final String defaultReportDirectory = String.join(File.separator, System.getProperty("user.dir"), "output", "easy-report", "");
 
     public EasyReportConfigReader() {
         this.loadProperties();

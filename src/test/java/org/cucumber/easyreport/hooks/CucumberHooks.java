@@ -8,9 +8,11 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.SneakyThrows;
 import org.cucumber.easyreport.assertions.Assertions;
 import org.cucumber.easyreport.exception.EasyReportException;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -24,6 +26,10 @@ public class CucumberHooks {
     @BeforeAll
     public static void beforeAllCucumberHook() {
         driver = WebDriverManager.chromedriver().create();
+        Capabilities cap = ((RemoteWebDriver) driver).getCapabilities();
+        System.out.println(cap.getBrowserVersion());
+
+//        driver.manage().getCookies().forEach(ck -> ck.);
     }
 
     @Before
