@@ -1,0 +1,4 @@
+knownFailures:
+  - label: apple
+    trackingId: XLCTCD-1234
+    description: new known failure

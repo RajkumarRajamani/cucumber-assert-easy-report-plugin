@@ -23,7 +23,9 @@ public class Assertions implements Assertion {
 
     private final ThreadLocal<SoftAssertions> assertions = ThreadLocal.withInitial(SoftAssertions::new);
 
-    public Assertions() {}
+    public Assertions() {
+        knownFailureLabelSet.get().putAll(KnownFailuresReader.readKnownFailures());
+    }
 
     public synchronized Assertions addKnownFailureLabels(String label, String trackingId) {
         knownFailureLabelSet.get().put(label, Objects.nonNull(trackingId) && !trackingId.isEmpty() ? trackingId : "No Tracking Id");
