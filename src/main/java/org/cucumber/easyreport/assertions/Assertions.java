@@ -60,7 +60,7 @@ public class Assertions implements Assertion {
     }
 
     private synchronized void addIntoFailures(String label, String trackingId, String failure) {
-        if(getKnownFailureLabels().keySet().contains(label)) {
+        if(getKnownFailureLabels().containsKey(label)) {
             if(failures.get().containsKey("knownFailures")) {
                 Map<String, String> fail = new HashMap<>();
                 fail.put("label", label);

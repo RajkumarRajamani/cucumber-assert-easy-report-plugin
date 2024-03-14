@@ -1,21 +1,7 @@
 package org.cucumber.easyreport.test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FilenameUtils;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
 
 public class Test {
     public static void main(String[] args) throws IOException {
@@ -53,9 +39,6 @@ public class Test {
 //        File fi = new File("src/main/resources/easy-cucumber-report-logo.png");
 //        byte[] fileContent = Files.readAllBytes(fi.toPath());
 //        System.out.println(fileContent);
-
-        System.out.println(FilenameUtils.getExtension("a/b/c.txt"));
-        System.out.println(FilenameUtils.removeExtension("a/b/c.txt"));
 
     }
 

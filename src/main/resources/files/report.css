@@ -386,6 +386,19 @@ nav ul a {
   cursor: pointer;
 }
 
+.scenario-stats {
+  min-height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+  border-bottom: 0.1px solid var(--border-color);
+  border-top: 0.1px solid var(--border-color);
+  cursor: pointer;
+  gap: 10px;
+}
+
 .scenario-name:hover,
 .step-name:hover {
   background-color: #DDE6ED;
@@ -413,7 +426,7 @@ nav ul a {
 }
 
 .scenario-expand-icon {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .step-items {
@@ -443,13 +456,26 @@ nav ul a {
 .step-name {
   min-height: 40px;
   border-bottom: 0.1px solid var(--border-color);
-  padding-left: 20px;
+  padding-left: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-right: 30px;
+  padding-right: 10px;
   cursor: pointer;
+}
+
+.step-name-stats {
+  min-height: 40px;
+  border-bottom: 0.1px solid var(--border-color);
+  padding-left: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 0px;
+  cursor: pointer;
+  gap: 10px;
 }
 
 .step-hook-error-section {

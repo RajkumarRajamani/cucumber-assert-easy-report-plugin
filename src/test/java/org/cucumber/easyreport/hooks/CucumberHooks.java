@@ -4,14 +4,12 @@ import io.cucumber.core.backend.TestCaseState;
 import io.cucumber.java.*;
 import io.cucumber.plugin.event.PickleStepTestStep;
 import io.cucumber.plugin.event.TestCase;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.SneakyThrows;
-import org.cucumber.easyreport.assertions.Assertions;
-import org.cucumber.easyreport.exception.EasyReportException;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.lang.reflect.Field;
@@ -25,7 +23,7 @@ public class CucumberHooks {
 
     @BeforeAll
     public static void beforeAllCucumberHook() {
-        driver = WebDriverManager.chromedriver().create();
+        driver = new ChromeDriver();
         Capabilities cap = ((RemoteWebDriver) driver).getCapabilities();
         System.out.println(cap.getBrowserVersion());
 
@@ -55,7 +53,7 @@ public class CucumberHooks {
 //        throw new EasyReportException("ForceFailCheck");
     }
 
-    @AfterStep
+//    @AfterStep
     public void easyReportEndStep(Scenario scenario) {
 
         final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
