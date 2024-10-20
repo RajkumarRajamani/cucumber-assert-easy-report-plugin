@@ -1186,16 +1186,24 @@ function getStepElements(steps) {
 }
 
 function createDynamicTableFromJSON(jsonData) {
-
-    // Null check: If jsonData or dataTableRowItems is null/undefined, return an empty string
+// Null check: If jsonData or dataTableRowItems is null/undefined, return an empty string
     if (!jsonData || !jsonData.dataTableRowItems) {
         return '';
     }
 
+    // Define alternate background colors for rows
+    const lightRowColor = '#F9F9F9';  // Light grey for alternate rows
+    const defaultRowColor = '#FFFFFF';  // White for other rows
+
+    // Define colors for borders and text
+    const borderColor = '#A9A9A9';  // Intermediate grey for borders
+    const borderThickness = '0.2px';  // Thin border
+    const textColor = '#333333';  // Dark grey for text
+
     // Start building the HTML table as a string inside a scrollable div container
     let tableHTML = `
     <div style="overflow-x: auto; max-width: 100%;">
-        <table style="border: 1px solid #b0b3b5; border-collapse: collapse; width: 100%; min-width: 500px;">
+        <table style="border-collapse: collapse; width: 100%; min-width: 500px;">
     `;
 
     // Get the array of data
@@ -1205,19 +1213,19 @@ function createDynamicTableFromJSON(jsonData) {
     for (let i = 0; i < dataTableRowItems.length; i++) {
         let rowData = dataTableRowItems[i];
 
-        // Start a new row
-        tableHTML += `<tr>`;
+        // Alternate background color for each row
+        let backgroundColor = (i % 2 === 0) ? lightRowColor : defaultRowColor;
+
+        // Start a new row with alternate background color and consistent text color
+        tableHTML += `<tr style="background-color: ${backgroundColor}; color: ${textColor};">`;
 
         // Loop through each key in the rowData object and create a cell
         let keys = Object.keys(rowData);
         for (let j = 0; j < keys.length; j++) {
             let key = keys[j];
 
-            // Alternate row coloring
-            let backgroundColor = (i % 2 === 0) ? '#f2f2f2' : '#ffffff';
-
-            // Add each cell to the row
-            tableHTML += `<td style="border: 1px solid #b0b3b5; padding: 8px; text-align: left; background-color: ${backgroundColor}; color: #9fa1a3;">
+            // Add each cell to the row with intermediate grey border and padding
+            tableHTML += `<td style="border: ${borderThickness} solid ${borderColor}; padding: 8px; text-align: left;">
                             ${rowData[key]}
                           </td>`;
         }
@@ -1231,7 +1239,6 @@ function createDynamicTableFromJSON(jsonData) {
 
     // Return the complete table HTML string
     return tableHTML;
-
 }
 
 function getStepEmbeddingElements(embeddings, stepStatus) {
