@@ -1237,7 +1237,7 @@ function createDynamicTableFromJSON(jsonData) {
     // Close the table and the scrollable div tag
     tableHTML += `</table></div>`;
 
-    // Return the complete table HTML string
+    // Return the complete table HTML string.
     return tableHTML;
 }
 
