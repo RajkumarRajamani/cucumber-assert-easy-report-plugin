@@ -451,6 +451,12 @@ nav ul a {
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 2px 2px 15px 2px #e3e2e2;
+  background-color: white;
+}
+
+.scenario-tags-line {
+  padding: 10px;
+  color: #3A98B9;
 }
 
 .step-name {

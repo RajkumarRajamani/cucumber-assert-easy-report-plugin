@@ -1,5 +1,6 @@
 package org.cucumber.easyreport.stepdefinitions;
 
+import io.cucumber.datatable.DataTable;
 import org.cucumber.easyreport.assertions.Assertions;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.java.en.Given;
@@ -54,7 +55,7 @@ public class FeatureC_StepDefinitions {
     //=====
 
     @Given("start9")
-    public void start6() throws JsonProcessingException {
+    public void start6(DataTable table) throws JsonProcessingException {
         System.out.println("Start method");
     }
 

@@ -115,6 +115,7 @@ public class ReportJsonFeature {
         private String name;
         private Match match;
         private ArrayList<After> after = new ArrayList<>();
+        private LinkedList<Row> rows = new LinkedList<>(); // changed for data table
         private String keyword;
 
         /*
@@ -130,6 +131,11 @@ public class ReportJsonFeature {
         private String afterStatus = StringUtils.EMPTY;
         private String afterError = StringUtils.EMPTY;
         private String stepFinalStatus = StringUtils.EMPTY;
+    }
+
+    @Data
+    public static class Row {
+        private LinkedList<String> cells = new LinkedList<>();
     }
 
 }

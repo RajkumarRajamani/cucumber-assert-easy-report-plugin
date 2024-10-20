@@ -17,6 +17,7 @@ public class FeatureB_StepDefinitions {
         assertions.assertEqualsTo("name", "raj", "rajkumar", "failed", "passed");
         assertions.assertEqualsTo("age", "30", "31", "failed", "passed");
         assertions.assertEqualsTo("apple", "macbook air", "macbook pro", "failed", "passed");
+        assertions.assertEqualsTo("orange", "macbook pro", "macbook air", "failed", "passed");
         assertions.assertAll();
     }
 

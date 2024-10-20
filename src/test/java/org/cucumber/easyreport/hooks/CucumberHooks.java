@@ -53,17 +53,17 @@ public class CucumberHooks {
 //        throw new EasyReportException("ForceFailCheck");
     }
 
-//    @AfterStep
+    @AfterStep
     public void easyReportEndStep(Scenario scenario) {
 
-        final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-        scenario.attach(screenshot, "image/png", "screenshot for " + getStepName(scenario));
-        StringBuilder sb = new StringBuilder();
-        sb.append("Total Number of cases = 5").append("\n")
-                .append("Total Number of cases = 5").append("\n")
-                .append("Total Number of cases = 5").append("\n")
-                .append("Total Number of cases = 5").append("\n");
-        scenario.attach(sb.toString(), "text/plain", "screenshot for " + getStepName(scenario));
+//        final byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+//        scenario.attach(screenshot, "image/png", "screenshot for " + getStepName(scenario));
+//        StringBuilder sb = new StringBuilder();
+//        sb.append("Total Number of cases = 5").append("\n")
+//                .append("C:\\abc\\bdhb\\dkkj.xml").append("\n")
+//                .append("Total Number of cases = 5").append("\n")
+//                .append("Total Number of cases = 5").append("\n");
+//        scenario.attach(sb.toString(), "text/plain", "screenshot for " + getStepName(scenario));
 
 //        if(getStepName(scenario).contains("check3") || getStepName(scenario).contains("process12"))
 //            throw new EasyReportException("ForceFailCheck");

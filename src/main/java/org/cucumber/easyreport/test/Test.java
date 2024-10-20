@@ -1,7 +1,10 @@
 package org.cucumber.easyreport.test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Test {
     public static void main(String[] args) throws IOException {

@@ -921,7 +921,7 @@ var table = new gridjs.Grid({
     }
   ],
   pagination: {
-    limit: 10,
+    limit: 50,
     summary: true
   },
   search: true,
@@ -1057,6 +1057,7 @@ function getScenarioElements(scenarios) {
     var scLineColor = getScenarioLineColorBasedOnStatus(scenario.status);
     var scenarioId = replaceAccentsChars(scenario.id, '', 'SINGLE_FOR_MULTI') + "-" + createUUID();
     var scenarioDuration = scenario.duration;
+    var scenarioTags = scenario.tags;
 
     var beforeScenarioError = "";
     if (scenario.beforeError.length != 0) {
@@ -1085,6 +1086,7 @@ function getScenarioElements(scenarios) {
     // On clicking scenario line, step is displayed
     scenarioElements += `
     <div class="scenario-item-box">
+        <div class = "scenario-tags-line">${scenarioTags}</div>
         ${beforeScenarioError}
         <div id="#${scenarioId}" class="scenario-item">
           <div id="#${scenarioId}-collapsible" class="scenario-name collapsible" onclick="collapseExpandScenario('#${scenarioId}-collapsible-content')">
@@ -1150,6 +1152,7 @@ function getStepElements(steps) {
     var stepName = atob(step.name);
     var stepNameForId = replaceAccentsChars(stepName, '', 'SINGLE_FOR_MULTI')  + "-" + createUUID();
     var stepDuration = step.duration;
+    var stepTable = createDynamicTableFromJSON(step); // get data table as html element
 
     stepElements += `
       <div id="#${stepNameForId}-${step.line}" class="step-item">
@@ -1167,6 +1170,8 @@ function getStepElements(steps) {
 
         </div>
 
+        <div>${stepTable}</div>
+
         <div
           id="#step-${stepNameForId}-${step.line}-collapsible-content"
           class="step-info-section">
@@ -1178,6 +1183,55 @@ function getStepElements(steps) {
     `;
   }
   return stepElements;
+}
+
+function createDynamicTableFromJSON(jsonData) {
+
+    // Null check: If jsonData or dataTableRowItems is null/undefined, return an empty string
+    if (!jsonData || !jsonData.dataTableRowItems) {
+        return '';
+    }
+
+    // Start building the HTML table as a string inside a scrollable div container
+    let tableHTML = `
+    <div style="overflow-x: auto; max-width: 100%;">
+        <table style="border: 1px solid #b0b3b5; border-collapse: collapse; width: 100%; min-width: 500px;">
+    `;
+
+    // Get the array of data
+    let dataTableRowItems = jsonData.dataTableRowItems;
+
+    // Loop through the dataTableRowItems using a conventional for loop
+    for (let i = 0; i < dataTableRowItems.length; i++) {
+        let rowData = dataTableRowItems[i];
+
+        // Start a new row
+        tableHTML += `<tr>`;
+
+        // Loop through each key in the rowData object and create a cell
+        let keys = Object.keys(rowData);
+        for (let j = 0; j < keys.length; j++) {
+            let key = keys[j];
+
+            // Alternate row coloring
+            let backgroundColor = (i % 2 === 0) ? '#f2f2f2' : '#ffffff';
+
+            // Add each cell to the row
+            tableHTML += `<td style="border: 1px solid #b0b3b5; padding: 8px; text-align: left; background-color: ${backgroundColor}; color: #9fa1a3;">
+                            ${rowData[key]}
+                          </td>`;
+        }
+
+        // End the row
+        tableHTML += `</tr>`;
+    }
+
+    // Close the table and the scrollable div tag
+    tableHTML += `</table></div>`;
+
+    // Return the complete table HTML string
+    return tableHTML;
+
 }
 
 function getStepEmbeddingElements(embeddings, stepStatus) {
@@ -1218,7 +1272,8 @@ function getStepEmbeddingElements(embeddings, stepStatus) {
 
 function getStepScreenshotElement(mimeType, encodedString, imageCaption, index) {
   if (mimeType == "text/plain") {
-    return `<div>${encodedString}</div>`;
+    var text = atob(encodedString);
+    return `<div>${text}</div>`;
   } else {
     var uint8array = new TextEncoder("utf-8").encode(encodedString);
     var text = new TextDecoder().decode(uint8array);

@@ -70,12 +70,21 @@ public class HtmlDataGenerator {
                 .map(dt -> dt.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
                 .min(Comparator.naturalOrder()).orElseThrow();
 
-        long totalDuration = features.stream()
+        LocalDateTime endTime = features.stream()
                 .map(ReportJsonFeature::getElements)
-                .flatMap(Collection::stream).toList()
-                .stream().mapToLong(ReportJsonFeature.Element::getTotalScenarioDuration)
-                .sum();
-        LocalDateTime endTime = startTime.plus(Duration.ofNanos(totalDuration));
+                .flatMap(Collection::stream)
+                .map(ReportJsonFeature.Element::getStart_timestamp)
+                .map(dt -> dt.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+                .max(Comparator.naturalOrder()).orElseThrow();
+
+        long totalDuration = Duration.between(startTime, endTime).toNanos();
+
+//        long totalDuration = features.stream()
+//                .map(ReportJsonFeature::getElements)
+//                .flatMap(Collection::stream).toList()
+//                .stream().mapToLong(ReportJsonFeature.Element::getTotalScenarioDuration)
+//                .sum();
+//        LocalDateTime endTime = startTime.plus(Duration.ofNanos(totalDuration));
         String totalExecutionDuration = this.getReadableTime(totalDuration);
 
         projectInfo.put("startTime", startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss:SSS")));
@@ -98,18 +107,18 @@ public class HtmlDataGenerator {
                         testCase.getSteps().forEach(step -> {
                             step.setStepSeq("Step " + (testCase.getSteps().indexOf(step) + 1));
                             ReportJsonFeature.Before failedBefore = step.getBefore().stream().filter(before -> !Set.of(PASSED.getStatus(), SKIPPED.getStatus()).contains(before.getResult().getStatus())).findFirst().orElse(null);
-                            if(Objects.nonNull(failedBefore)) {
+                            if (Objects.nonNull(failedBefore)) {
                                 step.setBeforeStatus(failedBefore.getResult().getStatus());
                                 step.setBeforeError(this.replaceEscapesWithHtml(failedBefore.getResult().getError_message()));
                             }
 
                             ReportJsonFeature.After failedAfter = step.getAfter().stream().filter(after -> !Set.of(PASSED.getStatus(), SKIPPED.getStatus()).contains(after.getResult().getStatus())).findFirst().orElse(null);
-                            if(Objects.nonNull(failedAfter)) {
+                            if (Objects.nonNull(failedAfter)) {
                                 step.setAfterStatus(failedAfter.getResult().getStatus());
                                 step.setAfterError(this.replaceEscapesWithHtml(failedAfter.getResult().getError_message()));
                             }
 
-                            if(step.getBeforeStatus().equals(FAILED.getStatus()) || step.getAfterStatus().equals(FAILED.getStatus()))
+                            if (step.getBeforeStatus().equals(FAILED.getStatus()) || step.getAfterStatus().equals(FAILED.getStatus()))
                                 step.setStepFinalStatus(FAILED.getStatus());
                             else
                                 step.setStepFinalStatus(step.getResult().getStatus());
@@ -136,18 +145,18 @@ public class HtmlDataGenerator {
                         List<ReportJsonFeature.After> afterList = Optional.ofNullable(testCase.getAfter()).orElse(new ArrayList<>());
 
                         ReportJsonFeature.Before failedBefore = beforeList.stream().filter(before -> !Set.of(PASSED.getStatus(), SKIPPED.getStatus()).contains(before.getResult().getStatus())).findFirst().orElse(null);
-                        if(Objects.nonNull(failedBefore)) {
+                        if (Objects.nonNull(failedBefore)) {
                             testCase.setBeforeStatus(failedBefore.getResult().getStatus());
                             testCase.setBeforeError(this.replaceEscapesWithHtml(failedBefore.getResult().getError_message()));
                         }
 
                         ReportJsonFeature.After failedAfter = afterList.stream().filter(after -> !Set.of(PASSED.getStatus(), SKIPPED.getStatus()).contains(after.getResult().getStatus())).findFirst().orElse(null);
-                        if(Objects.nonNull(failedAfter)) {
+                        if (Objects.nonNull(failedAfter)) {
                             testCase.setAfterStatus(failedAfter.getResult().getStatus());
                             testCase.setAfterError(this.replaceEscapesWithHtml(failedAfter.getResult().getError_message()));
                         }
 
-                        if(testCase.getBeforeStatus().equals(FAILED.getStatus()) || testCase.getAfterStatus().equals(FAILED.getStatus()))
+                        if (testCase.getBeforeStatus().equals(FAILED.getStatus()) || testCase.getAfterStatus().equals(FAILED.getStatus()))
                             testCase.setScenarioStatus(FAILED.getStatus());
                         else {
                             Set<String> consolidatedStatus = testCase.getSteps().stream().map(ReportJsonFeature.Step::getStepFinalStatus).collect(toSet());
@@ -367,18 +376,36 @@ public class HtmlDataGenerator {
                                             stepMap.put("afterError", this.getEncodedText(step.getAfterError()));
                                             stepMap.put("finalStatus", step.getStepFinalStatus());
 
+                                            // to add step level data table
+                                            if (Objects.nonNull(step.getRows()) && !step.getRows().isEmpty()) {
+                                                List<LinkedHashMap<String, String>> lst = step.getRows().stream()
+                                                        .map(row -> {
+                                                            LinkedHashMap<String, String> rowMap = new LinkedHashMap<>();
+                                                            int index = 1;
+                                                            for (String cell : row.getCells()) {
+                                                                rowMap.put("cell" + index, cell);
+                                                                index++;
+                                                            }
+                                                            return rowMap;
+                                                        })
+                                                        .toList();
+                                                stepMap.put("dataTableRowItems", lst);
+                                            } else {
+                                                stepMap.put("dataTableRowItems", null);
+                                            }
+
                                             List<ReportJsonFeature.Embedding> beforeScreenshots = Optional.of(step.getBefore().stream().filter(Objects::nonNull).map(ReportJsonFeature.Before::getEmbeddings).filter(Objects::nonNull).flatMap(Collection::stream).toList()).orElse(new ArrayList<>());
                                             List<ReportJsonFeature.Embedding> afterScreenshots = Optional.of(step.getAfter().stream().filter(Objects::nonNull).map(ReportJsonFeature.After::getEmbeddings).filter(Objects::nonNull).flatMap(Collection::stream).toList()).orElse(new ArrayList<>());
                                             List<ReportJsonFeature.Embedding> screenshots = Stream.concat(beforeScreenshots.stream(), afterScreenshots.stream()).toList();
 
-                                            if(!screenshots.isEmpty()) {
+                                            if (!screenshots.isEmpty()) {
                                                 screenshots.forEach(embedding -> {
                                                     embedding.setName(this.getEncodedText(this.replaceEscapesWithHtml(embedding.getName())));
-                                                    if(embedding.getMime_type().equals("text/plain")) {
-                                                        byte[] byteArray = Base64.getDecoder().decode(embedding.getData());
-                                                        String text = new String(byteArray, StandardCharsets.UTF_8);
-                                                        embedding.setData(this.replaceEscapesWithHtml(text));
-                                                    }
+//                                                    if(embedding.getMime_type().equals("text/plain")) {
+//                                                        byte[] byteArray = Base64.getDecoder().decode(embedding.getData());
+//                                                        String text = new String(byteArray, StandardCharsets.UTF_8);
+//                                                        embedding.setData(this.replaceEscapesWithHtml(text));
+//                                                    }
                                                 });
                                             }
 
@@ -395,6 +422,8 @@ public class HtmlDataGenerator {
                                 scenariosSet.put("afterStatus", scenario.getAfterStatus());
                                 scenariosSet.put("afterError", this.getEncodedText(scenario.getAfterError()));
                                 scenariosSet.put("steps", stepMapList);
+                                scenariosSet.put("tags", Objects.requireNonNullElse(scenario.getTags(), new ArrayList<ReportJsonFeature.Tag>())
+                                        .stream().map(ReportJsonFeature.Tag::getName).collect(Collectors.joining(" ; ")));
                                 scenarioMapList.add(scenariosSet);
                             });
                     featuresSet.put("id", this.replaceEscapesWithHtml(feature.getId()));
@@ -424,7 +453,7 @@ public class HtmlDataGenerator {
 
     private void generateDefectsStats(HtmlDataSet htmlDataSet) {
         features
-                .forEach( feature -> {
+                .forEach(feature -> {
                     String featureNameReference = feature.getFeatureSeq() + " : " + feature.getName();
                     List<ReportJsonFeature.Element> scenarios = feature.getElements();
 
@@ -464,14 +493,14 @@ public class HtmlDataGenerator {
         String scenarioNameReference = failedScenario.getScenarioSeq() + " : " + failedScenario.getName();
 
         List<ReportJsonFeature.Before> scenarioBeforeList = Optional.ofNullable(failedScenario.getBefore()).orElse(new ArrayList<>());
-        if(!scenarioBeforeList.isEmpty()) {
+        if (!scenarioBeforeList.isEmpty()) {
             ReportJsonFeature.Before scenarioBeforeFailure = scenarioBeforeList.stream().filter(before -> !ignorableStatus.contains(before.getResult().getStatus())).findFirst().orElse(null);
             String scenarioBeforeError = Objects.nonNull(scenarioBeforeFailure) ? scenarioBeforeFailure.getResult().getError_message() : StringUtils.EMPTY;
             this.addFailuresIntoCategory(featureName, scenarioNameReference, "scenario before hook", scenarioBeforeError);
         }
 
         List<ReportJsonFeature.Before> stepBeforeList = Optional.ofNullable(failedStep.getBefore()).orElse(new ArrayList<>());
-        if(!stepBeforeList.isEmpty()) {
+        if (!stepBeforeList.isEmpty()) {
             String stepNameRef = failedStep.getStepSeq() + " before hook error";
             ReportJsonFeature.Before stepBeforeFailure = stepBeforeList.stream().filter(before -> !ignorableStatus.contains(before.getResult().getStatus())).findFirst().orElse(null);
             String stepBeforeError = Objects.nonNull(stepBeforeFailure) ? stepBeforeFailure.getResult().getError_message() : StringUtils.EMPTY;
@@ -480,14 +509,14 @@ public class HtmlDataGenerator {
 
         String stepError = Optional.ofNullable(failedStep.getResult()).orElse(new ReportJsonFeature.Result()).getError_message();
         String stepNameReference = "";
-        if(Objects.nonNull(failedStep.getStepSeq())) {
+        if (Objects.nonNull(failedStep.getStepSeq())) {
             stepNameReference = failedStep.getStepSeq() + " : " + failedStep.getName();
         }
         stepError = Objects.nonNull(stepError) ? stepError : StringUtils.EMPTY;
         this.addFailuresIntoCategory(featureName, scenarioNameReference, stepNameReference, stepError);
 
         List<ReportJsonFeature.After> stepAfterList = Optional.ofNullable(failedStep.getAfter()).orElse(new ArrayList<>());
-        if(!stepAfterList.isEmpty()) {
+        if (!stepAfterList.isEmpty()) {
             String stepNameRef = failedStep.getStepSeq() + " after hook error";
             ReportJsonFeature.After stepAfterFailure = stepAfterList.stream().filter(after -> !ignorableStatus.contains(after.getResult().getStatus())).findFirst().orElse(null);
             String stepAfterError = Objects.nonNull(stepAfterFailure) ? stepAfterFailure.getResult().getError_message() : StringUtils.EMPTY;
@@ -495,7 +524,7 @@ public class HtmlDataGenerator {
         }
 
         List<ReportJsonFeature.After> scenarioAfterList = Optional.ofNullable(failedScenario.getAfter()).orElse(new ArrayList<>());
-        if(!scenarioAfterList.isEmpty()) {
+        if (!scenarioAfterList.isEmpty()) {
             ReportJsonFeature.After scenarioAfterFailure = scenarioAfterList.stream().filter(after -> !ignorableStatus.contains(after.getResult().getStatus())).findFirst().orElse(null);
             String scenarioAfterError = Objects.nonNull(scenarioAfterFailure) ? scenarioAfterFailure.getResult().getError_message() : StringUtils.EMPTY;
             this.addFailuresIntoCategory(featureName, scenarioNameReference, "scenario after hook", scenarioAfterError);
@@ -504,13 +533,13 @@ public class HtmlDataGenerator {
 
     private void addFailuresIntoCategory(String featureName, String scenarioName, String stepName, String errorText) {
         try {
-            if(errorText.contains("{") && errorText.contains("}")) {
+            if (errorText.contains("{") && errorText.contains("}")) {
                 errorText = errorText.substring(errorText.indexOf("{"), errorText.lastIndexOf("}") + 1);
                 ObjectMapper oMapper = new ObjectMapper();
                 oMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                 Error error = oMapper.readValue(errorText, Error.class);
 
-                if(!error.getKnownFailures().isEmpty()) {
+                if (!error.getKnownFailures().isEmpty()) {
                     error.getKnownFailures().forEach(f -> {
                         f.setFeatureName(this.getEncodedText(featureName));
                         f.setScenarioName(this.getEncodedText(scenarioName));
@@ -520,7 +549,7 @@ public class HtmlDataGenerator {
                     knownFailures.addAll(error.getKnownFailures());
                 }
 
-                if(!error.getFailures().isEmpty()){
+                if (!error.getFailures().isEmpty()) {
                     error.getFailures().forEach(f -> {
                         f.setFeatureName(this.getEncodedText(featureName));
                         f.setScenarioName(this.getEncodedText(scenarioName));
@@ -529,7 +558,7 @@ public class HtmlDataGenerator {
                     });
                     newFailures.addAll(error.getFailures());
                 }
-            } else if(!errorText.isBlank()){
+            } else if (!errorText.isBlank()) {
                 Cause cause = new Cause();
                 cause.setFeatureName(this.getEncodedText(featureName));
                 cause.setScenarioName(this.getEncodedText(scenarioName));
