@@ -1057,7 +1057,7 @@ function getScenarioElements(scenarios) {
     var scLineColor = getScenarioLineColorBasedOnStatus(scenario.status);
     var scenarioId = replaceAccentsChars(scenario.id, '', 'SINGLE_FOR_MULTI') + "-" + createUUID();
     var scenarioDuration = scenario.duration;
-    var scenarioTags = scenario.tags;
+    var scenarioTags = atob(scenario.tags);
 
     var beforeScenarioError = "";
     if (scenario.beforeError.length != 0) {

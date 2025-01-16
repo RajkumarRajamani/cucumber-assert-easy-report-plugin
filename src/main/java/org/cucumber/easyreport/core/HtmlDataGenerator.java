@@ -11,7 +11,6 @@ import org.apache.commons.text.CaseUtils;
 import org.cucumber.easyreport.exception.EasyReportException;
 import org.cucumber.easyreport.pojo.ReportJsonFeature;
 
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -21,7 +20,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toSet;
 import static org.cucumber.easyreport.core.EasyReportStatus.*;
 
@@ -422,8 +420,8 @@ public class HtmlDataGenerator {
                                 scenariosSet.put("afterStatus", scenario.getAfterStatus());
                                 scenariosSet.put("afterError", this.getEncodedText(scenario.getAfterError()));
                                 scenariosSet.put("steps", stepMapList);
-                                scenariosSet.put("tags", Objects.requireNonNullElse(scenario.getTags(), new ArrayList<ReportJsonFeature.Tag>())
-                                        .stream().map(ReportJsonFeature.Tag::getName).collect(Collectors.joining(" ; ")));
+                                scenariosSet.put("tags", this.getEncodedText(Objects.requireNonNullElse(scenario.getTags(), new ArrayList<ReportJsonFeature.Tag>())
+                                        .stream().map(ReportJsonFeature.Tag::getName).collect(Collectors.joining(" ; "))));
                                 scenarioMapList.add(scenariosSet);
                             });
                     featuresSet.put("id", this.replaceEscapesWithHtml(feature.getId()));

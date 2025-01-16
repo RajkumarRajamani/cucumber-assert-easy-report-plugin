@@ -11,6 +11,7 @@ Feature: Home Page pass with fails
 #    When process8
 #    Then check8
 
+  @CrossBrowser(env="Local",platform="Windows",browser={"Chrome","firefox","Safari"},version="131")
   Scenario Outline: scenario 9
     Given start9
       | name | value | details                                                                                      | city    | town    | pin    | state     | status | name2 | value2 | details2 | city2   | town2   | pin2   | state2    | status2 |

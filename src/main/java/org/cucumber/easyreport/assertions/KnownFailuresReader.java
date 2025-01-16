@@ -11,6 +11,7 @@ import org.cucumber.easyreport.pojo.KnownFailures;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -23,24 +24,27 @@ public class KnownFailuresReader {
 
     private static Map<String, String> knownFailureMap = new HashMap<>();
 
-    public static void main(String[] args) {
-        Map<String, String> map = readKnownFailures();
-        System.out.println(map);
-    }
-
+    /**
+     * Reads the known failures from the `known-failures.yml` file located in the project directory.
+     * If the known failures are already loaded, it does nothing.
+     *
+     * @return a map of known failure labels to their tracking IDs
+     * @throws EasyReportException if the `known-failures.yml` file is not found or cannot be loaded
+     */
     @SneakyThrows
     public static Map<String, String> readKnownFailures() {
-        if(knownFailureMap.isEmpty()) {
+        if (knownFailureMap.isEmpty()) {
             String fileNameToFind = "known-failures.yml";
             String rootDirectoryPath = String.join(System.getProperty("file.separator"), System.getProperty("user.dir"), "src", "");
             File rootDirectory = new File(rootDirectoryPath);
 
-
-            try(Stream<Path> walkStream = Files.walk(rootDirectory.toPath())) {
+            try (Stream<Path> walkStream = Files.walk(rootDirectory.toPath())) {
                 walkStream.filter(p -> p.toFile().isFile())
                         .filter(f -> f.toString().endsWith(fileNameToFind))
                         .findFirst()
                         .ifPresentOrElse(KnownFailuresReader::read, KnownFailuresReader::exceptionLog);
+            } catch (IOException e) {
+                throw new EasyReportException("Error while searching for 'known-failures.yml' file", e);
             }
         }
         return knownFailureMap;

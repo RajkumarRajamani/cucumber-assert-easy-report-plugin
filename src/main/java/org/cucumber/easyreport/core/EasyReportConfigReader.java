@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -14,69 +15,85 @@ import java.util.stream.Stream;
 public class EasyReportConfigReader {
 
     private static Properties properties;
-//    private static final String defaultReportDirectory = System.getProperty("user.dir") + System.getProperty("file.separator") + "easy-report" + System.getProperty("file.separator");
     private static final String defaultReportDirectory = String.join(File.separator, System.getProperty("user.dir"), "output", "easy-report", "");
 
     public EasyReportConfigReader() {
         this.loadProperties();
     }
 
+    /**
+     * Loads the properties from the `cucumber.properties` file located in the project directory (anywhere inside src/).
+     * If the properties are already loaded, it does nothing.
+     *
+     * @throws EasyReportException if the `cucumber.properties` file is not found or cannot be loaded.
+     */
     @SneakyThrows
     private void loadProperties() {
-        if(Objects.isNull(properties)) {
+        if (Objects.isNull(properties)) {
             String fileNameToFind = "cucumber.properties";
-            String rootDirectoryPath = System.getProperty("user.dir") + System.getProperty("file.separator") + "src" + System.getProperty("file.separator");
+            String rootDirectoryPath = System.getProperty("user.dir") + File.separator + "src" + File.separator;
             File rootDirectory = new File(rootDirectoryPath);
-            File cucumberPropertyFile = null;
+            File cucumberPropertyFile;
 
-            try(Stream<Path> walkStream = Files.walk(rootDirectory.toPath())) {
+            try (Stream<Path> walkStream = Files.walk(rootDirectory.toPath())) {
                 cucumberPropertyFile = walkStream.filter(p -> p.toFile().isFile())
                         .filter(f -> f.toString().endsWith(fileNameToFind))
-                        .findFirst().orElseThrow(() -> new EasyReportException("'cucumber.properties' file is not found in project folder")).toFile();
+                        .findFirst()
+                        .orElseThrow(() -> new EasyReportException("'cucumber.properties' file is not found in project folder"))
+                        .toFile();
+            } catch (IOException e) {
+                throw new EasyReportException("Error while searching for 'cucumber.properties' file", e);
             }
 
             properties = new Properties();
-            properties.load(new FileInputStream(cucumberPropertyFile));
+            try (FileInputStream fis = new FileInputStream(cucumberPropertyFile)) {
+                properties.load(fis);
+            } catch (IOException e) {
+                throw new EasyReportException("Error while loading 'cucumber.properties' file", e);
+            }
         }
     }
 
+    /**
+     * Retrieves the property value associated with the given key.
+     *
+     * @param key the property key to look up
+     * @return the property value associated with the key, or null if the key is not found or an error occurs
+     */
     public String getProperty(String key) {
-        return properties.getProperty(key);
+        try {
+            return properties.getProperty(key);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public String getJsonReportPath() {
-        String path = properties.getProperty("easyReport.format.json.conventional");
-        return path == null ? defaultReportDirectory + "easy-cucumber-report.json" : path;
+        return properties.getProperty("easyReport.format.json.conventional", defaultReportDirectory + "easy-cucumber-report.json");
     }
 
     public String getCustomizedJsonReportPath() {
-        String path = properties.getProperty("easyReport.format.json.customized");
-        return path == null ? defaultReportDirectory + "easy-cucumber-html-data-set-report.json" : path;
+        return properties.getProperty("easyReport.format.json.customized", defaultReportDirectory + "easy-cucumber-html-data-set-report.json");
     }
 
     public String getHtmlReportPath() {
-        String path = properties.getProperty("easyReport.format.html.customized");
-        return path == null ? defaultReportDirectory + "easy-cucumber-html-report.html" : path;
+        return properties.getProperty("easyReport.format.html.customized", defaultReportDirectory + "easy-cucumber-html-report.html");
     }
 
     public String getEnvironment() {
-        String environment = properties.getProperty("easyReport.project.info.environment");
-        return environment == null ? "Default Test Environment" : environment;
+        return properties.getProperty("easyReport.project.info.environment", "Default Test Environment");
     }
 
     public String getBrowser() {
-        String browser = properties.getProperty("easyReport.project.info.browser");
-        return browser == null ? "Default Browser" : browser;
+        return properties.getProperty("easyReport.project.info.browser", "Default Browser");
     }
 
     public String getApplicationName() {
-        String appName = properties.getProperty("easyReport.project.info.appName");
-        return appName == null ? "Default Application Name" : appName;
+        return properties.getProperty("easyReport.project.info.appName", "Default Application Name");
     }
 
     public String getProjectDescription() {
-        String projectDescription = properties.getProperty("easyReport.project.info.descriptionOrReleaseNotes");
-        return projectDescription == null ? "Default Description" : projectDescription;
+        return properties.getProperty("easyReport.project.info.descriptionOrReleaseNotes", "Default Description");
     }
 
     public String getOs() {
@@ -84,39 +101,35 @@ public class EasyReportConfigReader {
     }
 
     public String getProjectManger() {
-        String projectManager = properties.getProperty("easyReport.project.info.project-manager");
-        return projectManager == null ? "un-defined" : projectManager;
+        return properties.getProperty("easyReport.project.info.project-manager", "un-defined");
     }
 
     public String getDeliveryQualityManager() {
-        String dqManager = properties.getProperty("easyReport.project.info.dq-manager");
-        return dqManager == null ? "un-defined" : dqManager;
+        return properties.getProperty("easyReport.project.info.dq-manager", "un-defined");
     }
 
     public String getDeliveryQualityLead() {
-        String dqLead = properties.getProperty("easyReport.project.info.dq-lead");
-        return dqLead == null ? "un-defined" : dqLead;
+        return properties.getProperty("easyReport.project.info.dq-lead", "un-defined");
     }
 
     public String getProdReleaseName() {
-        String releaseName = properties.getProperty("easyReport.project.info.release.name");
-        return releaseName == null ? "un-defined" : releaseName;
+        return properties.getProperty("easyReport.project.info.release.name", "un-defined");
     }
 
     public String getProdReleaseDate() {
-        String releaseDate = properties.getProperty("easyReport.project.info.release.date");
-        return releaseDate == null ? "un-defined" : releaseDate;
+        return properties.getProperty("easyReport.project.info.release.date", "un-defined");
     }
 
     public String getSprintName() {
-        String sprintName = properties.getProperty("easyReport.project.info.release.sprint");
-        return sprintName == null ? "un-defined" : sprintName;
+        return properties.getProperty("easyReport.project.info.release.sprint", "un-defined");
     }
 
     public static void main(String[] args) {
         EasyReportConfigReader config = new EasyReportConfigReader();
         System.out.println(config.getProperty("easyReport.format.html.customized"));
-        System.out.println(config.getProperty("easyReport.format.html.customizeds"));
+        System.out.println(config.getProperty("easyReport.format.html.customized"));
+        System.out.println(config.getHtmlReportPath());
+        System.out.println(System.getProperty("user.dir"));
     }
 
 }

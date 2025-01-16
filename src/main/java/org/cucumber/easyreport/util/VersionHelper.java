@@ -3,12 +3,13 @@ package org.cucumber.easyreport.util;
 public class VersionHelper {
 
     /**
-     * Compares one version string to another version string by dotted ordinals.
-     * eg. "1.0" > "0.09" ; "0.9.5" < "0.10",
+     * <pre>Compares one version string to another version string by dotted ordinals.
+     * eg. "1.0" > "0.09"; "0.9.5" < "0.10",
      * also "1.0" < "1.0.0" but "1.0" == "01.00"
+     * </pre>
      *
-     * @param left  the left hand version string
-     * @param right the right hand version string
+     * @param left  the left-hand version string
+     * @param right the right-hand version string
      * @return 0 if equal, -1 if thisVersion &lt; comparedVersion and 1 otherwise.
      */
     public static int compare(String left, String right) {

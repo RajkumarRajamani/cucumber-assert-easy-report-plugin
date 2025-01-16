@@ -6,13 +6,9 @@ package org.cucumber.easyreport.core;
 //
 
 
-import org.cucumber.easyreport.assertions.Assertions;
-import org.cucumber.easyreport.exception.EasyReportException;
-import org.cucumber.easyreport.pojo.ReportJsonFeature;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import io.cucumber.core.exception.ExceptionUtils;
 import io.cucumber.messages.types.Background;
@@ -20,26 +16,10 @@ import io.cucumber.messages.types.Feature;
 import io.cucumber.messages.types.Scenario;
 import io.cucumber.messages.types.Step;
 import io.cucumber.plugin.EventListener;
-import io.cucumber.plugin.event.Argument;
-import io.cucumber.plugin.event.DataTableArgument;
-import io.cucumber.plugin.event.DocStringArgument;
-import io.cucumber.plugin.event.EmbedEvent;
-import io.cucumber.plugin.event.EventPublisher;
-import io.cucumber.plugin.event.HookTestStep;
-import io.cucumber.plugin.event.HookType;
-import io.cucumber.plugin.event.PickleStepTestStep;
-import io.cucumber.plugin.event.Result;
-import io.cucumber.plugin.event.Status;
-import io.cucumber.plugin.event.StepArgument;
-import io.cucumber.plugin.event.TestCase;
-import io.cucumber.plugin.event.TestCaseStarted;
-import io.cucumber.plugin.event.TestRunFinished;
-import io.cucumber.plugin.event.TestSourceRead;
-import io.cucumber.plugin.event.TestStep;
-import io.cucumber.plugin.event.TestStepFinished;
-import io.cucumber.plugin.event.TestStepStarted;
-import io.cucumber.plugin.event.WriteEvent;
+import io.cucumber.plugin.event.*;
 import lombok.SneakyThrows;
+import org.cucumber.easyreport.exception.EasyReportException;
+import org.cucumber.easyreport.pojo.ReportJsonFeature;
 
 import java.io.*;
 import java.net.URI;
