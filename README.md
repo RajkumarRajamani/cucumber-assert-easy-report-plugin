@@ -155,7 +155,7 @@ knownFailures:
 ```
 
 ### [Click here to see a sample report](https://raw.githubusercontent.com/seleniumbrain/cucumber-assert-easy-report-plugin/master/sample-output/easy-cucumber-report.html)
-### [Click here to download and view a sample report](../raw/master/sample-output/easy-cucumber-report.html)
+### [Click here to download and view a sample report](../cucumber-assert-easy-report/sample-output/easy-cucumber-report.html)
 
 ---
 ## License
