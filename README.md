@@ -123,6 +123,10 @@ public class StepDefinitions {
                     "Device Name is not matching. Please check...", // failure message to be displayed in the report
                     "Device Name is matching." // pass message to be displayed in the report
             );
+            
+            // Note: if you programmatically add known failures, then you should add it before adding assertions with the respective label name
+            // In the above example, the known-failure for the label "Device Name Field Validation" is added before adding the assertion for the same label
+            
         } finally {
             assertions.assertAll();
         }
@@ -130,6 +134,28 @@ public class StepDefinitions {
 
 }
 ```
+
+> [!NOTE]
+> You can also maintain list of known failures in a YAML file and keep it anywhere under `src/` location. Name the file as `known-failures.yml` and add list of known failures in below format
+
+`known-failures.yml`
+```yaml
+knownFailures:
+- label: UserNameField Validation
+  trackingId: XLCTCD-1234
+  description: any description
+
+- label: LoginButton Validation
+  trackingId: XLCTCD-5678
+  description: any description
+
+- label: SubmissionCount Validation
+  trackingId: XLCTCD-9810
+  description: any description
+```
+
+### [Click here to see a sample report](sample-output/easy-cucumber-report.html)
+
 ---
 ## License
 

@@ -1,4 +1,12 @@
 knownFailures:
-  - label: apple
+  - label: UserNameField Validation
     trackingId: XLCTCD-1234
-    description: new known failure
+    description: any description
+
+  - label: LoginButton Validation
+    trackingId: XLCTCD-5678
+    description: any description
+
+  - label: SubmissionCount Validation
+    trackingId: XLCTCD-9810
+    description: any description
