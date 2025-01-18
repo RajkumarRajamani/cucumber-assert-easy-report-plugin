@@ -5,11 +5,12 @@
 
     <groupId>io.github.seleniumbrain</groupId>
     <artifactId>easy-cucumber-report</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>Easy Cucumber Report</name>
-    <description>A plugin for easy reporting of cucumber assertions</description>
+    <description>EasyCucumberReport is a Java-based Cucumber plugin that generates HTML reports with a modern design. It includes an assertion object to manage known failures.
+        For unresolved or deferred issues, you can add them to the known failures list. This prevents the report from showing a harsh red failure status, instead displaying results in a more user-friendly amber color.</description>
     <url>https://github.com/seleniumbrain/cucumber-assert-easy-report-plugin</url>
 
     <licenses>

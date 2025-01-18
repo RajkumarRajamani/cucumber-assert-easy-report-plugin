@@ -5,12 +5,9 @@
 
 ## About
 
-EasyCucumberReport is a Java-based Cucumber plugin designed to generate an HTML report with a modern look and feel. This
-report provides an assertion object that allows you to add known failures.
+EasyCucumberReport is a Java-based Cucumber plugin that generates HTML reports with a modern design. It includes an assertion object to manage known failures.
 
-For non-fixed or deferred issues, instead of displaying the report with a failure status in a harsh red color, you can
-add these failures to the known failures list. This way, the report will not appear in an intimidating red color for
-users or stakeholders. Instead, it will display the results in a more pleasant amber color.
+For unresolved or deferred issues, you can add them to the known failures list. This prevents the report from showing a harsh red failure status, instead displaying results in a more user-friendly amber color.
 
 ## Tools & Technologies
 
