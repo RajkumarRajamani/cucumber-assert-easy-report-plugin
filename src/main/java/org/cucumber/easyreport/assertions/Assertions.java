@@ -96,14 +96,14 @@ public class Assertions implements Assertion {
     }
 
     /**
-     * Verifies that the actual value is equal to given value.
+     * Verifies that the actual value is equal to the given value.
      *
      * @param label       name of the field of assertion
      * @param actual      actual value to compare
      * @param expected    expected value to compare against
      * @param failureMsg  failure message to include in assertion exception
      * @param passMessage success message to display on console or log for debug
-     * @return @{@code Assertions}
+     * @return {@code Assertions}
      */
     @SneakyThrows
     @Override
@@ -133,7 +133,7 @@ public class Assertions implements Assertion {
      * @param expected    expected value to compare against
      * @param failureMsg  failure message to include in assertion exception
      * @param passMessage success message to display on console or log for debug
-     * @return @{@code Assertions}
+     * @return {@code Assertions}
      */
     @Override
     public synchronized Assertions assertNotEqualsTo(String label, Object actual, Object expected, String failureMsg, String passMessage) {
@@ -162,7 +162,7 @@ public class Assertions implements Assertion {
      * @param expected    expected value to compare against
      * @param failureMsg  failure message to include in assertion exception
      * @param passMessage success message to display on console or log for debug
-     * @return @{@code Assertions}
+     * @return {@code Assertions}
      */
     @SneakyThrows
     @Override
@@ -192,7 +192,7 @@ public class Assertions implements Assertion {
      * @param expected    expected value to compare against
      * @param failureMsg  failure message to include in assertion exception
      * @param passMessage success message to display on console or log for debug
-     * @return @{@code Assertions}
+     * @return {@code Assertions}
      */
     @Override
     public synchronized Assertions assertLesserThan(String label, Object actual, Object expected, String failureMsg, String passMessage) {
@@ -218,7 +218,7 @@ public class Assertions implements Assertion {
      *
      * @param label      name of the field of assertion
      * @param failureMsg failure message to include in assertion exception
-     * @return @{@code Assertions}
+     * @return {@code Assertions}
      */
     @Override
     public synchronized Assertions assertFail(String label, String failureMsg) {
@@ -231,7 +231,7 @@ public class Assertions implements Assertion {
      *
      * @param label      name of the field of assertion
      * @param failureMsg failure message to include in assertion exception
-     * @return @{@code Assertions}
+     * @return {@code Assertions}
      */
     @SneakyThrows
     @Override
@@ -245,7 +245,7 @@ public class Assertions implements Assertion {
      *
      * @param label      name of the field of assertion
      * @param failureMsg failure message to include in assertion exception
-     * @return @{@code Assertions}
+     * @return {@code Assertions}
      */
     @Override
     public synchronized Assertions isFalse(String label, boolean actual, String failureMsg) {

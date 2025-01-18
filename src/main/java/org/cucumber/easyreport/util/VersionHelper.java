@@ -4,8 +4,8 @@ public class VersionHelper {
 
     /**
      * <pre>Compares one version string to another version string by dotted ordinals.
-     * eg. "1.0" > "0.09"; "0.9.5" < "0.10",
-     * also "1.0" < "1.0.0" but "1.0" == "01.00"
+     * eg. "1.0" greater than "0.09"; "0.9.5" lesser than "0.10",
+     * also "1.0" lesser than "1.0.0" but "1.0" equals "01.00"
      * </pre>
      *
      * @param left  the left-hand version string
