@@ -154,7 +154,7 @@ knownFailures:
   description: any description
 ```
 
-### [Click here to see a sample report](https://raw.githubusercontent.com/seleniumbrain/easyreport/main/sample-output/easy-cucumber-report.html)
+### [Click here to see a sample report](https://raw.githubusercontent.com/seleniumbrain/cucumber-assert-easy-report-plugin/master/sample-output/easy-cucumber-report.html)
 
 ---
 ## License
