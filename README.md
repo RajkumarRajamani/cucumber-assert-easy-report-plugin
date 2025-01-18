@@ -153,10 +153,8 @@ knownFailures:
   trackingId: XLCTCD-9810
   description: any description
 ```
-
-[//]: # (### [Click here to see a sample report]&#40;https://raw.githubusercontent.com/seleniumbrain/cucumber-assert-easy-report-plugin/master/sample-output/easy-cucumber-report.html&#41;)
-<a href="https://raw.githubusercontent.com/seleniumbrain/cucumber-assert-easy-report-plugin/master/sample-output/easy-cucumber-report.html" download>Click here to download and view a sample report</a>
 ---
+
 ## License
 
 This project is licensed under the MIT License—see the LICENSE file for details.
