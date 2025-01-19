@@ -5,12 +5,15 @@
 
     <groupId>io.github.seleniumbrain</groupId>
     <artifactId>easy-cucumber-report</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.8</version>
     <packaging>jar</packaging>
 
     <name>Easy Cucumber Report</name>
-    <description>EasyCucumberReport is a Java-based Cucumber plugin that generates HTML reports with a modern design. It includes an assertion object to manage known failures.
-        For unresolved or deferred issues, you can add them to the known failures list. This prevents the report from showing a harsh red failure status, instead displaying results in a more user-friendly amber color.</description>
+    <description>EasyCucumberReport is a Java-based Cucumber plugin that generates HTML reports with a modern design. It
+        includes an assertion object to manage known failures.
+        For unresolved or deferred issues, you can add them to the known failures list. This prevents the report from
+        showing a harsh red failure status, instead displaying results in a more user-friendly amber color.
+    </description>
     <url>https://github.com/seleniumbrain/cucumber-assert-easy-report-plugin</url>
 
     <licenses>
@@ -29,7 +32,8 @@
     </developers>
     <scm>
         <connection>scm:git:git://github.com/seleniumbrain/cucumber-assert-easy-report-plugin.git</connection>
-        <developerConnection>scm:git:ssh://github.com:seleniumbrain/cucumber-assert-easy-report-plugin.git</developerConnection>
+        <developerConnection>scm:git:ssh://github.com:seleniumbrain/cucumber-assert-easy-report-plugin.git
+        </developerConnection>
         <url>https://github.com/seleniumbrain/cucumber-assert-easy-report-plugin</url>
     </scm>
     <distributionManagement>
@@ -194,6 +198,7 @@
 
     <build>
         <plugins>
+            <!--            test execution plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -208,6 +213,7 @@
                 </configuration>
             </plugin>
 
+            <!--            for publishing the project to maven central-->
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
@@ -218,6 +224,7 @@
                 </configuration>
             </plugin>
 
+            <!--            for signing the artifacts-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
@@ -232,6 +239,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--            for attaching sources and javadocs-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -258,6 +267,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!--            for deploying the artifacts to maven central-->
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
