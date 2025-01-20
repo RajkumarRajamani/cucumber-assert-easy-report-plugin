@@ -10,7 +10,8 @@ import org.assertj.core.api.SoftAssertions;
 import org.assertj.core.error.AssertJMultipleFailuresError;
 import org.cucumber.easyreport.exception.EasyReportException;
 import org.cucumber.easyreport.util.VersionHelper;
-import org.cucumber.easyreport.util.dateutils.DateUtils;
+import org.utils.datetime.date.DateTimeFormat;
+import org.utils.datetime.date.DateTimeUtils;
 
 import java.util.*;
 
@@ -60,8 +61,8 @@ public class Assertions implements Assertion {
     }
 
     private synchronized void addIntoFailures(String label, String trackingId, String failure) {
-        if(getKnownFailureLabels().containsKey(label)) {
-            if(failures.get().containsKey("knownFailures")) {
+        if (getKnownFailureLabels().containsKey(label)) {
+            if (failures.get().containsKey("knownFailures")) {
                 Map<String, String> fail = new HashMap<>();
                 fail.put("label", label);
                 fail.put("trackingId", trackingId);
@@ -77,7 +78,7 @@ public class Assertions implements Assertion {
                 failures.get().put("knownFailures", failureList);
             }
         } else {
-            if(failures.get().containsKey("failures")) {
+            if (failures.get().containsKey("failures")) {
                 Map<String, String> fail = new HashMap<>();
                 fail.put("label", label);
                 fail.put("trackingId", trackingId);
@@ -270,8 +271,9 @@ public class Assertions implements Assertion {
 
     private synchronized static String getLabelValue(String value) {
         try {
-            if (value.length() >= 10 && DateUtils.isDateValue(value.substring(0, 10)))
-                return value.substring(0, 10);
+            DateTimeUtils util = new DateTimeUtils();
+            if (util.isValid(value))
+                return util.formatTo(value, DateTimeFormat.FORMAT_DD_MM_YYYY);
             else
                 return value;
         } catch (IllegalArgumentException | IndexOutOfBoundsException e) {

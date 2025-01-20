@@ -194,6 +194,12 @@
             <version>1.7</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.seleniumbrain</groupId>
+            <artifactId>date-time-utils</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
