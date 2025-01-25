@@ -5,7 +5,7 @@
 
     <groupId>io.github.seleniumbrain</groupId>
     <artifactId>easy-cucumber-report</artifactId>
-    <version>1.0.9</version>
+    <version>1.1.1</version>
     <packaging>jar</packaging>
 
     <name>Easy Cucumber Report</name>
@@ -23,6 +23,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <developers>
         <developer>
             <id>SeleniumBrain</id>
@@ -30,13 +31,15 @@
             <email>rajoviyaa.s@gmail.com</email>
         </developer>
     </developers>
+
     <scm>
         <connection>scm:git:git://github.com/seleniumbrain/cucumber-assert-easy-report-plugin.git</connection>
         <developerConnection>scm:git:ssh://github.com:seleniumbrain/cucumber-assert-easy-report-plugin.git
         </developerConnection>
         <url>https://github.com/seleniumbrain/cucumber-assert-easy-report-plugin</url>
     </scm>
-    <distributionManagement>
+
+    <distributionManagement><!-- for deploying the artifacts to maven central-->
         <repository>
             <id>ossrh</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
@@ -46,6 +49,7 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
     <properties>
         <java.version>17</java.version>
         <cucumber.version>7.13.0</cucumber.version>
@@ -54,6 +58,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
+
     <dependencies>
         <!-- For Lombok including slf4j logging -->
         <dependency>
@@ -104,7 +109,7 @@
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-jvm</artifactId>
-            <version>7.13.0</version>
+            <version>${cucumber.version}</version>
             <type>pom</type>
         </dependency>
 
@@ -198,6 +203,12 @@
             <groupId>io.github.seleniumbrain</groupId>
             <artifactId>date-time-utils</artifactId>
             <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.seleniumbrain</groupId>
+            <artifactId>json-builder</artifactId>
+            <version>1.0.3</version>
         </dependency>
 
     </dependencies>

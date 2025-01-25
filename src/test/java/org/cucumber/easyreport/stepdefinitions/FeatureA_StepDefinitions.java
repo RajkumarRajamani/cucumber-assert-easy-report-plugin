@@ -7,6 +7,7 @@ import io.cucumber.java.en.When;
 import org.cucumber.easyreport.assertions.Assertions;
 import org.utils.datetime.date.DateTimeFormat;
 import org.utils.datetime.date.DateTimeUtils;
+import org.utils.datetime.date.TimeZoneId;
 
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -50,18 +51,20 @@ public class FeatureA_StepDefinitions {
 
     @Given("start3")
     public void start3() throws JsonProcessingException {
+
+
         System.out.println("Start method");
         Assertions assertions = new Assertions();
-        DateTimeUtils utils = utils = new DateTimeUtils(Locale.US, ZoneId.of("America/New_York"), ZoneOffset.of("-05:00"));
-        String date1 = utils.formatTo("2000-08-04", DateTimeFormat.FORMAT_ISO_LOCAL_DATE);
-        String date2 = utils.formatTo("04-08-2000", DateTimeFormat.FORMAT_ISO_LOCAL_DATE);
         try {
+//            assertions.addAssertions("City", assetion -> assetion.assertThat("Chennai").as("City is not matching.").isEqualTo("Madras"));
+//            assertions.addAssertions("Address", assetion -> assetion.assertThat("Chennai").as("City is not matching.").isEqualTo("Madras"));
+
             assertions.assertEqualsTo("BirthDate",
-                    date1,
-                    date2,
+                    "2000-08-04T13:00:00",
+                    "04-08-2000",
                     "Date is not matching.",
                     "Date is matching."
-                    );
+            );
         } finally {
             assertions.assertAll();
         }
