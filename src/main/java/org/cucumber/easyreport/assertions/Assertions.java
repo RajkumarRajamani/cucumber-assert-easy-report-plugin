@@ -1,7 +1,7 @@
 package org.cucumber.easyreport.assertions;
 
-import io.github.seleniumbrain.shaded.com.fasterxml.jackson.databind.JsonNode;
-import io.github.seleniumbrain.shaded.com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

@@ -30,7 +30,7 @@ Add below maven dependency to your existing pom.xml file
     <dependency>
         <groupId>io.github.seleniumbrain</groupId>
         <artifactId>easy-cucumber-report</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.2</version>
     </dependency>
 
 Include this plugin to your cucumber runner file
